@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EdgeMatrix — Free Trading Tools</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0D0D0F; color: #E5E5E5; font-family: system-ui, sans-serif; }
+
+  .nav { display: flex; align-items: center; gap: 10px; padding: 24px 40px; border-bottom: 1px solid #1a1a1d; }
+  .nav-bar { width: 4px; height: 32px; background: #A61E2E; border-radius: 2px; }
+  .nav-edge { font-size: 22px; font-weight: 900; color: #E5E5E5; letter-spacing: -1px; }
+  .nav-matrix { font-size: 10px; font-weight: 300; color: #555; letter-spacing: 5px; display: block; margin-top: -4px; }
+
+  .hero { padding: 72px 40px 48px; max-width: 720px; margin: 0 auto; text-align: center; }
+  .badge { display: inline-block; background: #1a1a1d; border: 1px solid #A61E2E; color: #A61E2E; font-size: 11px; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 28px; }
+  .hero h1 { font-size: 46px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
+  .hero h1 span { color: #A61E2E; }
+  .hero .sub { font-size: 18px; color: #888; line-height: 1.8; max-width: 580px; margin: 0 auto 40px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 720px; margin: 0 auto 48px; padding: 0 40px; }
+  .offer-card { background: #111113; border: 1px solid #1e1e22; border-radius: 14px; padding: 28px; }
+  .offer-card.highlight { border-color: #A61E2E; position: relative; }
+  .offer-tag { position: absolute; top: -12px; left: 20px; background: #A61E2E; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 4px 12px; border-radius: 20px; }
+  .offer-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .offer-card .label { font-size: 10px; color: #A61E2E; letter-spacing: 2px; margin-bottom: 12px; display: block; }
+  .offer-card ul { list-style: none; margin-top: 12px; }
+  .offer-card ul li { font-size: 13px; color: #666; padding: 5px 0; display: flex; gap: 8px; line-height: 1.6; border-top: 1px solid #1a1a1d; }
+  .offer-card ul li:first-child { border-top: none; }
+  .offer-card ul li::before { content: "→"; color: #A61E2E; flex-shrink: 0; }
+
+  .divider-line { height: 1px; background: #1a1a1d; margin: 0 40px 48px; }
+
+  .form-section { max-width: 480px; margin: 0 auto; padding: 0 40px 72px; }
+  .form-section h2 { font-size: 22px; font-weight: 900; margin-bottom: 8px; text-align: center; }
+  .form-section .form-sub { font-size: 14px; color: #666; text-align: center; margin-bottom: 28px; line-height: 1.7; }
+  .form-section input { width: 100%; background: #111113; border: 1px solid #222; border-radius: 8px; padding: 14px 16px; color: #E5E5E5; font-size: 15px; margin-bottom: 12px; outline: none; }
+  .form-section input:focus { border-color: #A61E2E; }
+  .form-section input::placeholder { color: #444; }
+  .btn { width: 100%; background: #A61E2E; color: #fff; border: none; border-radius: 8px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .btn:hover { background: #c02236; }
+  .privacy { font-size: 11px; color: #444; text-align: center; margin-top: 12px; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 30px; }
+    .two-col { grid-template-columns: 1fr; padding: 0 24px; }
+    .nav { padding: 20px 24px; }
+    .hero { padding: 48px 24px 32px; }
+    .form-section { padding: 0 24px 60px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="nav">
+    <div class="nav-bar"></div>
+    <div>
+      <span class="nav-edge">EDGE</span>
+      <span class="nav-matrix">MATRIX</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="badge">FREE TRADING TOOL — LIMITED RELEASE</div>
+    <h1>You're Losing Trades Because<br/>You Have <span>No System.</span></h1>
+    <p class="sub">Most traders enter on emotion, exit on fear, and wonder why their results are not consistent. EdgeMatrix gives you the tools to stay disciplined and only take trades that actually meet your criteria every single time.</p>
+  </div>
+
+  <div class="two-col">
+    <div class="offer-card">
+      <span class="label">FREE — AVAILABLE NOW</span>
+      <h3>EdgeMatrix Session Indicator</h3>
+      <ul>
+        <li>Automatically marks the high and low of the Asia, London and New York sessions on your chart</li>
+        <li>Works on any market including forex, indices, crypto and futures</li>
+        <li>Fully adjustable session times and colors to fit your setup</li>
+        <li>Yours completely free when you sign up below</li>
+      </ul>
+    </div>
+
+    <div class="offer-card highlight">
+      <div class="offer-tag">COMING SOON</div>
+      <span class="label">EDGEMATRIX PRO</span>
+      <h3>The Customizable Trade Checklist</h3>
+      <ul>
+        <li>Build your own confluence checklist around your personal strategy</li>
+        <li>Live trade score that updates as you check off your criteria</li>
+        <li>Works with any trading system including ICT, SMC and supply and demand</li>
+        <li>Email subscribers get early access before it goes public</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider-line"></div>
+
+  <div class="form-section">
+    <h2>Get Free Access + Early Access</h2>
+    <p class="form-sub">Sign up below to get the free session indicator today and be first in line when EdgeMatrix Pro releases. Early access members get a founder's price before it goes public.</p>
+    <form action="https://0b81c5db.sibforms.com/serve/MUIFAFBKG8R4bnmnCzYjayRyIuMUW48Vq3VC-I9NqVASnf8eoQc0tpE_Y6b_DfS_8Q9oV5D7oIJUOovhYOnjxUSrsDiL2r3Cg8fxJoYWfbcEX-rcX3z_G41c7kPQWrbWLPVva7ndPR3SKsjJe4tIzUbqalFpj9FYcBLo1CaOIyGtM_Y9K8xqst0KwnNSYj15QyX9LxVJxYtE3c1gsQ==" method="POST" target="_self">
+      <input type="text" name="FIRSTNAME" placeholder="Your first name" required/>
+      <input type="email" name="EMAIL" placeholder="Your email address" required/>
+      <input type="hidden" name="redirect_url" value="https://edgematrixhq.com/thankyou"/>
+      <button type="submit" class="btn">GET FREE ACCESS + EARLY ACCESS →</button>
+    </form>
+    <p class="privacy">No spam. Unsubscribe anytime.</p>
+  </div>
+
+</body>
+</html>
