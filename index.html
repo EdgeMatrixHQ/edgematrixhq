@@ -1,828 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EdgeMatrix — The Execution System for Serious Traders</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-main: #1A1A1D;
-            --bg-dark: #141416;
-            --accent: #8B1E2D;
-            --text-light: #E5E5E5;
-            --text-muted: #B8B8B8;
-            --text-dim: #888888;
-            --green: #2E8B57;
-            --red: #D64545;
-            --orange: #E5820A;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-light);
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 400;
-            line-height: 1.6;
-        }
-
-        /* Navigation */
-        nav {
-            background-color: var(--bg-dark);
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(139, 30, 45, 0.2);
-        }
-
-        .logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            text-transform: uppercase;
-        }
-
-        .logo-edge {
-            color: var(--text-light);
-        }
-
-        .logo-matrix {
-            color: var(--accent);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        .nav-cta {
-            background-color: var(--accent);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-
-        .nav-cta:hover {
-            background-color: #a8263a;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .hamburger span {
-            width: 25px;
-            height: 3px;
-            background-color: var(--text-light);
-            margin: 5px 0;
-            transition: 0.3s;
-            border-radius: 2px;
-        }
-
-        /* Hero */
-        .hero {
-            padding: 6rem 2rem;
-            text-align: center;
-            background: linear-gradient(135deg, rgba(139,30,45,0.1) 0%, transparent 100%);
-        }
-
-        .hero h1 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .hero-accent {
-            color: var(--accent);
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn-primary {
-            background-color: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #a8263a;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--text-light);
-            border: 2px solid var(--accent);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(139, 30, 45, 0.2);
-        }
-
-        /* Section */
-        section {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            text-transform: uppercase;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        /* Problem Section */
-        .problem-intro {
-            text-align: center;
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            margin-bottom: 4rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .pain-points {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .pain-card {
-            background-color: var(--bg-dark);
-            padding: 2rem;
-            border-radius: 4px;
-            border-left: 4px solid var(--accent);
-        }
-
-        .pain-card h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.3px;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-
-        .pain-card p {
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        /* Product Overview */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .product-card {
-            background-color: var(--bg-dark);
-            padding: 2.5rem;
-            border-radius: 4px;
-            border-top: 3px solid var(--accent);
-        }
-
-        .product-card h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.3px;
-            margin-bottom: 1rem;
-        }
-
-        .product-card p {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        .product-features {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .product-features li {
-            color: var(--text-muted);
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .product-features li:before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-        }
-
-        .badge {
-            display: inline-block;
-            background-color: rgba(139, 30, 45, 0.3);
-            color: var(--accent);
-            padding: 0.5rem 1rem;
-            border-radius: 2px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Video Placeholder */
-        .video-placeholder {
-            background-color: var(--bg-dark);
-            aspect-ratio: 16/9;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed rgba(139, 30, 45, 0.4);
-            color: var(--text-dim);
-            font-size: 1.25rem;
-            margin: 4rem 0;
-        }
-
-        /* Features Deep Dive */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background-color: var(--bg-dark);
-            padding: 2.5rem;
-            border-radius: 4px;
-            border: 1px solid rgba(139, 30, 45, 0.3);
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.3px;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card p {
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        /* Pricing Section */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .pricing-card {
-            background-color: var(--bg-dark);
-            padding: 2.5rem;
-            border-radius: 4px;
-            border: 2px solid rgba(139, 30, 45, 0.3);
-            text-align: center;
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        .pricing-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-        }
-
-        .pricing-card.featured {
-            border-color: var(--accent);
-            background-color: rgba(139, 30, 45, 0.1);
-        }
-
-        .pricing-card h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.3px;
-            margin-bottom: 1rem;
-        }
-
-        .price {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .price-period {
-            color: var(--text-dim);
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-        }
-
-        .pricing-features {
-            list-style: none;
-            margin-bottom: 2rem;
-            text-align: left;
-        }
-
-        .pricing-features li {
-            color: var(--text-muted);
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .pricing-features li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--green);
-        }
-
-        .pricing-note {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(139, 30, 45, 0.2);
-        }
-
-        /* Testimonials */
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .testimonial-card {
-            background-color: var(--bg-dark);
-            padding: 2rem;
-            border-radius: 4px;
-            border-left: 4px solid var(--accent);
-            position: relative;
-            padding-top: 3rem;
-        }
-
-        .quote-mark {
-            position: absolute;
-            top: 1rem;
-            left: 1.5rem;
-            font-size: 2rem;
-            color: var(--accent);
-            opacity: 0.5;
-        }
-
-        .testimonial-text {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            font-style: italic;
-            line-height: 1.8;
-        }
-
-        .testimonial-author {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.3px;
-            color: var(--text-light);
-            font-size: 0.95rem;
-        }
-
-        .testimonial-role {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-            margin-top: 0.25rem;
-        }
-
-        /* CTA Section */
-        .final-cta {
-            background: linear-gradient(135deg, rgba(139,30,45,0.15) 0%, transparent 100%);
-            text-align: center;
-            padding: 4rem 2rem;
-            border-radius: 4px;
-        }
-
-        .final-cta h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            margin-bottom: 1rem;
-        }
-
-        .final-cta p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--bg-dark);
-            padding: 3rem 2rem;
-            border-top: 1px solid rgba(139, 30, 45, 0.2);
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            text-align: left;
-        }
-
-        .footer-section h4 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-section a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-section a:hover {
-            color: var(--accent);
-        }
-
-        .footer-copyright {
-            grid-column: 1 / -1;
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(139, 30, 45, 0.2);
-            margin-top: 1rem;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .section-title {
-                font-size: 1.75rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn {
-                width: 100%;
-                max-width: 300px;
-            }
-
-            section {
-                padding: 3rem 1.5rem;
-            }
-
-            .product-grid,
-            .pain-points,
-            .features-grid,
-            .pricing-grid,
-            .testimonial-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .footer-section {
-                text-align: center;
-            }
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EdgeMatrix — Free Trading Tools</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0D0D0F; color: #E5E5E5; font-family: system-ui, sans-serif; }
+  .nav { display: flex; align-items: center; gap: 10px; padding: 24px 40px; border-bottom: 1px solid #1a1a1d; }
+  .nav-bar { width: 4px; height: 32px; background: #A61E2E; border-radius: 2px; }
+  .nav-edge { font-size: 22px; font-weight: 900; color: #E5E5E5; letter-spacing: -1px; }
+  .nav-matrix { font-size: 10px; font-weight: 300; color: #555; letter-spacing: 5px; display: block; margin-top: -4px; }
+  .hero { padding: 72px 40px 48px; max-width: 720px; margin: 0 auto; text-align: center; }
+  .badge { display: inline-block; background: #1a1a1d; border: 1px solid #A61E2E; color: #A61E2E; font-size: 11px; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 28px; }
+  .hero h1 { font-size: 46px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
+  .hero h1 span { color: #A61E2E; }
+  .hero .sub { font-size: 18px; color: #888; line-height: 1.8; max-width: 580px; margin: 0 auto 40px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 720px; margin: 0 auto 48px; padding: 0 40px; }
+  .offer-card { background: #111113; border: 1px solid #1e1e22; border-radius: 14px; padding: 28px; }
+  .offer-card.highlight { border-color: #A61E2E; position: relative; }
+  .offer-tag { position: absolute; top: -12px; left: 20px; background: #A61E2E; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 4px 12px; border-radius: 20px; }
+  .offer-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .offer-card .label { font-size: 10px; color: #A61E2E; letter-spacing: 2px; margin-bottom: 12px; display: block; }
+  .offer-card ul { list-style: none; margin-top: 12px; }
+  .offer-card ul li { font-size: 13px; color: #666; padding: 5px 0; display: flex; gap: 8px; line-height: 1.6; border-top: 1px solid #1a1a1d; }
+  .offer-card ul li:first-child { border-top: none; }
+  .offer-card ul li::before { content: "→"; color: #A61E2E; flex-shrink: 0; }
+  .divider-line { height: 1px; background: #1a1a1d; margin: 0 40px 48px; }
+  .form-section { max-width: 480px; margin: 0 auto; padding: 0 40px 72px; }
+  .form-section h2 { font-size: 22px; font-weight: 900; margin-bottom: 8px; text-align: center; }
+  .form-section .form-sub { font-size: 14px; color: #666; text-align: center; margin-bottom: 28px; line-height: 1.7; }
+  .form-section input { width: 100%; background: #111113; border: 1px solid #222; border-radius: 8px; padding: 14px 16px; color: #E5E5E5; font-size: 15px; margin-bottom: 12px; outline: none; }
+  .form-section input:focus { border-color: #A61E2E; }
+  .form-section input::placeholder { color: #444; }
+  .btn { width: 100%; background: #A61E2E; color: #fff; border: none; border-radius: 8px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .btn:hover { background: #c02236; }
+  .privacy { font-size: 11px; color: #444; text-align: center; margin-top: 12px; }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 30px; }
+    .two-col { grid-template-columns: 1fr; padding: 0 24px; }
+    .nav { padding: 20px 24px; }
+    .hero { padding: 48px 24px 32px; }
+    .form-section { padding: 0 24px 60px; }
+  }
+</style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">
-            <span class="logo-edge">EDGE</span><span class="logo-matrix">MATRIX</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="pro.html">Pro</a></li>
-            <li><a href="free.html">Free Tool</a></li>
-            <li><a href="tools.html">Tools</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="blog.html">Blog</a></li>
-        </ul>
-        <a href="free.html" class="nav-cta">Join Waitlist</a>
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </nav>
-
-    <!-- Hero -->
-    <section class="hero">
-        <h1>Traders don't lose because they don't know what to do.<br><span class="hero-accent">They lose because they break their own rules.</span></h1>
-        <p>The execution system built for serious traders.</p>
-        <div class="hero-buttons">
-            <a href="pro.html" class="btn btn-primary">Get EdgeMatrix Pro</a>
-            <a href="free.html" class="btn btn-secondary">Get the Free Tool</a>
-        </div>
-    </section>
-
-    <!-- Problem Section -->
-    <section>
-        <div class="problem-intro">
-            Most traders know what to do. They just don't do it when money is on the line.
-        </div>
-        <div class="pain-points">
-            <div class="pain-card">
-                <h3>Emotional Decisions</h3>
-                <p>Fear and greed take over. Entries happen at the worst times. Exits happen too early. Systems fall apart under pressure.</p>
-            </div>
-            <div class="pain-card">
-                <h3>Inconsistent Sizing</h3>
-                <p>You know the rules. But position sizing stays loose. Risk scales with emotion, not logic. One bad trade wipes out weeks of wins.</p>
-            </div>
-            <div class="pain-card">
-                <h3>No Objective System</h3>
-                <p>You have rules. You just don't enforce them. No checklist. No score. No way to track whether you actually followed your edge.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Product Overview -->
-    <section>
-        <h2 class="section-title">Two Products. One Mission.</h2>
-        <div class="product-grid">
-            <div class="product-card">
-                <h3>Sessions <span class="badge">Free</span></h3>
-                <p>Mark Asia, London, New York, and Sydney session highs and lows on any chart. Real edge. No complexity.</p>
-                <ul class="product-features">
-                    <li>Works on any timeframe</li>
-                    <li>Any instrument</li>
-                    <li>Free forever</li>
-                    <li>LIVE on TradingView now</li>
-                </ul>
-                <a href="free.html" class="btn btn-secondary" style="width: 100%; text-align: center;">Get Free Access</a>
-            </div>
-            <div class="product-card">
-                <h3>Pro <span class="badge">Paid</span></h3>
-                <p>The discipline system. Customizable checklist. Live trade score. Position size calculator. Everything you need to enforce your edge.</p>
-                <ul class="product-features">
-                    <li>Customizable checklist</li>
-                    <li>Trade score /100</li>
-                    <li>Position calculator</li>
-                    <li>Futures, Forex, CFDs</li>
-                </ul>
-                <a href="pro.html" class="btn btn-primary" style="width: 100%; text-align: center;">Learn More</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Video Placeholder -->
-    <section>
-        <div class="video-placeholder">
-            Product demo coming soon
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section>
-        <h2 class="section-title">What EdgeMatrix Pro Does</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">✓</div>
-                <h3>Checklist</h3>
-                <p>Define up to 10 of your own confluences. Price action, moving averages, divergences, whatever your system requires. Score every setup before you risk money.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Trade Score</h3>
-                <p>See your setup score in real-time. Green (≥80%), orange (≥60%), red (<60%). Only trade green. Simple.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚙️</div>
-                <h3>Position Calculator</h3>
-                <p>Risk amount, stop loss, entry price. Instantly see your position size. Works for Futures, Forex, and CFDs. No more guessing.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section>
-        <h2 class="section-title">Pricing</h2>
-        <div class="pricing-grid">
-            <div class="pricing-card featured">
-                <h3>Founders</h3>
-                <div class="price">$27</div>
-                <div class="price-period">One-time lifetime access</div>
-                <ul class="pricing-features">
-                    <li>Full Pro access</li>
-                    <li>Lifetime updates</li>
-                    <li>Limited window only</li>
-                </ul>
-                <a href="https://buy.stripe.com/3cIcN79Uqevp7Kj1S04ZG06" class="btn btn-primary" style="width: 100%; text-align: center;">Get Founders Access</a>
-                <div class="pricing-note">You'll receive your TradingView invite within 24 hours of purchase.</div>
-            </div>
-            <div class="pricing-card">
-                <h3>Monthly</h3>
-                <div class="price">$9.99</div>
-                <div class="price-period">Per month, cancel anytime</div>
-                <ul class="pricing-features">
-                    <li>Full Pro access</li>
-                    <li>All updates included</li>
-                    <li>No commitment</li>
-                </ul>
-                <a href="https://buy.stripe.com/dRm9AV1nU1IDe8H2W44ZG07" class="btn btn-primary" style="width: 100%; text-align: center;">Get Monthly</a>
-                <div class="pricing-note">You'll receive your TradingView invite within 24 hours of purchase.</div>
-            </div>
-            <div class="pricing-card">
-                <h3>Lifetime</h3>
-                <div class="price">$97</div>
-                <div class="price-period">One-time, keep forever</div>
-                <ul class="pricing-features">
-                    <li>Full Pro access</li>
-                    <li>Lifetime updates</li>
-                    <li>Best long-term value</li>
-                </ul>
-                <a href="https://buy.stripe.com/14A3cx0jQcnhggP68g4ZG08" class="btn btn-primary" style="width: 100%; text-align: center;">Get Lifetime</a>
-                <div class="pricing-note">You'll receive your TradingView invite within 24 hours of purchase.</div>
-            </div>
-        </div>
-        <p style="text-align: center; color: var(--text-dim); font-size: 0.95rem;">TradingView username required at checkout. Invoice provided for tax records.</p>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section>
-        <h2 class="section-title">Beta Traders</h2>
-        <div class="testimonial-grid">
-            <div class="testimonial-card">
-                <div class="quote-mark">"</div>
-                <p class="testimonial-text">Finally, a checklist that actually forces discipline. I stop myself before stupid trades.</p>
-                <div class="testimonial-author">Futures Trader</div>
-                <div class="testimonial-role">Coming soon</div>
-            </div>
-            <div class="testimonial-card">
-                <div class="quote-mark">"</div>
-                <p class="testimonial-text">The score system is exactly what I needed. Green means go. That's it.</p>
-                <div class="testimonial-author">Swing Trader</div>
-                <div class="testimonial-role">Coming soon</div>
-            </div>
-            <div class="testimonial-card">
-                <div class="quote-mark">"</div>
-                <p class="testimonial-text">Position sizing calculator saved me from blowing an account. The math is instant.</p>
-                <div class="testimonial-author">Forex Trader</div>
-                <div class="testimonial-role">Coming soon</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Final CTA -->
-    <section>
-        <div class="final-cta">
-            <h2>Waitlist Open Now</h2>
-            <p>Limited spots. Launch pricing locked in.</p>
-            <a href="free.html" class="btn btn-primary">Join the Waitlist</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>EdgeMatrix</h4>
-                <p style="color: var(--text-muted); margin-bottom: 1rem;">The execution system for serious traders.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Product</h4>
-                <ul>
-                    <li><a href="pro.html">EdgeMatrix Pro</a></li>
-                    <li><a href="free.html">EdgeMatrix Sessions</a></li>
-                    <li><a href="tools.html">Tools</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Company</h4>
-                <ul>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="mailto:hello@edgematrixhq.com">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Follow</h4>
-                <ul>
-                    <li><a href="#">@EdgeMatrixHQ on Instagram</a></li>
-                    <li><a href="#">@EdgeMatrixHQ on TikTok</a></li>
-                    <li><a href="mailto:hello@edgematrixhq.com">hello@edgematrixhq.com</a></li>
-                </ul>
-            </div>
-            <div class="footer-copyright">
-                © 2026 EdgeMatrix. All rights reserved.
-            </div>
-        </div>
-    </footer>
+  <div class="nav">
+    <div class="nav-bar"></div>
+    <div>
+      <span class="nav-edge">EDGE</span>
+      <span class="nav-matrix">MATRIX</span>
+    </div>
+  </div>
+  <div class="hero">
+    <div class="badge">FREE TRADING TOOL — LIMITED RELEASE</div>
+    <h1>You're Losing Trades Because<br/>You Have <span>No System.</span></h1>
+    <p class="sub">Most traders enter on emotion, exit on fear, and wonder why their results are not consistent. EdgeMatrix gives you the tools to stay disciplined and only take trades that actually meet your criteria every single time.</p>
+  </div>
+  <div class="two-col">
+    <div class="offer-card">
+      <span class="label">FREE — AVAILABLE NOW</span>
+      <h3>EdgeMatrix Session Indicator</h3>
+      <ul>
+        <li>Automatically marks the high and low of the Asia, London and New York sessions on your chart</li>
+        <li>Works on any market including forex, indices, crypto and futures</li>
+        <li>Fully adjustable session times and colors to fit your setup</li>
+        <li>Yours completely free when you sign up below</li>
+      </ul>
+    </div>
+    <div class="offer-card highlight">
+      <div class="offer-tag">COMING SOON</div>
+      <span class="label">EDGEMATRIX PRO</span>
+      <h3>The Customizable Trade Checklist</h3>
+      <ul>
+        <li>Build your own confluence checklist around your personal strategy</li>
+        <li>Live trade score that updates as you check off your criteria</li>
+        <li>Works with any trading system including ICT, SMC and supply and demand</li>
+        <li>Email subscribers get early access before it goes public</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider-line"></div>
+  <div class="form-section">
+    <h2>Get Free Access + Early Access</h2>
+    <p class="form-sub">Sign up below to get the free session indicator today and be first in line when EdgeMatrix Pro releases. Early access members get a founder's price before it goes public.</p>
+    <form action="https://0b81c5db.sibforms.com/serve/MUIFAFBKG8R4bnmnCzYjayRyIuMUW48Vq3VC-I9NqVASnf8eoQc0tpE_Y6b_DfS_8Q9oV5D7oIJUOovhYOnjxUSrsDiL2r3Cg8fxJoYWfbcEX-rcX3z_G41c7kPQWrbWLPVva7ndPR3SKsjJe4tIzUbqalFpj9FYcBLo1CaOIyGtM_Y9K8xqst0KwnNSYj15QyX9LxVJxYtE3c1gsQ==" method="POST" target="_self">
+      <input type="text" name="FIRSTNAME" placeholder="Your first name" required/>
+      <input type="email" name="EMAIL" placeholder="Your email address" required/>
+      <input type="hidden" name="redirect_url" value="https://edgematrixhq.com/thankyou"/>
+      <button type="submit" class="btn">GET FREE ACCESS + EARLY ACCESS →</button>
+    </form>
+    <p class="privacy">No spam. Unsubscribe anytime.</p>
+  </div>
 </body>
 </html>
