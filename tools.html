@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools — EdgeMatrix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-main: #1A1A1D;
+            --bg-dark: #141416;
+            --accent: #8B1E2D;
+            --text-light: #E5E5E5;
+            --text-muted: #B8B8B8;
+            --text-dim: #888888;
+            --green: #2E8B57;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--bg-dark);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(139, 30, 45, 0.2);
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+        }
+
+        .logo-edge {
+            color: var(--text-light);
+        }
+
+        .logo-matrix {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-cta {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .nav-cta:hover {
+            background-color: #a8263a;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-light);
+            margin: 5px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 6rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(139,30,45,0.1) 0%, transparent 100%);
+        }
+
+        .hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Section */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        /* Tool Cards */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .tool-card {
+            background-color: var(--bg-dark);
+            padding: 3rem;
+            border-radius: 4px;
+            border-top: 4px solid var(--accent);
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            border-top-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(139, 30, 45, 0.2);
+        }
+
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.3px;
+            margin-bottom: 1rem;
+        }
+
+        .tool-status {
+            display: inline-block;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.4rem 0.8rem;
+            border-radius: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .status-live {
+            background-color: rgba(46, 139, 87, 0.2);
+            color: var(--green);
+        }
+
+        .status-paid {
+            background-color: rgba(139, 30, 45, 0.2);
+            color: var(--accent);
+        }
+
+        .tool-card p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .tool-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .tool-features li {
+            color: var(--text-muted);
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .tool-features li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #a8263a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(139, 30, 45, 0.2);
+        }
+
+        /* Coming Soon Section */
+        .coming-soon {
+            background-color: var(--bg-dark);
+            padding: 4rem;
+            border-radius: 4px;
+            border: 2px dashed rgba(139, 30, 45, 0.4);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .coming-soon h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+        }
+
+        .coming-soon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .coming-item {
+            background-color: rgba(139, 30, 45, 0.1);
+            padding: 2rem;
+            border-radius: 4px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .coming-item h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.75rem;
+            color: var(--accent);
+        }
+
+        .coming-item p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .coming-badge {
+            display: inline-block;
+            background-color: rgba(139, 30, 45, 0.3);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 2px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-dark);
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(139, 30, 45, 0.2);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .footer-section h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .footer-copyright {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(139, 30, 45, 0.2);
+            margin-top: 1rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            section {
+                padding: 3rem 1.5rem;
+            }
+
+            .tools-grid,
+            .coming-soon-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-section {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <span class="logo-edge">EDGE</span><span class="logo-matrix">MATRIX</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="pro.html">Pro</a></li>
+            <li><a href="free.html">Free Tool</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="blog.html">Blog</a></li>
+        </ul>
+        <a href="free.html" class="nav-cta">Join Waitlist</a>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Tools for Serious Traders</h1>
+        <p>Everything you need to trade with discipline and precision.</p>
+    </section>
+
+    <!-- Available Tools -->
+    <section>
+        <h2 class="section-title">Now Available</h2>
+        <div class="tools-grid">
+            <!-- Sessions Card -->
+            <div class="tool-card">
+                <div class="tool-icon">📍</div>
+                <h3>Sessions</h3>
+                <span class="tool-status status-live">Free</span>
+                <p>Mark Asia, London, New York, and Sydney session highs and lows on any chart. Free forever.</p>
+                <ul class="tool-features">
+                    <li>Works on any timeframe</li>
+                    <li>Any instrument</li>
+                    <li>Real session edge</li>
+                    <li>LIVE on TradingView</li>
+                </ul>
+                <a href="free.html" class="btn btn-primary">Get Free Access</a>
+            </div>
+
+            <!-- Pro Card -->
+            <div class="tool-card">
+                <div class="tool-icon">⚙️</div>
+                <h3>Pro</h3>
+                <span class="tool-status status-paid">Paid</span>
+                <p>The discipline system. Customizable checklist. Live trade score. Position size calculator.</p>
+                <ul class="tool-features">
+                    <li>Customizable checklist</li>
+                    <li>Trade score /100</li>
+                    <li>Position calculator</li>
+                    <li>Futures, Forex, CFDs</li>
+                </ul>
+                <a href="pro.html" class="btn btn-primary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coming Soon Section -->
+    <section>
+        <div class="coming-soon">
+            <h2>More Tools Coming</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 1.05rem;">We're building a complete toolkit for serious traders. Here's what's next.</p>
+            <div class="coming-soon-grid">
+                <div class="coming-item">
+                    <h3>Swing Structure</h3>
+                    <p>Free indicator to identify higher timeframe structure and confirm your setup confluence. Coming next month.</p>
+                    <span class="coming-badge">Coming Soon</span>
+                </div>
+                <div class="coming-item">
+                    <h3>Risk Calculator</h3>
+                    <p>Web app for position sizing. Risk percentage, stop loss, entry price. Instant math. No guessing.</p>
+                    <span class="coming-badge">Coming Soon</span>
+                </div>
+                <div class="coming-item">
+                    <h3>Economic Calendar</h3>
+                    <p>Know when major economic releases hit. See impacts on your charts. Trade around the news, not through it.</p>
+                    <span class="coming-badge">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>EdgeMatrix</h4>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">The execution system for serious traders.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="pro.html">EdgeMatrix Pro</a></li>
+                    <li><a href="free.html">EdgeMatrix Sessions</a></li>
+                    <li><a href="tools.html">Tools</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="mailto:hello@edgematrixhq.com">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow</h4>
+                <ul>
+                    <li><a href="#">@EdgeMatrixHQ on Instagram</a></li>
+                    <li><a href="#">@EdgeMatrixHQ on TikTok</a></li>
+                    <li><a href="mailto:hello@edgematrixhq.com">hello@edgematrixhq.com</a></li>
+                </ul>
+            </div>
+            <div class="footer-copyright">
+                © 2026 EdgeMatrix. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

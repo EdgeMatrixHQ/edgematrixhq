@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EdgeMatrix — The Execution System for Serious Traders</title>
+    <title>EdgeMatrix Pro — The Discipline System for Serious Traders</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -118,16 +118,12 @@
 
         .hero h1 {
             font-family: 'Poppins', sans-serif;
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 700;
             letter-spacing: -1px;
             text-transform: uppercase;
             margin-bottom: 1rem;
             line-height: 1.2;
-        }
-
-        .hero-accent {
-            color: var(--accent);
         }
 
         .hero p {
@@ -194,140 +190,139 @@
             text-align: center;
         }
 
-        /* Problem Section */
-        .problem-intro {
+        /* Pain Agitation */
+        .pain-intro {
             text-align: center;
             font-size: 1.5rem;
             color: var(--text-muted);
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .pain-points {
+        .pain-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .pain-item {
+            background-color: var(--bg-dark);
+            padding: 2rem;
+            border-radius: 4px;
+            border-left: 4px solid var(--red);
+        }
+
+        .pain-item h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.75rem;
+            color: var(--red);
+        }
+
+        .pain-item p {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* Features Deep Dive */
+        .features-container {
+            display: grid;
+            gap: 3rem;
+        }
+
+        .feature-section {
+            background-color: var(--bg-dark);
+            padding: 3rem;
+            border-radius: 4px;
+            border-top: 3px solid var(--accent);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .feature-header-text h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-header-text p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .feature-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-detail {
+            padding: 1.5rem;
+            background-color: rgba(139, 30, 45, 0.1);
+            border-radius: 4px;
+            border-left: 2px solid var(--accent);
+        }
+
+        .feature-detail-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-detail-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* How It Works */
+        .steps-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
         }
 
-        .pain-card {
-            background-color: var(--bg-dark);
-            padding: 2rem;
-            border-radius: 4px;
-            border-left: 4px solid var(--accent);
-        }
-
-        .pain-card h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.3px;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-
-        .pain-card p {
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        /* Product Overview */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .product-card {
+        .step-card {
             background-color: var(--bg-dark);
             padding: 2.5rem;
             border-radius: 4px;
-            border-top: 3px solid var(--accent);
-        }
-
-        .product-card h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.3px;
-            margin-bottom: 1rem;
-        }
-
-        .product-card p {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        .product-features {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .product-features li {
-            color: var(--text-muted);
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .product-features li:before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-        }
-
-        .badge {
-            display: inline-block;
-            background-color: rgba(139, 30, 45, 0.3);
-            color: var(--accent);
-            padding: 0.5rem 1rem;
-            border-radius: 2px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Video Placeholder */
-        .video-placeholder {
-            background-color: var(--bg-dark);
-            aspect-ratio: 16/9;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed rgba(139, 30, 45, 0.4);
-            color: var(--text-dim);
-            font-size: 1.25rem;
-            margin: 4rem 0;
-        }
-
-        /* Features Deep Dive */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background-color: var(--bg-dark);
-            padding: 2.5rem;
-            border-radius: 4px;
+            text-align: center;
             border: 1px solid rgba(139, 30, 45, 0.3);
         }
 
-        .feature-icon {
-            font-size: 2.5rem;
+        .step-number {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
             margin-bottom: 1rem;
         }
 
-        .feature-card h3 {
+        .step-card h3 {
             font-family: 'Poppins', sans-serif;
             font-size: 1.25rem;
             font-weight: 700;
@@ -336,12 +331,12 @@
             margin-bottom: 1rem;
         }
 
-        .feature-card p {
+        .step-card p {
             color: var(--text-muted);
             line-height: 1.7;
         }
 
-        /* Pricing Section */
+        /* Pricing */
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -399,7 +394,7 @@
 
         .pricing-features li {
             color: var(--text-muted);
-            padding: 0.5rem 0;
+            padding: 0.75rem 0;
             padding-left: 1.5rem;
             position: relative;
         }
@@ -409,6 +404,7 @@
             position: absolute;
             left: 0;
             color: var(--green);
+            font-weight: 700;
         }
 
         .pricing-note {
@@ -419,74 +415,40 @@
             border-top: 1px solid rgba(139, 30, 45, 0.2);
         }
 
-        /* Testimonials */
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+        .pricing-disclaimer {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-top: 2rem;
         }
 
-        .testimonial-card {
+        /* FAQ */
+        .faq-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
             background-color: var(--bg-dark);
             padding: 2rem;
+            margin-bottom: 1.5rem;
             border-radius: 4px;
             border-left: 4px solid var(--accent);
-            position: relative;
-            padding-top: 3rem;
         }
 
-        .quote-mark {
-            position: absolute;
-            top: 1rem;
-            left: 1.5rem;
-            font-size: 2rem;
-            color: var(--accent);
-            opacity: 0.5;
-        }
-
-        .testimonial-text {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            font-style: italic;
-            line-height: 1.8;
-        }
-
-        .testimonial-author {
+        .faq-item h4 {
             font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: -0.3px;
-            color: var(--text-light);
-            font-size: 0.95rem;
-        }
-
-        .testimonial-role {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-            margin-top: 0.25rem;
-        }
-
-        /* CTA Section */
-        .final-cta {
-            background: linear-gradient(135deg, rgba(139,30,45,0.15) 0%, transparent 100%);
-            text-align: center;
-            padding: 4rem 2rem;
-            border-radius: 4px;
-        }
-
-        .final-cta h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
             margin-bottom: 1rem;
+            color: var(--text-light);
         }
 
-        .final-cta p {
+        .faq-item p {
             color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
+            line-height: 1.7;
         }
 
         /* Footer */
@@ -544,6 +506,36 @@
             margin-top: 1rem;
         }
 
+        .supported-instruments {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .instrument-group {
+            background-color: rgba(139, 30, 45, 0.1);
+            padding: 1.5rem;
+            border-radius: 4px;
+            border-left: 2px solid var(--accent);
+        }
+
+        .instrument-group h5 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .instrument-group p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .nav-links {
@@ -580,11 +572,16 @@
                 padding: 3rem 1.5rem;
             }
 
-            .product-grid,
-            .pain-points,
-            .features-grid,
+            .feature-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .feature-details,
+            .pain-list,
+            .steps-grid,
             .pricing-grid,
-            .testimonial-grid {
+            .supported-instruments {
                 grid-template-columns: 1fr;
             }
 
@@ -623,95 +620,141 @@
 
     <!-- Hero -->
     <section class="hero">
-        <h1>Traders don't lose because they don't know what to do.<br><span class="hero-accent">They lose because they break their own rules.</span></h1>
-        <p>The execution system built for serious traders.</p>
+        <h1>EdgeMatrix Pro</h1>
+        <p>The discipline system built for serious traders.</p>
         <div class="hero-buttons">
-            <a href="pro.html" class="btn btn-primary">Get EdgeMatrix Pro</a>
-            <a href="free.html" class="btn btn-secondary">Get the Free Tool</a>
+            <a href="#pricing" class="btn btn-primary">Get Founders Access — $27</a>
+            <a href="#pricing" class="btn btn-secondary">$9.99/month</a>
         </div>
     </section>
 
-    <!-- Problem Section -->
+    <!-- Pain Agitation -->
     <section>
-        <div class="problem-intro">
-            Most traders know what to do. They just don't do it when money is on the line.
+        <h2 class="section-title">Without a System</h2>
+        <div class="pain-intro">
+            You know your edge. You know the setup. But when money is on the line, everything breaks down.
         </div>
-        <div class="pain-points">
-            <div class="pain-card">
-                <h3>Emotional Decisions</h3>
-                <p>Fear and greed take over. Entries happen at the worst times. Exits happen too early. Systems fall apart under pressure.</p>
+        <div class="pain-list">
+            <div class="pain-item">
+                <h3>Emotional Entry Fills</h3>
+                <p>Fear and greed override your rules. You enter too early. You enter too late. You chase breakouts. You catch falling knives. Your system dies the moment price moves.</p>
             </div>
-            <div class="pain-card">
-                <h3>Inconsistent Sizing</h3>
-                <p>You know the rules. But position sizing stays loose. Risk scales with emotion, not logic. One bad trade wipes out weeks of wins.</p>
+            <div class="pain-item">
+                <h3>Loose Position Sizing</h3>
+                <p>You know you should risk 1-2% per trade. But when you see a good setup, you size up. One bad trade erases weeks of gains. Your risk management is just a guideline you break.</p>
             </div>
-            <div class="pain-card">
-                <h3>No Objective System</h3>
-                <p>You have rules. You just don't enforce them. No checklist. No score. No way to track whether you actually followed your edge.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Product Overview -->
-    <section>
-        <h2 class="section-title">Two Products. One Mission.</h2>
-        <div class="product-grid">
-            <div class="product-card">
-                <h3>Sessions <span class="badge">Free</span></h3>
-                <p>Mark Asia, London, New York, and Sydney session highs and lows on any chart. Real edge. No complexity.</p>
-                <ul class="product-features">
-                    <li>Works on any timeframe</li>
-                    <li>Any instrument</li>
-                    <li>Free forever</li>
-                    <li>LIVE on TradingView now</li>
-                </ul>
-                <a href="free.html" class="btn btn-secondary" style="width: 100%; text-align: center;">Get Free Access</a>
-            </div>
-            <div class="product-card">
-                <h3>Pro <span class="badge">Paid</span></h3>
-                <p>The discipline system. Customizable checklist. Live trade score. Position size calculator. Everything you need to enforce your edge.</p>
-                <ul class="product-features">
-                    <li>Customizable checklist</li>
-                    <li>Trade score /100</li>
-                    <li>Position calculator</li>
-                    <li>Futures, Forex, CFDs</li>
-                </ul>
-                <a href="pro.html" class="btn btn-primary" style="width: 100%; text-align: center;">Learn More</a>
+            <div class="pain-item">
+                <h3>No Objective Score</h3>
+                <p>You have a system. But you don't enforce it. No checklist. No way to track whether you actually followed your rules. You rationalize bad entries. You override your own edge.</p>
             </div>
         </div>
     </section>
 
-    <!-- Video Placeholder -->
+    <!-- Features Deep Dive -->
     <section>
-        <div class="video-placeholder">
-            Product demo coming soon
+        <h2 class="section-title">What You Get</h2>
+        <div class="features-container">
+            <!-- Checklist Feature -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <div class="feature-icon">✓</div>
+                    <div class="feature-header-text">
+                        <h3>Customizable Checklist</h3>
+                        <p>Define up to 10 of your own confluences. Your rules. Your edge. Your execution.</p>
+                    </div>
+                </div>
+                <div class="feature-details">
+                    <div class="feature-detail">
+                        <div class="feature-detail-title">Your Confluences</div>
+                        <div class="feature-detail-desc">Price action, moving averages, divergences, volume profile, order flow — whatever your system requires. You choose what matters.</div>
+                    </div>
+                    <div class="feature-detail">
+                        <div class="feature-detail-title">Real-Time Checklist</div>
+                        <div class="feature-detail-desc">On the chart. Before entry. Check each confluence. See exactly what's in your favor and what's not.</div>
+                    </div>
+                    <div class="feature-detail">
+                        <div class="feature-detail-title">Force Discipline</div>
+                        <div class="feature-detail-desc">No emotional entries. No skipping steps. The checklist makes discipline enforceable, not aspirational.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score Feature -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-header-text">
+                        <h3>Live Trade Score /100</h3>
+                        <p>Objective signal. Green means go. Red means no.</p>
+                    </div>
+                </div>
+                <div class="feature-details">
+                    <div class="feature-detail">
+                        <div class="feature-detail-title">Green ≥80%</div>
+                        <div class="feature-detail-desc">All or most confluences align. This is your high-confidence setup. This is where you trade.</div>
+                    </div>
+                    <div class="feature-detail">
+                        <div class="feature-detail-title">Orange ≥60%</div>
+                        <div class="feature-detail-desc">Partial alignment. Mixed signals. Reduce size or pass. This is not your A-setup.</div>
+                    </div>
+                    <div class="feature-detail">
+                        <div class="feature-detail-title">Red <60%</div>
+                        <div class="feature-detail-desc">Weak confluence. This is not a trade. No exceptions. The system protects you from yourself.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculator Feature -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <div class="feature-icon">⚙️</div>
+                    <div class="feature-header-text">
+                        <h3>Position Size Calculator</h3>
+                        <p>Risk amount. Stop loss. Entry price. Instant position size.</p>
+                    </div>
+                </div>
+                <div class="feature-details">
+                    <div class="feature-detail">
+                        <div class="feature-detail-title">Futures</div>
+                        <div class="feature-detail-desc">MNQ, NQ, MES, ES, MYM, YM, M2K, RTY, MGC, GC, SIL, SI, MCL, CL. Micro and standard contracts. Math is instant.</div>
+                    </div>
+                    <div class="feature-detail">
+                        <div class="feature-detail-title">Forex & CFDs</div>
+                        <div class="feature-detail-desc">EURUSD, GBPUSD, AUDUSD, NZDUSD, USDCAD, USDCHF, USDJPY, GBPJPY, EURJPY, EURGBP, EURCAD, GBPCAD, NAS100, UK100, GER40, US30, XAUUSD. Any broker pip value.</div>
+                    </div>
+                    <div class="feature-detail">
+                        <div class="feature-detail-title">One-Click Entry</div>
+                        <div class="feature-detail-desc">No mental math. No mistakes. Position size is calculated. Your risk is protected. Enter with precision.</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- How It Works -->
     <section>
-        <h2 class="section-title">What EdgeMatrix Pro Does</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">✓</div>
-                <h3>Checklist</h3>
-                <p>Define up to 10 of your own confluences. Price action, moving averages, divergences, whatever your system requires. Score every setup before you risk money.</p>
+        <h2 class="section-title">Three Steps</h2>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Add to TradingView</h3>
+                <p>Get your TradingView username. Receive invite within 24 hours. Add to your chart. Done.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Trade Score</h3>
-                <p>See your setup score in real-time. Green (≥80%), orange (≥60%), red (<60%). Only trade green. Simple.</p>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Set Your Confluences</h3>
+                <p>Define up to 10 of your own rules. Price action setups. Moving average confluences. Whatever you trade.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚙️</div>
-                <h3>Position Calculator</h3>
-                <p>Risk amount, stop loss, entry price. Instantly see your position size. Works for Futures, Forex, and CFDs. No more guessing.</p>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Score Every Trade</h3>
+                <p>Before entry. See your score. Follow the signal. Green means go. Red means no. Discipline is enforced.</p>
             </div>
         </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section>
+    <!-- Pricing -->
+    <section id="pricing">
         <h2 class="section-title">Pricing</h2>
         <div class="pricing-grid">
             <div class="pricing-card featured">
@@ -722,6 +765,7 @@
                     <li>Full Pro access</li>
                     <li>Lifetime updates</li>
                     <li>Limited window only</li>
+                    <li>Best value if you stay</li>
                 </ul>
                 <a href="https://buy.stripe.com/3cIcN79Uqevp7Kj1S04ZG06" class="btn btn-primary" style="width: 100%; text-align: center;">Get Founders Access</a>
                 <div class="pricing-note">You'll receive your TradingView invite within 24 hours of purchase.</div>
@@ -734,6 +778,7 @@
                     <li>Full Pro access</li>
                     <li>All updates included</li>
                     <li>No commitment</li>
+                    <li>Try before you commit</li>
                 </ul>
                 <a href="https://buy.stripe.com/dRm9AV1nU1IDe8H2W44ZG07" class="btn btn-primary" style="width: 100%; text-align: center;">Get Monthly</a>
                 <div class="pricing-note">You'll receive your TradingView invite within 24 hours of purchase.</div>
@@ -746,45 +791,58 @@
                     <li>Full Pro access</li>
                     <li>Lifetime updates</li>
                     <li>Best long-term value</li>
+                    <li>Never pay again</li>
                 </ul>
                 <a href="https://buy.stripe.com/14A3cx0jQcnhggP68g4ZG08" class="btn btn-primary" style="width: 100%; text-align: center;">Get Lifetime</a>
                 <div class="pricing-note">You'll receive your TradingView invite within 24 hours of purchase.</div>
             </div>
         </div>
-        <p style="text-align: center; color: var(--text-dim); font-size: 0.95rem;">TradingView username required at checkout. Invoice provided for tax records.</p>
+        <div class="pricing-disclaimer">TradingView username required at checkout. Invoice provided for tax records.</div>
     </section>
 
-    <!-- Testimonials Section -->
+    <!-- Supported Instruments -->
     <section>
-        <h2 class="section-title">Beta Traders</h2>
-        <div class="testimonial-grid">
-            <div class="testimonial-card">
-                <div class="quote-mark">"</div>
-                <p class="testimonial-text">Finally, a checklist that actually forces discipline. I stop myself before stupid trades.</p>
-                <div class="testimonial-author">Futures Trader</div>
-                <div class="testimonial-role">Coming soon</div>
+        <h2 class="section-title">Works On</h2>
+        <div class="supported-instruments">
+            <div class="instrument-group">
+                <h5>Futures</h5>
+                <p>MNQ, NQ, MES, ES, MYM, YM, M2K, RTY, MGC, GC, SIL, SI, MCL, CL</p>
             </div>
-            <div class="testimonial-card">
-                <div class="quote-mark">"</div>
-                <p class="testimonial-text">The score system is exactly what I needed. Green means go. That's it.</p>
-                <div class="testimonial-author">Swing Trader</div>
-                <div class="testimonial-role">Coming soon</div>
+            <div class="instrument-group">
+                <h5>Forex</h5>
+                <p>EURUSD, GBPUSD, AUDUSD, NZDUSD, USDCAD, USDCHF, USDJPY, GBPJPY, EURJPY, EURGBP, EURCAD, GBPCAD</p>
             </div>
-            <div class="testimonial-card">
-                <div class="quote-mark">"</div>
-                <p class="testimonial-text">Position sizing calculator saved me from blowing an account. The math is instant.</p>
-                <div class="testimonial-author">Forex Trader</div>
-                <div class="testimonial-role">Coming soon</div>
+            <div class="instrument-group">
+                <h5>CFDs</h5>
+                <p>NAS100, UK100, GER40, US30, XAUUSD (user inputs broker pip value)</p>
             </div>
         </div>
     </section>
 
-    <!-- Final CTA -->
+    <!-- FAQ -->
     <section>
-        <div class="final-cta">
-            <h2>Waitlist Open Now</h2>
-            <p>Limited spots. Launch pricing locked in.</p>
-            <a href="free.html" class="btn btn-primary">Join the Waitlist</a>
+        <h2 class="section-title">FAQ</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <h4>What is TradingView?</h4>
+                <p>TradingView is the world's largest social trading platform. It has live charts for all major markets — stocks, futures, forex, crypto, commodities. Most serious traders use it. EdgeMatrix Pro runs as an indicator inside TradingView, right on your chart where you need it.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Do I need TradingView Premium?</h4>
+                <p>Yes. You need TradingView Premium to add custom indicators from other authors (like EdgeMatrix Pro). A Premium subscription costs $14.95/month or $149/year. This is separate from EdgeMatrix Pro pricing.</p>
+            </div>
+            <div class="faq-item">
+                <h4>What markets does EdgeMatrix Pro support?</h4>
+                <p>Futures (micro and standard contracts), Forex, CFDs, and spot commodities like gold (XAUUSD). If TradingView supports it, EdgeMatrix Pro works on it. See the full list above.</p>
+            </div>
+            <div class="faq-item">
+                <h4>What happens after I buy?</h4>
+                <p>You'll be asked for your TradingView username at checkout. Within 24 hours, you'll receive an invite from EdgeMatrix's TradingView account. Click the invite. Add EdgeMatrix Pro to your chart. That's it. You're live.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Is there a refund policy?</h4>
+                <p>All sales are final. But this product is built for traders. If something isn't working, email hello@edgematrixhq.com and we'll help you fix it. The system works. The question is whether you'll follow it.</p>
+            </div>
         </div>
     </section>
 

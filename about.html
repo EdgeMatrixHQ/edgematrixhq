@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>You're In — EdgeMatrix</title>
+    <title>About EdgeMatrix</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -30,9 +30,6 @@
             font-family: 'DM Sans', sans-serif;
             font-weight: 400;
             line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
         }
 
         /* Navigation */
@@ -42,6 +39,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
             border-bottom: 1px solid rgba(139, 30, 45, 0.2);
         }
 
@@ -78,6 +78,20 @@
             color: var(--accent);
         }
 
+        .nav-cta {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .nav-cta:hover {
+            background-color: #a8263a;
+        }
+
         .hamburger {
             display: none;
             flex-direction: column;
@@ -93,114 +107,145 @@
             border-radius: 2px;
         }
 
-        /* Main Content */
-        .container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4rem 2rem;
-        }
-
-        .thank-you-content {
+        /* Hero */
+        .hero {
+            padding: 6rem 2rem;
             text-align: center;
-            max-width: 700px;
-            animation: fadeIn 0.6s ease-in;
+            background: linear-gradient(135deg, rgba(139,30,45,0.1) 0%, transparent 100%);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .checkmark {
-            font-size: 5rem;
-            margin-bottom: 2rem;
-            animation: bounce 0.8s ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-        }
-
-        h1 {
+        .hero h1 {
             font-family: 'Poppins', sans-serif;
             font-size: 3.5rem;
             font-weight: 700;
             letter-spacing: -1px;
             text-transform: uppercase;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        /* Section */
+        section {
+            padding: 5rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        /* Story */
+        .story-section {
+            margin-bottom: 4rem;
+        }
+
+        .story-section p {
+            color: var(--text-muted);
+            line-height: 1.9;
             margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .story-section p:first-of-type::first-letter {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1;
+            padding-right: 0.5rem;
+            float: left;
             color: var(--accent);
         }
 
-        .subtitle {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            line-height: 1.7;
-        }
-
-        .next-step {
+        /* Mission Statement */
+        .mission {
             background-color: var(--bg-dark);
-            padding: 2.5rem;
+            padding: 3rem;
             border-radius: 4px;
             border-left: 4px solid var(--accent);
-            margin-bottom: 3rem;
-            text-align: left;
+            margin-bottom: 4rem;
         }
 
-        .next-step h3 {
+        .mission h2 {
             font-family: 'Poppins', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.3px;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-
-        .next-step p {
-            color: var(--text-muted);
-            line-height: 1.8;
-        }
-
-        .social-section {
-            background-color: var(--bg-dark);
-            padding: 2.5rem;
-            border-radius: 4px;
-            border: 1px solid rgba(139, 30, 45, 0.3);
-            margin-bottom: 3rem;
-        }
-
-        .social-section h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: -0.3px;
             margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .mission p {
+            color: var(--text-muted);
+            line-height: 1.9;
+            font-size: 1.05rem;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: var(--bg-dark);
+            padding: 3rem;
+            border-radius: 4px;
+            border: 2px solid rgba(139, 30, 45, 0.3);
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-item h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .contact-item p {
+            color: var(--text-muted);
+        }
+
+        .contact-item a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover {
             color: var(--text-light);
         }
 
         .social-links {
             display: flex;
-            flex-direction: column;
             gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .social-link {
-            display: inline-block;
             padding: 0.75rem 1.5rem;
             background-color: rgba(139, 30, 45, 0.2);
             color: var(--accent);
@@ -215,56 +260,12 @@
             color: white;
         }
 
-        .cta-section {
-            background: linear-gradient(135deg, rgba(139,30,45,0.15) 0%, transparent 100%);
-            padding: 3rem;
-            border-radius: 4px;
-            margin-bottom: 2rem;
-        }
-
-        .cta-section h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            margin-bottom: 1rem;
-        }
-
-        .cta-section p {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background-color: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #a8263a;
-            transform: translateY(-2px);
-        }
-
         /* Footer */
         footer {
             background-color: var(--bg-dark);
             padding: 3rem 2rem;
             border-top: 1px solid rgba(139, 30, 45, 0.2);
             text-align: center;
-            margin-top: auto;
         }
 
         .footer-content {
@@ -324,28 +325,24 @@
                 display: flex;
             }
 
-            .container {
-                padding: 2rem 1.5rem;
+            .hero h1 {
+                font-size: 2rem;
             }
 
-            h1 {
-                font-size: 2.5rem;
+            .section-title {
+                font-size: 1.75rem;
             }
 
-            .checkmark {
-                font-size: 3.5rem;
+            section {
+                padding: 3rem 1.5rem;
             }
 
-            .subtitle {
-                font-size: 1.05rem;
+            .story-section p {
+                font-size: 1rem;
             }
 
-            .social-links {
-                flex-direction: column;
-            }
-
-            .social-link {
-                text-align: center;
+            .contact-info {
+                grid-template-columns: 1fr;
             }
 
             .footer-content {
@@ -373,6 +370,7 @@
             <li><a href="about.html">About</a></li>
             <li><a href="blog.html">Blog</a></li>
         </ul>
+        <a href="free.html" class="nav-cta">Join Waitlist</a>
         <div class="hamburger">
             <span></span>
             <span></span>
@@ -380,33 +378,47 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="thank-you-content">
-            <div class="checkmark">✓</div>
-            <h1>You're In</h1>
-            <p class="subtitle">Check your email. Your free tool instructions are on the way.</p>
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Built by a Trader.<br>For Traders.</h1>
+    </section>
 
-            <div class="next-step">
-                <h3>What's Next</h3>
-                <p>Look for an email from EdgeMatrix within the next minute. Inside, you'll find a link to find EdgeMatrix Sessions on TradingView. Click. Add to your chart. That's it.</p>
-            </div>
+    <!-- Story -->
+    <section class="story-section">
+        <h2 class="section-title">The Problem</h2>
+        <p>I was a profitable trader. I had rules. I knew my edge. But I was inconsistent. On good days, I followed my system. On days when I was excited or scared, I broke it. I'd size up on bad setups. I'd skip my checklist. I'd chase. I'd panic sell. The rules didn't matter when money was actually on the line.</p>
+        <p>I watched other traders struggle with the same thing. We all knew the theory. We all had systems. But we couldn't stick to them. The problem wasn't knowledge. It was discipline under pressure.</p>
+        <p>So I built a system to fix it. A checklist that forces you to look at every confluence before entry. A score that tells you objectively whether the setup qualifies. A position calculator that removes guessing. EdgeMatrix turns discipline from aspirational into enforceable.</p>
+    </section>
 
-            <div class="social-section">
-                <h3>Follow for Daily Insights</h3>
-                <div class="social-links">
-                    <a href="#" class="social-link">Follow @EdgeMatrixHQ on Instagram</a>
-                    <a href="#" class="social-link">Follow @EdgeMatrixHQ on TikTok</a>
+    <!-- Mission Statement -->
+    <section>
+        <div class="mission">
+            <h2>Our Mission</h2>
+            <p>EdgeMatrix exists to give traders the infrastructure to enforce their own system on every trade. We're not selling indicators. We're selling discipline. We're building the tools that make it possible to trade the way you always planned to.</p>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section>
+        <div class="contact-section">
+            <h2>Get in Touch</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>Email</h3>
+                    <p><a href="mailto:hello@edgematrixhq.com">hello@edgematrixhq.com</a></p>
+                </div>
+                <div class="contact-item">
+                    <h3>Follow Us</h3>
+                    <p>@EdgeMatrixHQ on Instagram and TikTok</p>
+                </div>
+                <div class="contact-item">
+                    <h3>Questions</h3>
+                    <p>Direct message us on social or email. We respond fast.</p>
                 </div>
             </div>
-
-            <div class="cta-section">
-                <h3>Ready to Level Up?</h3>
-                <p>Sessions is your edge. EdgeMatrix Pro makes you unstoppable. Discipline system. Trade score. Position calculator.</p>
-                <a href="pro.html" class="btn btn-primary">Learn About EdgeMatrix Pro</a>
-            </div>
         </div>
-    </div>
+    </section>
 
     <!-- Footer -->
     <footer>
