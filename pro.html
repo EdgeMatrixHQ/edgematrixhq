@@ -3,185 +3,492 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>EdgeMatrix Pro — Trade Checklist</title>
+<title>EdgeMatrix Pro — Trade Checklist for TradingView</title>
+<meta name="description" content="Stop trading on gut feel. EdgeMatrix Pro puts your checklist, trade score, and position calculator directly on your TradingView chart."/>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0D0D0F; color: #E5E5E5; font-family: system-ui, sans-serif; }
-  .nav { display: flex; align-items: center; gap: 10px; padding: 24px 40px; border-bottom: 1px solid #1a1a1d; }
-  .nav-bar { width: 4px; height: 32px; background: #A61E2E; border-radius: 2px; }
-  .nav-edge { font-size: 22px; font-weight: 900; color: #E5E5E5; letter-spacing: -1px; }
-  .nav-matrix { font-size: 10px; font-weight: 300; color: #555; letter-spacing: 5px; display: block; margin-top: -4px; }
-  .hero { padding: 72px 40px 48px; max-width: 720px; margin: 0 auto; text-align: center; }
-  .badge { display: inline-block; background: #1a1a1d; border: 1px solid #A61E2E; color: #A61E2E; font-size: 11px; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 28px; }
-  .hero h1 { font-size: 46px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
-  .hero p { font-size: 18px; color: #888; line-height: 1.8; max-width: 580px; margin: 0 auto 40px; }
-  .cta-btn { display: inline-block; background: #A61E2E; color: #fff; text-decoration: none; border-radius: 8px; padding: 16px 32px; font-size: 16px; font-weight: 700; }
-  .cta-btn:hover { background: #c02236; }
-  .pain-section { max-width: 720px; margin: 48px auto; padding: 0 40px; }
-  .pain-title { font-size: 28px; font-weight: 900; margin-bottom: 32px; text-align: center; }
-  .pain-points { display: grid; grid-template-columns: 1fr; gap: 16px; }
-  .pain-point { background: #111113; border-left: 3px solid #d64545; border-radius: 0 8px 8px 0; padding: 20px; }
-  .pain-point p { font-size: 16px; color: #E5E5E5; line-height: 1.6; }
-  .features-section { max-width: 900px; margin: 48px auto; padding: 0 40px; }
-  .section-title { font-size: 28px; font-weight: 900; margin-bottom: 32px; text-align: center; }
-  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .feature-card { background: #111113; border: 1px solid #1e1e22; border-radius: 14px; padding: 28px; }
-  .feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #E5E5E5; }
-  .feature-card p { font-size: 14px; color: #666; line-height: 1.8; }
-  .instruments-section { max-width: 900px; margin: 48px auto; padding: 0 40px; }
-  .instruments-label { font-size: 14px; font-weight: 700; color: #A61E2E; letter-spacing: 1px; margin-bottom: 12px; }
-  .instruments-list { font-size: 14px; color: #666; line-height: 2; }
-  .steps-section { max-width: 720px; margin: 48px auto; padding: 0 40px; }
-  .steps-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-  .step { background: #111113; border: 1px solid #1e1e22; border-radius: 14px; padding: 28px; text-align: center; }
-  .step-num { font-size: 32px; font-weight: 900; color: #A61E2E; margin-bottom: 12px; }
-  .step h4 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
-  .step p { font-size: 13px; color: #666; line-height: 1.8; }
-  .cta-section { max-width: 720px; margin: 48px auto; padding: 40px; text-align: center; background: #111113; border: 1px solid #1e1e22; border-radius: 14px; }
-  .cta-section h2 { font-size: 24px; font-weight: 900; margin-bottom: 12px; }
-  .cta-section p { font-size: 15px; color: #888; margin-bottom: 28px; line-height: 1.8; }
-  .faq-section { max-width: 720px; margin: 48px auto; padding: 0 40px; }
-  .faq-item { background: #111113; border: 1px solid #1e1e22; border-radius: 14px; padding: 20px; margin-bottom: 12px; cursor: pointer; }
-  .faq-item.open .faq-answer { display: block; margin-top: 12px; }
-  .faq-q { font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; }
-  .faq-q::after { content: "+"; color: #A61E2E; font-weight: 900; }
-  .faq-item.open .faq-q::after { content: "−"; }
-  .faq-answer { display: none; font-size: 14px; color: #666; line-height: 1.8; }
-  .footer { display: flex; align-items: center; justify-content: center; gap: 32px; padding: 32px 40px; border-top: 1px solid #1a1a1d; margin-top: 40px; }
-  .footer a { font-size: 13px; color: #555; text-decoration: none; }
-  .footer a:hover { color: #A61E2E; }
-  .footer span { font-size: 13px; color: #333; }
-  @media (max-width: 600px) {
-    .hero h1 { font-size: 30px; }
-    .hero p { font-size: 16px; }
-    .pain-title { font-size: 22px; }
-    .section-title { font-size: 22px; }
-    .features-grid { grid-template-columns: 1fr; }
-    .steps-grid { grid-template-columns: 1fr; }
-    .nav { padding: 20px 24px; }
-    .hero { padding: 48px 24px 32px; }
-    .pain-section { padding: 0 24px; }
-    .features-section { padding: 0 24px; }
-    .instruments-section { padding: 0 24px; }
-    .steps-section { padding: 0 24px; }
-    .cta-section { margin: 48px 24px; padding: 32px 24px; }
-    .faq-section { padding: 0 24px 60px; }
-    .footer { flex-direction: column; gap: 16px; padding: 24px; }
-  }
+/* ── PRO HERO ─── */
+.pro-hero {
+  position: relative;
+  padding: 160px 24px 100px;
+  text-align: center;
+  overflow: hidden;
+}
+#pro-particles {
+  position: absolute;
+  inset: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+.pro-hero-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px; height: 500px;
+  background: radial-gradient(ellipse, rgba(166,30,46,0.13), transparent 65%);
+  pointer-events: none;
+}
+.pro-hero-content {
+  position: relative; z-index: 2;
+  max-width: 760px; margin: 0 auto;
+}
+.pro-hero h1 {
+  font-size: clamp(40px, 6vw, 82px);
+  font-weight: 700;
+  letter-spacing: -3px;
+  line-height: 1.0;
+  margin-bottom: 24px;
+}
+.pro-hero h1 em { font-style: normal; color: #D42B40; }
+.pro-hero p {
+  font-size: 19px; color: #888899;
+  line-height: 1.8; max-width: 560px;
+  margin: 0 auto 40px;
+}
+
+/* ── PAIN ─── */
+.pain-row {
+  display: flex; flex-direction: column; gap: 2px;
+  margin-top: 56px;
+}
+.pain-block {
+  display: flex; align-items: flex-start; gap: 20px;
+  background: #0F0F12;
+  border: 1px solid rgba(166,30,46,0.1);
+  padding: 28px 32px;
+  border-left: 3px solid #A61E2E;
+  transition: background 0.3s;
+}
+.pain-block:hover { background: #141418; }
+.pain-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; color: #A61E2E;
+  letter-spacing: 1px; flex-shrink: 0;
+  margin-top: 2px;
+}
+.pain-block p { font-size: 16px; color: #888899; line-height: 1.7; }
+.pain-block p strong { color: #E8E8EC; }
+
+/* ── FEATURES GRID ─── */
+.features-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px; margin-top: 56px;
+  background: rgba(166,30,46,0.08);
+  border: 1px solid rgba(166,30,46,0.1);
+}
+.feature-block {
+  background: #0A0A0C;
+  padding: 40px 32px;
+  transition: background 0.3s;
+}
+.feature-block:hover { background: #0F0F12; }
+.feature-block-icon {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 3px; color: #A61E2E;
+  text-transform: uppercase; margin-bottom: 16px;
+  display: block;
+}
+.feature-block h3 {
+  font-size: 20px; font-weight: 700;
+  letter-spacing: -0.5px; margin-bottom: 12px;
+}
+.feature-block p { font-size: 14px; color: #666677; line-height: 1.8; }
+
+/* ── SCORE VISUAL ─── */
+.score-demo {
+  margin-top: 56px;
+  background: #0F0F12;
+  border: 1px solid rgba(166,30,46,0.2);
+  border-radius: 6px; padding: 48px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: center;
+}
+.score-left h3 {
+  font-size: 28px; font-weight: 700;
+  letter-spacing: -0.5px; margin-bottom: 12px;
+}
+.score-left p { font-size: 15px; color: #888899; line-height: 1.8; margin-bottom: 24px; }
+.score-visual {
+  background: #0A0A0C;
+  border: 1px solid rgba(166,30,46,0.15);
+  border-radius: 6px; padding: 28px;
+  font-family: 'Space Mono', monospace;
+}
+.score-header {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 3px; color: #444455;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.score-checklist { display: flex; flex-direction: column; gap: 8px; }
+.score-row {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 12px;
+  font-size: 12px; color: #666677;
+}
+.score-check {
+  width: 16px; height: 16px;
+  border-radius: 2px; border: 1px solid #333344;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; flex-shrink: 0;
+  transition: all 0.3s;
+}
+.score-check.on { background: #1a3a1a; border-color: #1DB954; color: #1DB954; }
+.score-check.off { background: #3a1a1a; border-color: #A61E2E; color: #A61E2E; }
+.score-meter {
+  margin-top: 20px; padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.score-meter-label {
+  display: flex; justify-content: space-between;
+  font-size: 10px; color: #444455; margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+.score-bar-outer {
+  height: 6px; background: #1a1a1e; border-radius: 3px; overflow: hidden;
+}
+.score-bar-inner {
+  height: 100%; border-radius: 3px;
+  transition: width 1s ease;
+}
+.score-bar-green { background: linear-gradient(90deg, #1DB954, #26d962); }
+.score-bar-orange { background: linear-gradient(90deg, #E5820A, #f59a2a); }
+.score-bar-red { background: linear-gradient(90deg, #D42B40, #ff4060); }
+.score-num-big {
+  font-size: 48px; font-weight: 700;
+  margin: 12px 0 4px; letter-spacing: -2px;
+}
+.score-verdict {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+}
+
+/* ── PRICING ─── */
+.pricing-grid-2 {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px; margin-top: 56px;
+}
+.pricing-card {
+  background: #0F0F12;
+  border: 1px solid rgba(166,30,46,0.15);
+  border-radius: 6px; padding: 40px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.pricing-card:hover {
+  border-color: rgba(166,30,46,0.4);
+  box-shadow: 0 12px 60px rgba(166,30,46,0.1);
+}
+.pricing-card.best {
+  border-color: rgba(166,30,46,0.4);
+  box-shadow: 0 0 40px rgba(166,30,46,0.08);
+}
+.pricing-tag {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 2px;
+  margin-bottom: 20px;
+}
+.tag-best { background: rgba(166,30,46,0.2); color: #D42B40; }
+.tag-monthly { background: rgba(255,255,255,0.05); color: #888899; }
+.pricing-price {
+  font-family: 'Space Mono', monospace;
+  font-size: 52px; font-weight: 700;
+  letter-spacing: -3px; color: #E8E8EC;
+  margin-bottom: 4px;
+}
+.pricing-period {
+  font-size: 14px; color: #444455; margin-bottom: 4px;
+}
+.pricing-strike {
+  font-size: 14px; color: #333344;
+  text-decoration: line-through; margin-bottom: 28px;
+}
+.pricing-features {
+  list-style: none; margin-bottom: 32px;
+}
+.pricing-features li {
+  font-size: 14px; color: #666677;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  display: flex; gap: 12px; line-height: 1.5;
+}
+.pricing-features li:first-child { border-top: none; }
+.pricing-features li::before {
+  content: '✓'; color: #1DB954;
+  font-weight: 700; flex-shrink: 0;
+  font-family: 'Space Mono', monospace;
+}
+
+/* ── FAQ ─── */
+.faq-list { display: flex; flex-direction: column; gap: 2px; margin-top: 56px; }
+.faq-item { background: #0F0F12; border: 1px solid rgba(166,30,46,0.1); border-radius: 4px; overflow: hidden; }
+.faq-item.open { border-color: rgba(166,30,46,0.35); }
+.faq-q { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; cursor: pointer; user-select: none; font-size: 15px; font-weight: 600; gap: 16px; transition: color 0.2s; }
+.faq-q:hover { color: #D42B40; }
+.faq-icon { font-family: 'Space Mono', monospace; font-size: 18px; color: #A61E2E; flex-shrink: 0; transition: transform 0.3s; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.faq-item.open .faq-a { max-height: 200px; }
+.faq-a-inner { padding: 0 28px 22px; font-size: 14px; color: #666677; line-height: 1.8; border-top: 1px solid rgba(166,30,46,0.08); padding-top: 16px; }
+
+/* ── CTA ─── */
+.cta-section { position: relative; background: #0F0F12; border-top: 1px solid rgba(166,30,46,0.2); border-bottom: 1px solid rgba(166,30,46,0.2); overflow: hidden; text-align: center; padding: 100px 24px; }
+.cta-bg-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 400px; background: radial-gradient(ellipse, rgba(166,30,46,0.15), transparent 65%); pointer-events: none; }
+.cta-content { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
+.cta-content h2 { font-size: clamp(32px, 4vw, 52px); font-weight: 700; letter-spacing: -2px; margin-bottom: 16px; }
+.cta-content p { font-size: 17px; color: #888899; line-height: 1.8; margin-bottom: 36px; }
+
+@media (max-width: 900px) {
+  .features-grid-3 { grid-template-columns: 1fr; }
+  .score-demo { grid-template-columns: 1fr; }
+  .pricing-grid-2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .pro-hero h1 { letter-spacing: -2px; }
+  .pain-block { padding: 20px; }
+}
 </style>
 </head>
 <body>
-  <div class="nav">
-    <div class="nav-bar"></div>
-    <div>
-      <span class="nav-edge">EDGE</span>
-      <span class="nav-matrix">MATRIX</span>
+<script src="em-shared.js"></script>
+<script>
+  EM.injectGlobalStyles();
+  EM.buildNav('pro');
+</script>
+
+<!-- HERO -->
+<div class="pro-hero">
+  <div class="pro-hero-glow"></div>
+  <canvas id="pro-particles"></canvas>
+  <div class="pro-hero-content">
+    <div class="em-badge" style="margin-bottom:32px;">EdgeMatrix Pro</div>
+    <h1>Stop trading on<br/><em>gut feel.</em></h1>
+    <p>EdgeMatrix Pro puts your checklist, trade score, and position size calculator directly on your TradingView chart. Your rules, enforced — on every trade.</p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href="checkout.html" class="em-btn em-btn-primary em-btn-lg">Get Pro — $9.99/mo →</a>
+      <a href="checkout.html" class="em-btn em-btn-ghost em-btn-lg">$97 Lifetime ↗</a>
     </div>
   </div>
-  <div class="hero">
-    <div class="badge">EDGEMATRIX PRO</div>
-    <h1>Stop trading on gut feel.</h1>
-    <p>EdgeMatrix Pro puts your checklist, trade score, and position size calculator directly on your TradingView chart.</p>
-    <a href="checkout.html" class="cta-btn">GET EDGEMATRIX PRO — $9.99/MONTH →</a>
-  </div>
-  <div class="pain-section">
-    <h2 class="pain-title">What trading without a system looks like.</h2>
-    <div class="pain-points">
-      <div class="pain-point">
-        <p>You enter on feel instead of confirmation.</p>
+</div>
+
+<div class="em-divider"></div>
+
+<!-- PAIN -->
+<section class="em-section">
+  <div class="em-grid-bg"></div>
+  <div class="em-container">
+    <div class="em-reveal" style="max-width:560px;">
+      <div class="em-section-label">The Problem</div>
+      <h2 class="em-section-title">What trading without<br/>a system looks like.</h2>
+    </div>
+    <div class="pain-row">
+      <div class="pain-block em-reveal">
+        <span class="pain-num">01</span>
+        <p>You <strong>enter on feel</strong> instead of confirmation. The setup looked good enough. It wasn't.</p>
       </div>
-      <div class="pain-point">
-        <p>Your position size changes every trade.</p>
+      <div class="pain-block em-reveal" data-delay="80">
+        <span class="pain-num">02</span>
+        <p>Your <strong>position size changes every trade</strong> based on how confident you feel in the moment.</p>
       </div>
-      <div class="pain-point">
-        <p>You know your rules. You break them when it counts.</p>
+      <div class="pain-block em-reveal" data-delay="160">
+        <span class="pain-num">03</span>
+        <p>You <strong>know your rules.</strong> You break them when it counts. Every single time.</p>
       </div>
     </div>
   </div>
-  <div class="features-section">
-    <h2 class="section-title">How it works.</h2>
-    <div class="features-grid">
-      <div class="feature-card">
+</section>
+
+<div class="em-divider"></div>
+
+<!-- FEATURES -->
+<section class="em-section">
+  <div class="em-container">
+    <div class="em-reveal" style="text-align:center; max-width:560px; margin:0 auto;">
+      <div class="em-section-label">How It Works</div>
+      <h2 class="em-section-title">Three tools. One system.</h2>
+    </div>
+    <div class="features-grid-3">
+      <div class="feature-block em-reveal">
+        <span class="feature-block-icon">// 01</span>
         <h3>Trade Checklist</h3>
-        <p>Up to 10 custom confluences. Your labels, your criteria. Every trade scored against your actual system.</p>
+        <p>Up to 10 fully customizable confluences. Your labels, your criteria. Every setup scored against your actual system before you click.</p>
       </div>
-      <div class="feature-card">
-        <h3>Live Score out of 100</h3>
-        <p>Green means go. Orange means wait. Red means no. Removes the guesswork before you click.</p>
+      <div class="feature-block em-reveal" data-delay="100">
+        <span class="feature-block-icon">// 02</span>
+        <h3>Live Score /100</h3>
+        <p>Green means go. Orange means wait. Red means no. The score updates in real time as you check off criteria. No guesswork.</p>
       </div>
-      <div class="feature-card">
-        <h3>Position Size Calculator</h3>
-        <p>Futures, Forex, and CFDs. Enter your risk and stop distance. Get your exact position size instantly.</p>
-      </div>
-    </div>
-  </div>
-  <div class="instruments-section">
-    <h3 class="section-title">Supported instruments.</h3>
-    <div>
-      <div class="instruments-label">FUTURES</div>
-      <div class="instruments-list">MNQ NQ MES ES MYM YM M2K RTY MGC GC SIL SI MCL CL</div>
-    </div>
-    <div style="margin-top: 24px;">
-      <div class="instruments-label">FOREX</div>
-      <div class="instruments-list">EURUSD GBPUSD AUDUSD NZDUSD USDCAD USDCHF USDJPY GBPJPY EURJPY EURGBP EURCAD GBPCAD</div>
-    </div>
-    <div style="margin-top: 24px;">
-      <div class="instruments-label">CFDs</div>
-      <div class="instruments-list">NAS100 UK100 GER40 US30 XAUUSD</div>
-    </div>
-  </div>
-  <div class="steps-section">
-    <h2 class="section-title">How it works — 3 steps.</h2>
-    <div class="steps-grid">
-      <div class="step">
-        <div class="step-num">1</div>
-        <h4>Purchase</h4>
-        <p>Choose monthly or lifetime and provide your TradingView username at checkout.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <h4>Receive Invite</h4>
-        <p>We'll send your TradingView invite within 24 hours.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <h4>Add to Chart</h4>
-        <p>Add it to your chart and set your confluences.</p>
+      <div class="feature-block em-reveal" data-delay="200">
+        <span class="feature-block-icon">// 03</span>
+        <h3>Position Calculator</h3>
+        <p>Works for Futures, Forex, and CFDs. Enter your account risk and stop distance. Get your exact position size instantly.</p>
       </div>
     </div>
   </div>
-  <div class="cta-section">
-    <h2>$9.99/month. Cancel anytime.</h2>
-    <p>You'll be asked to choose between monthly and lifetime on the next page.</p>
-    <a href="checkout.html" class="cta-btn">GET EDGEMATRIX PRO →</a>
+</section>
+
+<div class="em-divider"></div>
+
+<!-- SCORE DEMO -->
+<section class="em-section">
+  <div class="em-grid-bg"></div>
+  <div class="em-container">
+    <div class="score-demo em-reveal">
+      <div class="score-left">
+        <div class="em-section-label">Live Score</div>
+        <h3>Objective decisions.<br/>Every time.</h3>
+        <p>The score updates as you work through your checklist. When you hit your threshold — and only when you hit it — you take the trade. No more second guessing.</p>
+        <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:8px;">
+          <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:#1DB954;">
+            <div style="width:8px; height:8px; border-radius:50%; background:#1DB954;"></div>80–100: GO
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:#E5820A;">
+            <div style="width:8px; height:8px; border-radius:50%; background:#E5820A;"></div>50–79: WAIT
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:#D42B40;">
+            <div style="width:8px; height:8px; border-radius:50%; background:#D42B40;"></div>0–49: NO
+          </div>
+        </div>
+      </div>
+      <div class="score-visual">
+        <div class="score-header">Edgematrix Pro // Live Checklist</div>
+        <div class="score-checklist" id="score-checklist">
+          <div class="score-row"><span>HTF Structure Confirmed</span><div class="score-check on">✓</div></div>
+          <div class="score-row"><span>Session High/Low Level</span><div class="score-check on">✓</div></div>
+          <div class="score-row"><span>Fair Value Gap Present</span><div class="score-check on">✓</div></div>
+          <div class="score-row"><span>Order Block Identified</span><div class="score-check on">✓</div></div>
+          <div class="score-row"><span>Displacement Candle</span><div class="score-check on">✓</div></div>
+          <div class="score-row"><span>Risk:Reward &gt; 3:1</span><div class="score-check on">✓</div></div>
+          <div class="score-row"><span>London/NY Session</span><div class="score-check on">✓</div></div>
+          <div class="score-row"><span>No News in 30min</span><div class="score-check off">✗</div></div>
+        </div>
+        <div class="score-meter">
+          <div class="score-meter-label"><span>Trade Score</span><span id="score-val">87/100</span></div>
+          <div class="score-bar-outer"><div class="score-bar-inner score-bar-green" id="score-bar" style="width:87%"></div></div>
+          <div class="score-num-big" id="score-num" style="color:#1DB954;">87</div>
+          <div class="score-verdict" style="color:#1DB954;" id="score-verdict">● GO — TAKE THE TRADE</div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="faq-section">
-    <h2 class="section-title">FAQ</h2>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">What is TradingView?</div>
-      <div class="faq-answer">TradingView is a free charting platform used by millions of traders. EdgeMatrix Pro runs directly on your TradingView chart.</div>
+</section>
+
+<div class="em-divider"></div>
+
+<!-- PRICING -->
+<section class="em-section">
+  <div class="em-container">
+    <div class="em-reveal" style="text-align:center; max-width:500px; margin:0 auto;">
+      <div class="em-section-label">Pricing</div>
+      <h2 class="em-section-title">Simple pricing.<br/>No surprises.</h2>
     </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">Do I need a paid TradingView account?</div>
-      <div class="faq-answer">No. EdgeMatrix Pro works on the free TradingView plan.</div>
+    <div class="pricing-grid-2" style="max-width:780px; margin:0 auto;">
+      <div class="pricing-card em-reveal">
+        <div class="pricing-tag tag-monthly">Monthly</div>
+        <div class="pricing-price">$9.99</div>
+        <div class="pricing-period">/month · cancel anytime</div>
+        <div style="height:24px;"></div>
+        <ul class="pricing-features">
+          <li>Trade checklist (up to 10 confluences)</li>
+          <li>Live trade score out of 100</li>
+          <li>Position size calculator</li>
+          <li>All supported instruments</li>
+          <li>TradingView invite within 24hrs</li>
+        </ul>
+        <a href="https://buy.stripe.com/dRm9AV1nU1IDe8H2W44ZG07" target="_blank" class="em-btn em-btn-ghost" style="width:100%;">Get Monthly Access →</a>
+      </div>
+      <div class="pricing-card best em-reveal" data-delay="120">
+        <div class="pricing-tag tag-best">Best Value</div>
+        <div class="pricing-price">$97</div>
+        <div class="pricing-period">one-time · never billed again</div>
+        <div class="pricing-strike">$9.99 × 12 = $119.88/yr</div>
+        <ul class="pricing-features">
+          <li>Trade checklist (up to 10 confluences)</li>
+          <li>Live trade score out of 100</li>
+          <li>Position size calculator</li>
+          <li>All supported instruments</li>
+          <li>All future updates included</li>
+          <li>TradingView invite within 24hrs</li>
+        </ul>
+        <a href="https://buy.stripe.com/14A3cx0jQcnhggP68g4ZG08" target="_blank" class="em-btn em-btn-primary" style="width:100%;">Get Lifetime Access →</a>
+      </div>
     </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">What markets does it support?</div>
-      <div class="faq-answer">Futures, Forex, and CFDs. Full instrument list is above.</div>
+    <p style="text-align:center; margin-top:20px; font-size:13px; color:#444455;">Questions? <a href="mailto:hello@edgematrixhq.com" style="color:#A61E2E; text-decoration:none;">hello@edgematrixhq.com</a></p>
+  </div>
+</section>
+
+<div class="em-divider"></div>
+
+<!-- FAQ -->
+<section class="em-section">
+  <div class="em-container">
+    <div class="em-reveal" style="max-width:500px; margin:0 auto; text-align:center;">
+      <div class="em-section-label">FAQ</div>
+      <h2 class="em-section-title">Questions answered.</h2>
     </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">What happens after I purchase?</div>
-      <div class="faq-answer">You'll enter your TradingView username at checkout. We'll send your invite within 24 hours.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">Is there a refund policy?</div>
-      <div class="faq-answer">Due to the digital nature of the product, all sales are final. If you have an issue, email hello@edgematrixhq.com.</div>
+    <div class="faq-list" style="max-width:720px; margin:0 auto;">
+      <div class="faq-item em-reveal"><div class="faq-q">What is TradingView?<span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">TradingView is a free charting platform used by millions of traders. EdgeMatrix Pro runs directly as a private indicator on your TradingView chart — no separate app needed.</div></div></div>
+      <div class="faq-item em-reveal" data-delay="60"><div class="faq-q">Do I need a paid TradingView account?<span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">No. EdgeMatrix Pro works on the free TradingView plan. You don't need to upgrade anything.</div></div></div>
+      <div class="faq-item em-reveal" data-delay="120"><div class="faq-q">What markets does it support?<span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">Futures (MNQ, NQ, MES, ES, MYM, YM, and more), Forex (EURUSD, GBPUSD, and all major pairs), and CFDs (NAS100, XAUUSD, GER40, US30, UK100).</div></div></div>
+      <div class="faq-item em-reveal" data-delay="180"><div class="faq-q">What happens after I purchase?<span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">You'll enter your TradingView username at checkout. We'll send your private indicator invite within 24 hours. Add it to any chart, set your confluences, and you're live.</div></div></div>
+      <div class="faq-item em-reveal" data-delay="240"><div class="faq-q">Is there a refund policy?<span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">Due to the digital nature of the product, all sales are final. If you have any issue, email hello@edgematrixhq.com — we respond fast.</div></div></div>
     </div>
   </div>
-  <div class="footer">
-    <a href="https://www.instagram.com/edgematrixhq?igsh=NTc4MTIwNjQ2YQ%3D%3D&utm_source=qr" target="_blank">Instagram</a>
-    <a href="https://www.tiktok.com/@edgematrixhq?_r=1&_t=ZP-95y4evVmmnn" target="_blank">TikTok</a>
-    <span>© 2026 EdgeMatrix</span>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-bg-glow"></div>
+  <div class="cta-content em-reveal">
+    <div class="em-section-label" style="display:inline-block; margin-bottom:16px;">Start trading with discipline</div>
+    <h2>Your system.<br/>Every trade.</h2>
+    <p>Stop guessing. Start enforcing. EdgeMatrix Pro is the tool that keeps your discipline locked in.</p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href="https://buy.stripe.com/14A3cx0jQcnhggP68g4ZG08" target="_blank" class="em-btn em-btn-primary em-btn-lg">Get Lifetime — $97 →</a>
+      <a href="https://buy.stripe.com/dRm9AV1nU1IDe8H2W44ZG07" target="_blank" class="em-btn em-btn-ghost em-btn-lg">Monthly — $9.99/mo</a>
+    </div>
   </div>
+</section>
+
+<script>
+  EM.buildFooter();
+  EM.initReveal();
+  EM.initParticles('pro-particles');
+
+  // FAQ
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // Animate score demo
+  let scoreAnimated = false;
+  const scoreObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !scoreAnimated) {
+        scoreAnimated = true;
+        let score = 0;
+        const target = 87;
+        const bar = document.getElementById('score-bar');
+        const num = document.getElementById('score-num');
+        const val = document.getElementById('score-val');
+        const verdict = document.getElementById('score-verdict');
+        const interval = setInterval(() => {
+          score = Math.min(score + 2, target);
+          if (bar) bar.style.width = score + '%';
+          if (num) num.textContent = score;
+          if (val) val.textContent = score + '/100';
+          if (score >= target) clearInterval(interval);
+        }, 20);
+      }
+    });
+  }, { threshold: 0.4 });
+  const demo = document.querySelector('.score-demo');
+  if (demo) scoreObs.observe(demo);
+</script>
 </body>
 </html>

@@ -3,105 +3,864 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>EdgeMatrix — Free Trading Tools</title>
+<title>EdgeMatrix — The Execution System for Serious Traders</title>
+<meta name="description" content="Stop trading on gut feel. EdgeMatrix gives you the tools to enforce your system on every single trade."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0D0D0F; color: #E5E5E5; font-family: system-ui, sans-serif; }
-  .nav { display: flex; align-items: center; gap: 10px; padding: 24px 40px; border-bottom: 1px solid #1a1a1d; }
-  .nav-bar { width: 4px; height: 32px; background: #A61E2E; border-radius: 2px; }
-  .nav-edge { font-size: 22px; font-weight: 900; color: #E5E5E5; letter-spacing: -1px; }
-  .nav-matrix { font-size: 10px; font-weight: 300; color: #555; letter-spacing: 5px; display: block; margin-top: -4px; }
-  .hero { padding: 72px 40px 48px; max-width: 720px; margin: 0 auto; text-align: center; }
-  .badge { display: inline-block; background: #1a1a1d; border: 1px solid #A61E2E; color: #A61E2E; font-size: 11px; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 28px; }
-  .hero h1 { font-size: 46px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
-  .hero h1 span { color: #A61E2E; }
-  .hero .sub { font-size: 18px; color: #888; line-height: 1.8; max-width: 580px; margin: 0 auto 40px; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 720px; margin: 0 auto 48px; padding: 0 40px; }
-  .offer-card { background: #111113; border: 1px solid #1e1e22; border-radius: 14px; padding: 28px; }
-  .offer-card.highlight { border-color: #A61E2E; position: relative; }
-  .offer-tag { position: absolute; top: -12px; left: 20px; background: #A61E2E; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 4px 12px; border-radius: 20px; }
-  .offer-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-  .offer-card .label { font-size: 10px; color: #A61E2E; letter-spacing: 2px; margin-bottom: 12px; display: block; }
-  .offer-card ul { list-style: none; margin-top: 12px; }
-  .offer-card ul li { font-size: 13px; color: #666; padding: 5px 0; display: flex; gap: 8px; line-height: 1.6; border-top: 1px solid #1a1a1d; }
-  .offer-card ul li:first-child { border-top: none; }
-  .offer-card ul li::before { content: "→"; color: #A61E2E; flex-shrink: 0; }
-  .divider-line { height: 1px; background: #1a1a1d; margin: 0 40px 48px; }
-  .form-section { max-width: 480px; margin: 0 auto; padding: 0 40px 72px; }
-  .form-section h2 { font-size: 22px; font-weight: 900; margin-bottom: 8px; text-align: center; }
-  .form-section .form-sub { font-size: 14px; color: #666; text-align: center; margin-bottom: 28px; line-height: 1.7; }
-  .form-section input { width: 100%; background: #111113; border: 1px solid #222; border-radius: 8px; padding: 14px 16px; color: #E5E5E5; font-size: 15px; margin-bottom: 12px; outline: none; }
-  .form-section input:focus { border-color: #A61E2E; }
-  .form-section input::placeholder { color: #444; }
-  .btn { width: 100%; background: #A61E2E; color: #fff; border: none; border-radius: 8px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
-  .btn:hover { background: #c02236; }
-  .privacy { font-size: 11px; color: #444; text-align: center; margin-top: 12px; }
-  .footer { display: flex; align-items: center; justify-content: center; gap: 32px; padding: 32px 40px; border-top: 1px solid #1a1a1d; margin-top: 40px; }
-  .footer a { font-size: 13px; color: #555; text-decoration: none; }
-  .footer a:hover { color: #A61E2E; }
-  .footer span { font-size: 13px; color: #333; }
-  @media (max-width: 600px) {
-    .hero h1 { font-size: 30px; }
-    .two-col { grid-template-columns: 1fr; padding: 0 24px; }
-    .nav { padding: 20px 24px; }
-    .hero { padding: 48px 24px 32px; }
-    .form-section { padding: 0 24px 60px; }
-    .footer { flex-direction: column; gap: 16px; padding: 24px; }
-  }
+/* ── HERO ────────────────────────────────────────────── */
+.hero-wrap {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 120px 24px 80px;
+}
+
+#particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero-canvas-interact {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: all;
+  cursor: crosshair;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(166,30,46,0.08);
+  border: 1px solid rgba(166,30,46,0.4);
+  color: #D42B40;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  padding: 7px 16px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  animation: fadeUp 0.8s ease both;
+}
+
+.hero-eyebrow-dot {
+  width: 5px;
+  height: 5px;
+  background: #D42B40;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #D42B40;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.4; transform:scale(0.7); }
+}
+
+.hero-h1 {
+  font-size: clamp(42px, 6.5vw, 88px);
+  font-weight: 700;
+  letter-spacing: -3px;
+  line-height: 1.0;
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s 0.15s ease both;
+}
+
+.hero-h1 em {
+  font-style: normal;
+  color: #D42B40;
+  position: relative;
+}
+
+.hero-h1 em::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #D42B40, transparent);
+}
+
+.hero-sub {
+  font-size: clamp(16px, 2vw, 20px);
+  color: #888899;
+  line-height: 1.8;
+  max-width: 580px;
+  margin: 0 auto 48px;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.45s ease both;
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #444455;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: fadeUp 1s 1s ease both;
+}
+
+.hero-scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, #A61E2E, transparent);
+  animation: scroll-line 2s ease-in-out infinite;
+}
+
+@keyframes scroll-line {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* Glow orbs behind content */
+.hero-glow-1 {
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(166,30,46,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: glow-pulse 4s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%,100% { opacity:0.6; transform:translate(-50%,-50%) scale(1); }
+  50% { opacity:1; transform:translate(-50%,-50%) scale(1.15); }
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(28px); }
+  to { opacity:1; transform:none; }
+}
+
+/* ── STATS BAR ──────────────────────────────────────── */
+.stats-bar {
+  background: #0F0F12;
+  border-top: 1px solid rgba(166,30,46,0.15);
+  border-bottom: 1px solid rgba(166,30,46,0.15);
+  padding: 28px 48px;
+}
+
+.stats-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: #E8E8EC;
+}
+
+.stat-num span { color: #D42B40; }
+
+.stat-label {
+  font-size: 11px;
+  color: #444455;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* ── PROBLEM ─────────────────────────────────────────── */
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+  margin-top: 56px;
+}
+
+.problem-item {
+  background: #0F0F12;
+  padding: 36px 28px;
+  border: 1px solid rgba(166,30,46,0.1);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+
+.problem-item:hover { background: #141418; }
+
+.problem-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, #D42B40, transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.problem-item:hover::before { opacity: 1; }
+
+.problem-icon {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: #A61E2E;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.problem-text {
+  font-size: 16px;
+  color: #888899;
+  line-height: 1.7;
+}
+
+.problem-text strong { color: #E8E8EC; }
+
+/* ── PRODUCT SHOWCASE ────────────────────────────────── */
+.product-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.product-card {
+  background: #0F0F12;
+  border: 1px solid rgba(166,30,46,0.18);
+  border-radius: 6px;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+  border-color: rgba(166,30,46,0.5);
+  box-shadow: 0 12px 60px rgba(166,30,46,0.1);
+}
+
+.product-card-glow {
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(166,30,46,0.12), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.product-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #A61E2E;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.product-card h3 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+}
+
+.product-card p {
+  font-size: 15px;
+  color: #888899;
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+
+.product-features {
+  list-style: none;
+  margin-bottom: 32px;
+}
+
+.product-features li {
+  font-size: 13px;
+  color: #666677;
+  padding: 9px 0;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  display: flex;
+  gap: 10px;
+  line-height: 1.5;
+}
+
+.product-features li:first-child { border-top: none; }
+
+.product-features li::before {
+  content: '→';
+  color: #A61E2E;
+  flex-shrink: 0;
+  font-family: 'Space Mono', monospace;
+}
+
+.product-card.featured {
+  border-color: rgba(166,30,46,0.4);
+}
+
+.product-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.product-price-big {
+  font-family: 'Space Mono', monospace;
+  font-size: 40px;
+  font-weight: 700;
+  color: #E8E8EC;
+}
+
+.product-price-period {
+  font-size: 14px;
+  color: #444455;
+}
+
+/* ── HOW IT WORKS ────────────────────────────────────── */
+.steps-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(166,30,46,0.1);
+  margin-top: 56px;
+  border: 1px solid rgba(166,30,46,0.1);
+}
+
+.step-block {
+  background: #0A0A0C;
+  padding: 40px 32px;
+  position: relative;
+  transition: background 0.3s;
+}
+
+.step-block:hover { background: #0F0F12; }
+
+.step-num-big {
+  font-family: 'Space Mono', monospace;
+  font-size: 64px;
+  font-weight: 700;
+  color: rgba(166,30,46,0.12);
+  line-height: 1;
+  margin-bottom: 20px;
+  letter-spacing: -4px;
+}
+
+.step-block h4 {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.step-block p {
+  font-size: 14px;
+  color: #666677;
+  line-height: 1.8;
+}
+
+/* ── INSTRUMENTS ─────────────────────────────────────── */
+.instruments-wrap {
+  margin-top: 56px;
+  background: #0F0F12;
+  border: 1px solid rgba(166,30,46,0.15);
+  border-radius: 6px;
+  padding: 40px;
+}
+
+.instruments-row {
+  margin-bottom: 24px;
+}
+
+.instruments-row:last-child { margin-bottom: 0; }
+
+.instruments-category {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #A61E2E;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.instruments-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.instrument-pill {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: #888899;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 2px;
+  padding: 4px 10px;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+  cursor: default;
+}
+
+.instrument-pill:hover {
+  color: #E8E8EC;
+  border-color: rgba(166,30,46,0.4);
+  background: rgba(166,30,46,0.06);
+}
+
+/* ── FAQ ─────────────────────────────────────────────── */
+.faq-list {
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.faq-item {
+  background: #0F0F12;
+  border: 1px solid rgba(166,30,46,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.faq-item.open {
+  border-color: rgba(166,30,46,0.35);
+}
+
+.faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 15px;
+  font-weight: 600;
+  gap: 16px;
+  transition: color 0.2s;
+}
+
+.faq-q:hover { color: #D42B40; }
+
+.faq-icon {
+  font-family: 'Space Mono', monospace;
+  font-size: 18px;
+  color: #A61E2E;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+}
+
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.faq-item.open .faq-a { max-height: 200px; }
+
+.faq-a-inner {
+  padding: 0 28px 22px;
+  font-size: 14px;
+  color: #666677;
+  line-height: 1.8;
+  border-top: 1px solid rgba(166,30,46,0.08);
+  padding-top: 16px;
+}
+
+/* ── CTA SECTION ─────────────────────────────────────── */
+.cta-section {
+  position: relative;
+  background: #0F0F12;
+  border-top: 1px solid rgba(166,30,46,0.2);
+  border-bottom: 1px solid rgba(166,30,46,0.2);
+  overflow: hidden;
+  text-align: center;
+  padding: 100px 24px;
+}
+
+.cta-bg-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px; height: 400px;
+  background: radial-gradient(ellipse, rgba(166,30,46,0.15), transparent 65%);
+  pointer-events: none;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.cta-content h2 {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 700;
+  letter-spacing: -2px;
+  margin-bottom: 16px;
+}
+
+.cta-content p {
+  font-size: 17px;
+  color: #888899;
+  line-height: 1.8;
+  margin-bottom: 36px;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 900px) {
+  .stats-inner { grid-template-columns: repeat(2,1fr); padding: 0; }
+  .stats-bar { padding: 24px; }
+  .problem-grid { grid-template-columns: 1fr; gap: 2px; }
+  .product-showcase { grid-template-columns: 1fr; }
+  .steps-row { grid-template-columns: 1fr; }
+  .hero-h1 { letter-spacing: -2px; }
+}
+
+@media (max-width: 600px) {
+  .stats-inner { grid-template-columns: repeat(2,1fr); gap: 24px; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .em-btn { width: 100%; }
+}
 </style>
 </head>
 <body>
-  <div class="nav">
-    <div class="nav-bar"></div>
-    <div>
-      <span class="nav-edge">EDGE</span>
-      <span class="nav-matrix">MATRIX</span>
+<script src="em-shared.js"></script>
+<script>
+  EM.injectGlobalStyles();
+  EM.buildNav('home');
+</script>
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<div class="hero-wrap">
+  <div class="hero-glow-1"></div>
+  <canvas id="particle-canvas"></canvas>
+  <div class="hero-canvas-interact" id="hero-interact"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-dot"></div>
+      Trusted by 500+ active traders
+    </div>
+
+    <h1 class="hero-h1">
+      Stop trading<br/>on <em>gut feel.</em>
+    </h1>
+
+    <p class="hero-sub">
+      Most traders enter on emotion, exit on fear, and wonder why results are inconsistent.
+      EdgeMatrix gives you the infrastructure to enforce your system on every single trade.
+    </p>
+
+    <div class="hero-actions">
+      <a href="pro.html" class="em-btn em-btn-primary em-btn-lg">Get EdgeMatrix Pro →</a>
+      <a href="free.html" class="em-btn em-btn-ghost em-btn-lg">Free Tool — Sessions</a>
     </div>
   </div>
-  <div class="hero">
-    <div class="badge">FREE TRADING TOOL — LIMITED RELEASE</div>
-    <h1>You're Losing Trades Because<br/>You Have <span>No System.</span></h1>
-    <p class="sub">Most traders enter on emotion, exit on fear, and wonder why their results are not consistent. EdgeMatrix gives you the tools to stay disciplined and only take trades that actually meet your criteria every single time.</p>
+
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
   </div>
-  <div class="two-col">
-    <div class="offer-card">
-      <span class="label">FREE — AVAILABLE NOW</span>
-      <h3>EdgeMatrix Session Indicator</h3>
-      <ul>
-        <li>Automatically marks the high and low of the Asia, London and New York sessions on your chart</li>
-        <li>Works on any market including forex, indices, crypto and futures</li>
-        <li>Fully adjustable session times and colors to fit your setup</li>
-        <li>Yours completely free when you sign up below</li>
-      </ul>
+</div>
+
+<!-- ── STATS ─────────────────────────────────────────────── -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item em-reveal">
+      <div class="stat-num">500<span>+</span></div>
+      <div class="stat-label">Active Traders</div>
     </div>
-    <div class="offer-card highlight">
-      <div class="offer-tag">COMING SOON</div>
-      <span class="label">EDGEMATRIX PRO</span>
-      <h3>The Customizable Trade Checklist</h3>
-      <ul>
-        <li>Build your own confluence checklist around your personal strategy</li>
-        <li>Live trade score that updates as you check off your criteria</li>
-        <li>Works with any trading system including ICT, SMC and supply and demand</li>
-        <li>Email subscribers get early access before it goes public</li>
-      </ul>
+    <div class="stat-item em-reveal" data-delay="80">
+      <div class="stat-num"><span>$</span>9.99</div>
+      <div class="stat-label">Per Month</div>
+    </div>
+    <div class="stat-item em-reveal" data-delay="160">
+      <div class="stat-num">3<span>+</span></div>
+      <div class="stat-label">Tools Available</div>
+    </div>
+    <div class="stat-item em-reveal" data-delay="240">
+      <div class="stat-num">24<span>hr</span></div>
+      <div class="stat-label">Delivery Time</div>
     </div>
   </div>
-  <div class="divider-line"></div>
-  <div class="form-section">
-    <h2>Get Free Access + Early Access</h2>
-    <p class="form-sub">Sign up below to get the free session indicator today and be first in line when EdgeMatrix Pro releases. Early access members get a founder's price before it goes public.</p>
-    <form action="https://0b81c5db.sibforms.com/serve/MUIFAFBKG8R4bnmnCzYjayRyIuMUW48Vq3VC-I9NqVASnf8eoQc0tpE_Y6b_DfS_8Q9oV5D7oIJUOovhYOnjxUSrsDiL2r3Cg8fxJoYWfbcEX-rcX3z_G41c7kPQWrbWLPVva7ndPR3SKsjJe4tIzUbqalFpj9FYcBLo1CaOIyGtM_Y9K8xqst0KwnNSYj15QyX9LxVJxYtE3c1gsQ==" method="POST" target="_self">
-      <input type="text" name="FIRSTNAME" placeholder="Your first name" required/>
-      <input type="email" name="EMAIL" placeholder="Your email address" required/>
-      <input type="hidden" name="redirect_url" value="https://edgematrixhq.com/thankyou"/>
-      <button type="submit" class="btn">GET FREE ACCESS + EARLY ACCESS →</button>
-    </form>
-    <p class="privacy">No spam. Unsubscribe anytime.</p>
+</div>
+
+<div class="em-divider"></div>
+
+<!-- ── THE PROBLEM ───────────────────────────────────────── -->
+<section class="em-section">
+  <div class="em-grid-bg"></div>
+  <div class="em-container">
+    <div style="max-width:600px;" class="em-reveal">
+      <div class="em-section-label">The Problem</div>
+      <h2 class="em-section-title">You know your rules.<br/>You break them anyway.</h2>
+      <p class="em-section-sub">We've all been there. The system works. But pressure, excitement, and fear make it disappear at the exact moment it matters most.</p>
+    </div>
+
+    <div class="problem-grid">
+      <div class="problem-item em-reveal" data-delay="0">
+        <span class="problem-icon">// 01</span>
+        <div class="problem-text"><strong>You enter on feel</strong> instead of waiting for every confluence to align.</div>
+      </div>
+      <div class="problem-item em-reveal" data-delay="80">
+        <span class="problem-icon">// 02</span>
+        <div class="problem-text"><strong>Your position size</strong> changes every trade based on how confident you feel.</div>
+      </div>
+      <div class="problem-item em-reveal" data-delay="160">
+        <span class="problem-icon">// 03</span>
+        <div class="problem-text"><strong>You chase setups</strong> you missed, and size down on the ones you shouldn't.</div>
+      </div>
+    </div>
   </div>
-  <div class="footer">
-    <a href="https://www.instagram.com/edgematrixhq?igsh=NTc4MTIwNjQ2YQ%3D%3D&utm_source=qr" target="_blank">Instagram</a>
-    <a href="https://www.tiktok.com/@edgematrixhq?_r=1&_t=ZP-95y4evVmmnn" target="_blank">TikTok</a>
-    <span>© 2026 EdgeMatrix</span>
+</section>
+
+<div class="em-divider"></div>
+
+<!-- ── PRODUCT SHOWCASE ──────────────────────────────────── -->
+<section class="em-section">
+  <div class="em-container">
+    <div style="text-align:center; max-width:600px; margin:0 auto 0;" class="em-reveal">
+      <div class="em-section-label">The Solution</div>
+      <h2 class="em-section-title">Your edge. Enforced.</h2>
+      <p class="em-section-sub">Two tools built around one mission: making it impossible to trade outside your system.</p>
+    </div>
+
+    <div class="product-showcase">
+      <!-- Sessions -->
+      <div class="product-card em-reveal" data-delay="0">
+        <div class="product-card-glow"></div>
+        <span class="product-tag">Free Forever</span>
+        <h3>EdgeMatrix Sessions</h3>
+        <p>Automatically marks the Asia, London, New York, and Sydney session highs and lows directly on your TradingView chart. Know exactly where price was when the world's biggest trading sessions opened and closed.</p>
+        <ul class="product-features">
+          <li>Asia, London, New York &amp; Sydney sessions</li>
+          <li>Works on every market — Forex, Crypto, Futures, Indices</li>
+          <li>Fully adjustable times and colors</li>
+          <li>Free forever, no subscription required</li>
+        </ul>
+        <a href="free.html" class="em-btn em-btn-ghost" style="width:100%;">Get Free Access →</a>
+      </div>
+
+      <!-- Pro -->
+      <div class="product-card featured em-reveal" data-delay="120">
+        <div class="product-card-glow"></div>
+        <span class="product-tag">Most Popular</span>
+        <h3>EdgeMatrix Pro</h3>
+        <p>The discipline system. Build your own checklist, score every setup live, and calculate your exact position size before you click. Your system, enforced on every trade.</p>
+        <ul class="product-features">
+          <li>Up to 10 custom confluence checkboxes</li>
+          <li>Live trade score out of 100 — green / orange / red</li>
+          <li>Position size calculator for Futures, Forex &amp; CFDs</li>
+          <li>Works with ICT, SMC, supply &amp; demand, any method</li>
+        </ul>
+        <div class="product-price">
+          <span class="product-price-big">$9.99</span>
+          <span class="product-price-period">/month or $97 lifetime</span>
+        </div>
+        <a href="pro.html" class="em-btn em-btn-primary" style="width:100%;">Get EdgeMatrix Pro →</a>
+      </div>
+    </div>
   </div>
+</section>
+
+<div class="em-divider"></div>
+
+<!-- ── HOW IT WORKS ──────────────────────────────────────── -->
+<section class="em-section">
+  <div class="em-grid-bg"></div>
+  <div class="em-container">
+    <div style="max-width:500px;" class="em-reveal">
+      <div class="em-section-label">How It Works</div>
+      <h2 class="em-section-title">Up and running in under 5 minutes.</h2>
+    </div>
+
+    <div class="steps-row">
+      <div class="step-block em-reveal" data-delay="0">
+        <div class="step-num-big">01</div>
+        <h4>Purchase Access</h4>
+        <p>Choose monthly ($9.99) or lifetime ($97). Enter your TradingView username at checkout. That's all we need.</p>
+      </div>
+      <div class="step-block em-reveal" data-delay="120">
+        <div class="step-num-big">02</div>
+        <h4>Receive Your Invite</h4>
+        <p>We'll manually send your TradingView indicator invite within 24 hours. Check your email.</p>
+      </div>
+      <div class="step-block em-reveal" data-delay="240">
+        <div class="step-num-big">03</div>
+        <h4>Add to Chart &amp; Trade</h4>
+        <p>Add it to any TradingView chart. Set your confluences. Never take a substandard setup again.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="em-divider"></div>
+
+<!-- ── INSTRUMENTS ───────────────────────────────────────── -->
+<section class="em-section" style="padding-bottom:64px;">
+  <div class="em-container">
+    <div class="em-reveal" style="max-width:500px;">
+      <div class="em-section-label">Supported Instruments</div>
+      <h2 class="em-section-title">Works on everything you trade.</h2>
+    </div>
+    <div class="instruments-wrap em-reveal" data-delay="120">
+      <div class="instruments-row">
+        <div class="instruments-category">Futures</div>
+        <div class="instruments-pills">
+          <span class="instrument-pill">MNQ</span><span class="instrument-pill">NQ</span><span class="instrument-pill">MES</span><span class="instrument-pill">ES</span><span class="instrument-pill">MYM</span><span class="instrument-pill">YM</span><span class="instrument-pill">M2K</span><span class="instrument-pill">RTY</span><span class="instrument-pill">MGC</span><span class="instrument-pill">GC</span><span class="instrument-pill">SIL</span><span class="instrument-pill">SI</span><span class="instrument-pill">MCL</span><span class="instrument-pill">CL</span>
+        </div>
+      </div>
+      <div class="instruments-row">
+        <div class="instruments-category">Forex</div>
+        <div class="instruments-pills">
+          <span class="instrument-pill">EURUSD</span><span class="instrument-pill">GBPUSD</span><span class="instrument-pill">AUDUSD</span><span class="instrument-pill">NZDUSD</span><span class="instrument-pill">USDCAD</span><span class="instrument-pill">USDCHF</span><span class="instrument-pill">USDJPY</span><span class="instrument-pill">GBPJPY</span><span class="instrument-pill">EURJPY</span><span class="instrument-pill">EURGBP</span><span class="instrument-pill">EURCAD</span><span class="instrument-pill">GBPCAD</span>
+        </div>
+      </div>
+      <div class="instruments-row">
+        <div class="instruments-category">CFDs</div>
+        <div class="instruments-pills">
+          <span class="instrument-pill">NAS100</span><span class="instrument-pill">UK100</span><span class="instrument-pill">GER40</span><span class="instrument-pill">US30</span><span class="instrument-pill">XAUUSD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="em-divider"></div>
+
+<!-- ── FAQ ───────────────────────────────────────────────── -->
+<section class="em-section">
+  <div class="em-container">
+    <div style="max-width:500px; margin:0 auto 0; text-align:center;" class="em-reveal">
+      <div class="em-section-label">FAQ</div>
+      <h2 class="em-section-title">Common questions.</h2>
+    </div>
+
+    <div class="faq-list" style="max-width:720px; margin:0 auto;">
+      <div class="faq-item em-reveal">
+        <div class="faq-q">What is TradingView? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">TradingView is a free charting platform used by millions of traders worldwide. EdgeMatrix Pro runs as a private indicator directly on your TradingView chart — no separate app needed.</div></div>
+      </div>
+      <div class="faq-item em-reveal" data-delay="60">
+        <div class="faq-q">Do I need a paid TradingView plan? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">No. EdgeMatrix Pro works on the free TradingView plan. You don't need to upgrade anything.</div></div>
+      </div>
+      <div class="faq-item em-reveal" data-delay="120">
+        <div class="faq-q">What happens after I purchase? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">You'll enter your TradingView username at checkout. We manually send your private indicator invite within 24 hours. Then you add it to any chart and set your confluences. That's it.</div></div>
+      </div>
+      <div class="faq-item em-reveal" data-delay="180">
+        <div class="faq-q">Which trading methods does it support? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">All of them. The checklist is fully customizable — you write your own confluence labels. Whether you trade ICT, SMC, supply &amp; demand, price action, or anything else, it works around your system.</div></div>
+      </div>
+      <div class="faq-item em-reveal" data-delay="240">
+        <div class="faq-q">Is there a refund policy? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Due to the digital nature of the product, all sales are final. If you have any issue at all, email hello@edgematrixhq.com and we'll make it right.</div></div>
+      </div>
+      <div class="faq-item em-reveal" data-delay="300">
+        <div class="faq-q">What's the difference between monthly and lifetime? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Monthly is $9.99/month and can be cancelled anytime. Lifetime is a one-time payment of $97 and you never get billed again — all future updates included.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ───────────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="cta-bg-glow"></div>
+  <div class="cta-content em-reveal">
+    <div class="em-section-label" style="display:inline-block; margin-bottom:16px;">Ready to trade with discipline?</div>
+    <h2>Your system.<br/>Every trade.</h2>
+    <p>Join 500+ traders who stopped guessing and started enforcing their edge with EdgeMatrix.</p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href="pro.html" class="em-btn em-btn-primary em-btn-lg">Get EdgeMatrix Pro →</a>
+      <a href="free.html" class="em-btn em-btn-ghost em-btn-lg">Try Sessions Free</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Init shared utilities
+  EM.buildFooter();
+  EM.initReveal();
+
+  // Particle canvas — attach mouse to the overlay
+  const canvas = document.getElementById('particle-canvas');
+  const interact = document.getElementById('hero-interact');
+  EM.initParticles('particle-canvas');
+
+  // Re-wire mouse from interact overlay to canvas particle engine
+  const ctx2 = canvas.getContext('2d');
+  interact.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    canvas.dispatchEvent(new MouseEvent('mousemove', {
+      clientX: e.clientX,
+      clientY: e.clientY
+    }));
+  });
+  interact.addEventListener('mouseleave', () => {
+    canvas.dispatchEvent(new MouseEvent('mouseleave'));
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+</script>
 </body>
 </html>

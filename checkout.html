@@ -3,103 +3,95 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>EdgeMatrix — Checkout</title>
+<title>Checkout — EdgeMatrix Pro</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0D0D0F; color: #E5E5E5; font-family: system-ui, sans-serif; }
-  .nav { display: flex; align-items: center; gap: 10px; padding: 24px 40px; border-bottom: 1px solid #1a1a1d; }
-  .nav-bar { width: 4px; height: 32px; background: #A61E2E; border-radius: 2px; }
-  .nav-edge { font-size: 22px; font-weight: 900; color: #E5E5E5; letter-spacing: -1px; }
-  .nav-matrix { font-size: 10px; font-weight: 300; color: #555; letter-spacing: 5px; display: block; margin-top: -4px; }
-  .hero { padding: 72px 40px 48px; max-width: 720px; margin: 0 auto; text-align: center; }
-  .hero h1 { font-size: 46px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
-  .hero p { font-size: 18px; color: #888; line-height: 1.8; max-width: 580px; margin: 0 auto; }
-  .pricing-section { max-width: 800px; margin: 48px auto; padding: 0 40px; }
-  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
-  .price-card { background: #111113; border: 1px solid #1e1e22; border-radius: 14px; padding: 32px; position: relative; }
-  .price-card.highlight { border-color: #A61E2E; }
-  .card-tag { display: inline-block; background: #A61E2E; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; }
-  .price-big { font-size: 44px; font-weight: 900; margin-bottom: 8px; }
-  .price-sub { font-size: 15px; color: #888; margin-bottom: 24px; }
-  .price-card ul { list-style: none; margin: 24px 0; }
-  .price-card ul li { font-size: 14px; color: #666; padding: 8px 0; display: flex; gap: 10px; line-height: 1.6; border-top: 1px solid #1a1a1d; }
-  .price-card ul li:first-child { border-top: none; }
-  .price-card ul li::before { content: "✓"; color: #A61E2E; flex-shrink: 0; font-weight: 900; }
-  .price-btn { width: 100%; background: #A61E2E; color: #fff; border: none; border-radius: 8px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 24px; }
-  .price-btn:hover { background: #c02236; }
-  .btn-note { font-size: 12px; color: #555; text-align: center; margin-top: 12px; }
-  .support-note { max-width: 800px; margin: 0 auto 72px; padding: 0 40px; text-align: center; font-size: 14px; color: #555; }
-  .support-note a { color: #A61E2E; text-decoration: none; }
-  .support-note a:hover { text-decoration: underline; }
-  .footer { display: flex; align-items: center; justify-content: center; gap: 32px; padding: 32px 40px; border-top: 1px solid #1a1a1d; margin-top: 40px; }
-  .footer a { font-size: 13px; color: #555; text-decoration: none; }
-  .footer a:hover { color: #A61E2E; }
-  .footer span { font-size: 13px; color: #333; }
-  @media (max-width: 600px) {
-    .hero h1 { font-size: 30px; }
-    .pricing-grid { grid-template-columns: 1fr; }
-    .nav { padding: 20px 24px; }
-    .hero { padding: 48px 24px 32px; }
-    .pricing-section { padding: 0 24px; }
-    .support-note { padding: 0 24px 60px; }
-    .footer { flex-direction: column; gap: 16px; padding: 24px; }
-  }
+.checkout-hero { padding:160px 24px 80px; text-align:center; position:relative; overflow:hidden; }
+#checkout-particles { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.checkout-hero-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:700px; height:400px; background:radial-gradient(ellipse,rgba(166,30,46,0.12),transparent 65%); pointer-events:none; }
+.checkout-hero-content { position:relative; z-index:2; max-width:640px; margin:0 auto; }
+.checkout-hero h1 { font-size:clamp(36px,5vw,64px); font-weight:700; letter-spacing:-2px; line-height:1.1; margin-bottom:16px; }
+.checkout-hero p { font-size:17px; color:#888899; line-height:1.8; max-width:500px; margin:0 auto; }
+
+.pricing-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:56px; max-width:800px; margin-left:auto; margin-right:auto; }
+.pricing-card { background:#0F0F12; border:1px solid rgba(166,30,46,0.15); border-radius:6px; padding:40px; transition:border-color 0.3s, box-shadow 0.3s; }
+.pricing-card:hover { border-color:rgba(166,30,46,0.4); box-shadow:0 12px 60px rgba(166,30,46,0.1); }
+.pricing-card.best { border-color:rgba(166,30,46,0.4); box-shadow:0 0 40px rgba(166,30,46,0.08); }
+.pricing-tag { display:inline-block; font-family:'Space Mono',monospace; font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:5px 12px; border-radius:2px; margin-bottom:20px; }
+.tag-best { background:rgba(166,30,46,0.2); color:#D42B40; }
+.tag-monthly { background:rgba(255,255,255,0.05); color:#888899; }
+.pricing-price { font-family:'Space Mono',monospace; font-size:52px; font-weight:700; letter-spacing:-3px; color:#E8E8EC; margin-bottom:4px; }
+.pricing-period { font-size:14px; color:#444455; margin-bottom:28px; }
+.pricing-features { list-style:none; margin-bottom:32px; }
+.pricing-features li { font-size:14px; color:#666677; padding:10px 0; border-top:1px solid rgba(255,255,255,0.04); display:flex; gap:12px; line-height:1.5; }
+.pricing-features li:first-child { border-top:none; }
+.pricing-features li::before { content:'✓'; color:#1DB954; font-weight:700; flex-shrink:0; font-family:'Space Mono',monospace; }
+.delivery-note { max-width:800px; margin:24px auto 0; background:#0F0F12; border:1px solid rgba(166,30,46,0.15); border-radius:4px; padding:20px 28px; display:flex; align-items:center; gap:16px; font-size:14px; color:#888899; }
+.delivery-note strong { color:#E8E8EC; }
+.delivery-icon { font-family:'Space Mono',monospace; font-size:9px; color:#A61E2E; letter-spacing:2px; white-space:nowrap; }
+
+@media(max-width:900px){ .pricing-grid-2{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
-  <div class="nav">
-    <div class="nav-bar"></div>
-    <div>
-      <span class="nav-edge">EDGE</span>
-      <span class="nav-matrix">MATRIX</span>
-    </div>
-  </div>
-  <div class="hero">
+<script src="em-shared.js"></script>
+<script>EM.injectGlobalStyles(); EM.buildNav('');</script>
+
+<div class="checkout-hero">
+  <div class="checkout-hero-glow"></div>
+  <canvas id="checkout-particles"></canvas>
+  <div class="checkout-hero-content">
+    <div class="em-badge" style="margin-bottom:28px;">Secure Checkout</div>
     <h1>Choose your plan.</h1>
-    <p>Both options include the full EdgeMatrix Pro indicator. Delivered to your TradingView account within 24 hours.</p>
+    <p>Both options include the full EdgeMatrix Pro indicator. Delivered to your TradingView account within 24 hours of purchase.</p>
   </div>
-  <div class="pricing-section">
-    <div class="pricing-grid">
-      <div class="price-card">
-        <div class="card-tag">MONTHLY</div>
-        <div class="price-big">$9.99</div>
-        <div class="price-sub">/month. Cancel anytime.</div>
-        <ul>
+</div>
+
+<div class="em-divider"></div>
+
+<section class="em-section">
+  <div class="em-container">
+    <div class="pricing-grid-2">
+      <div class="pricing-card em-reveal">
+        <div class="pricing-tag tag-monthly">Monthly</div>
+        <div class="pricing-price">$9.99</div>
+        <div class="pricing-period">/month · cancel anytime</div>
+        <ul class="pricing-features">
           <li>Trade checklist (up to 10 confluences)</li>
           <li>Live trade score out of 100</li>
           <li>Position size calculator</li>
-          <li>Works on all supported instruments</li>
+          <li>All supported instruments</li>
+          <li>TradingView invite within 24hrs</li>
         </ul>
-        <a href="https://buy.stripe.com/dRm9AV1nU1IDe8H2W44ZG07" target="_blank">
-          <button class="price-btn">GET MONTHLY ACCESS</button>
-        </a>
-        <div class="btn-note">TradingView invite sent within 24 hours.</div>
+        <a href="https://buy.stripe.com/dRm9AV1nU1IDe8H2W44ZG07" target="_blank" class="em-btn em-btn-ghost" style="width:100%;">Get Monthly Access →</a>
+        <p style="font-size:12px; color:#444455; text-align:center; margin-top:12px;">You'll receive your TradingView invite within 24 hours.</p>
       </div>
-      <div class="price-card highlight">
-        <div class="card-tag">BEST VALUE</div>
-        <div class="price-big">$97</div>
-        <div class="price-sub">one-time. Never billed again.</div>
-        <ul>
+      <div class="pricing-card best em-reveal" data-delay="120">
+        <div class="pricing-tag tag-best">Best Value</div>
+        <div class="pricing-price">$97</div>
+        <div class="pricing-period">one-time · never billed again</div>
+        <ul class="pricing-features">
           <li>Trade checklist (up to 10 confluences)</li>
           <li>Live trade score out of 100</li>
           <li>Position size calculator</li>
-          <li>Works on all supported instruments</li>
+          <li>All supported instruments</li>
           <li>All future updates included</li>
+          <li>TradingView invite within 24hrs</li>
         </ul>
-        <a href="https://buy.stripe.com/14A3cx0jQcnhggP68g4ZG08" target="_blank">
-          <button class="price-btn">GET LIFETIME ACCESS</button>
-        </a>
-        <div class="btn-note">TradingView invite sent within 24 hours.</div>
+        <a href="https://buy.stripe.com/14A3cx0jQcnhggP68g4ZG08" target="_blank" class="em-btn em-btn-primary" style="width:100%;">Get Lifetime Access →</a>
+        <p style="font-size:12px; color:#444455; text-align:center; margin-top:12px;">You'll receive your TradingView invite within 24 hours.</p>
       </div>
     </div>
-    <div class="support-note">
-      Questions? <a href="mailto:hello@edgematrixhq.com">hello@edgematrixhq.com</a>
+    <div class="delivery-note em-reveal" data-delay="200">
+      <span class="delivery-icon">// DELIVERY</span>
+      <span>After checkout, you'll be asked for your <strong>TradingView username</strong>. We'll send your private invite within <strong>24 hours</strong>. Questions? <a href="mailto:hello@edgematrixhq.com" style="color:#A61E2E; text-decoration:none;">hello@edgematrixhq.com</a></span>
     </div>
   </div>
-  <div class="footer">
-    <a href="https://www.instagram.com/edgematrixhq?igsh=NTc4MTIwNjQ2YQ%3D%3D&utm_source=qr" target="_blank">Instagram</a>
-    <a href="https://www.tiktok.com/@edgematrixhq?_r=1&_t=ZP-95y4evVmmnn" target="_blank">TikTok</a>
-    <span>© 2026 EdgeMatrix</span>
-  </div>
+</section>
+
+<script>
+  EM.buildFooter();
+  EM.initReveal();
+  EM.initParticles('checkout-particles');
+</script>
 </body>
 </html>

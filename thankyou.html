@@ -3,137 +3,153 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>EdgeMatrix — You're In</title>
+<title>You're In — EdgeMatrix</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0D0D0F; color: #E5E5E5; font-family: system-ui, sans-serif; }
-  .nav { display: flex; align-items: center; gap: 10px; padding: 24px 40px; border-bottom: 1px solid #1a1a1d; }
-  .nav-bar { width: 4px; height: 32px; background: #A61E2E; border-radius: 2px; }
-  .nav-edge { font-size: 22px; font-weight: 900; color: #E5E5E5; letter-spacing: -1px; }
-  .nav-matrix { font-size: 10px; font-weight: 300; color: #555; letter-spacing: 5px; display: block; margin-top: -4px; }
-  .ty-hero { padding: 72px 40px 48px; max-width: 640px; margin: 0 auto; text-align: center; }
-  .checkmark { width: 64px; height: 64px; background: #1a1a1d; border: 2px solid #A61E2E; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; }
-  .checkmark svg { width: 28px; height: 28px; }
-  .ty-hero h1 { font-size: 44px; font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 16px; }
-  .ty-hero h1 span { color: #A61E2E; }
-  .ty-hero p { font-size: 17px; color: #888; line-height: 1.8; max-width: 520px; margin: 0 auto; }
-  .steps { max-width: 580px; margin: 48px auto 0; padding: 0 40px 72px; }
-  .step-card { background: #111113; border: 1px solid #1e1e22; border-radius: 14px; padding: 28px; margin-bottom: 14px; display: flex; gap: 20px; align-items: flex-start; }
-  .step-num { min-width: 38px; height: 38px; background: #A61E2E; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 900; color: #fff; flex-shrink: 0; }
-  .step-content h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-  .step-content p { font-size: 14px; color: #666; line-height: 1.8; }
-  .indicator-name { font-size: 22px; font-weight: 900; color: #A61E2E; margin: 12px 0 4px; letter-spacing: -0.5px; }
-  .indicator-sub { font-size: 12px; color: #444; margin-top: 4px; }
-  .indicator-steps { list-style: none; margin-top: 14px; }
-  .indicator-steps li { font-size: 13px; color: #666; padding: 6px 0; display: flex; gap: 10px; line-height: 1.6; border-top: 1px solid #1a1a1d; }
-  .indicator-steps li:first-child { border-top: none; }
-  .indicator-steps li span { color: #A61E2E; flex-shrink: 0; font-weight: 700; }
-  .coming-soon-card { background: #111113; border: 1px solid #A61E2E; border-radius: 14px; padding: 28px; margin-bottom: 14px; position: relative; overflow: hidden; }
-  .cs-tag { display: inline-block; background: #A61E2E; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; }
-  .coming-soon-card h3 { font-size: 20px; font-weight: 900; margin-bottom: 12px; }
-  .coming-soon-card .personal { font-size: 14px; color: #888; line-height: 1.9; font-style: italic; border-left: 3px solid #A61E2E; padding-left: 16px; margin: 16px 0; }
-  .coming-soon-card .personal strong { color: #E5E5E5; font-style: normal; }
-  .feature-list { list-style: none; margin-top: 16px; }
-  .feature-list li { font-size: 13px; color: #666; padding: 7px 0; display: flex; gap: 10px; line-height: 1.6; border-top: 1px solid #1a1a1d; }
-  .feature-list li:first-child { border-top: none; }
-  .feature-list li span { color: #A61E2E; flex-shrink: 0; }
-  .bg-glow { position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; background: #A61E2E; border-radius: 50%; opacity: 0.03; }
-  .discord-box { background: #111113; border: 1px solid #5865F2; border-radius: 14px; padding: 32px; margin-bottom: 14px; text-align: center; }
-  .discord-top { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
-  .discord-top svg { width: 28px; height: 28px; }
-  .discord-box h3 { font-size: 20px; font-weight: 900; margin-bottom: 10px; }
-  .discord-box p { font-size: 14px; color: #666; line-height: 1.8; margin-bottom: 24px; max-width: 420px; margin-left: auto; margin-right: auto; }
-  .discord-perks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
-  .discord-perk { background: #0D0D0F; border: 1px solid #1e1e22; border-radius: 8px; padding: 12px; font-size: 12px; color: #666; text-align: left; line-height: 1.6; }
-  .discord-perk strong { color: #5865F2; display: block; font-size: 13px; margin-bottom: 2px; }
-  .discord-btn { display: inline-block; background: #5865F2; color: #fff; border: none; border-radius: 8px; padding: 14px 40px; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; }
-  .discord-btn:hover { background: #4752c4; }
-  .email-note { background: #1a1a1d; border-left: 3px solid #A61E2E; border-radius: 0 8px 8px 0; padding: 18px 20px; margin-bottom: 60px; }
-  .email-note p { font-size: 13px; color: #666; line-height: 1.8; }
-  .email-note strong { color: #E5E5E5; }
-  .footer { display: flex; align-items: center; justify-content: center; gap: 32px; padding: 32px 40px; border-top: 1px solid #1a1a1d; margin-top: 40px; }
-  .footer a { font-size: 13px; color: #555; text-decoration: none; }
-  .footer a:hover { color: #A61E2E; }
-  .footer span { font-size: 13px; color: #333; }
-  @media (max-width: 600px) {
-    .ty-hero { padding: 48px 24px 32px; }
-    .ty-hero h1 { font-size: 30px; }
-    .steps { padding: 0 24px 60px; }
-    .discord-perks { grid-template-columns: 1fr; }
-    .nav { padding: 20px 24px; }
-    .footer { flex-direction: column; gap: 16px; padding: 24px; }
-  }
+.ty-hero { padding:160px 24px 80px; text-align:center; position:relative; overflow:hidden; }
+#ty-particles { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.ty-hero-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:700px; height:400px; background:radial-gradient(ellipse,rgba(29,185,84,0.08),transparent 65%); pointer-events:none; }
+.ty-hero-content { position:relative; z-index:2; max-width:640px; margin:0 auto; }
+
+.ty-check { width:72px; height:72px; background:rgba(29,185,84,0.1); border:2px solid rgba(29,185,84,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 32px; animation:check-pop 0.6s ease both; }
+.ty-check svg { width:32px; height:32px; }
+
+@keyframes check-pop {
+  0% { transform:scale(0); opacity:0; }
+  70% { transform:scale(1.15); }
+  100% { transform:scale(1); opacity:1; }
+}
+
+.ty-hero h1 { font-size:clamp(36px,5vw,64px); font-weight:700; letter-spacing:-2px; line-height:1.1; margin-bottom:16px; }
+.ty-hero h1 em { font-style:normal; color:#1DB954; }
+.ty-hero p { font-size:17px; color:#888899; line-height:1.8; max-width:500px; margin:0 auto; }
+
+.steps-col { display:flex; flex-direction:column; gap:16px; max-width:680px; margin:0 auto; }
+.step-card { background:#0F0F12; border:1px solid rgba(166,30,46,0.15); border-radius:6px; padding:28px 32px; display:flex; gap:24px; align-items:flex-start; transition:border-color 0.3s; }
+.step-card:hover { border-color:rgba(166,30,46,0.35); }
+.step-circle { min-width:40px; height:40px; background:#A61E2E; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; font-size:14px; font-weight:700; color:#fff; flex-shrink:0; box-shadow:0 0 16px rgba(166,30,46,0.3); }
+.step-card h4 { font-size:16px; font-weight:700; margin-bottom:8px; }
+.step-card p { font-size:14px; color:#666677; line-height:1.8; }
+.indicator-name { font-family:'Space Mono',monospace; font-size:20px; font-weight:700; color:#D42B40; margin:12px 0 4px; letter-spacing:-0.5px; }
+.indicator-steps { list-style:none; margin-top:12px; }
+.indicator-steps li { font-size:13px; color:#666677; padding:6px 0; display:flex; gap:10px; line-height:1.6; border-top:1px solid rgba(255,255,255,0.04); }
+.indicator-steps li:first-child { border-top:none; }
+.indicator-steps li::before { content:'→'; color:#A61E2E; flex-shrink:0; font-family:'Space Mono',monospace; }
+
+.pro-teaser { background:rgba(166,30,46,0.07); border:1px solid rgba(166,30,46,0.3); border-radius:6px; padding:36px; position:relative; overflow:hidden; }
+.pro-teaser-glow { position:absolute; top:-40px; right:-40px; width:200px; height:200px; background:radial-gradient(circle,rgba(166,30,46,0.15),transparent 70%); pointer-events:none; }
+.pro-teaser-tag { display:inline-block; background:#A61E2E; color:#fff; font-family:'Space Mono',monospace; font-size:9px; font-weight:700; letter-spacing:2px; padding:5px 12px; border-radius:2px; margin-bottom:16px; text-transform:uppercase; }
+.pro-teaser h3 { font-size:22px; font-weight:700; letter-spacing:-0.5px; margin-bottom:16px; }
+.pro-teaser-quote { font-size:15px; color:#888899; line-height:1.9; font-style:italic; border-left:3px solid #A61E2E; padding-left:20px; margin:20px 0; }
+.pro-teaser-quote strong { color:#E8E8EC; font-style:normal; }
+.pro-features { list-style:none; margin-bottom:28px; }
+.pro-features li { font-size:13px; color:#666677; padding:7px 0; display:flex; gap:10px; line-height:1.6; border-top:1px solid rgba(255,255,255,0.04); }
+.pro-features li:first-child { border-top:none; }
+.pro-features li::before { content:'→'; color:#A61E2E; flex-shrink:0; font-family:'Space Mono',monospace; }
+
+.discord-box { background:#0F0F12; border:1px solid #5865F2; border-radius:6px; padding:36px; text-align:center; }
+.discord-box h3 { font-size:22px; font-weight:700; margin-bottom:10px; }
+.discord-box p { font-size:14px; color:#888899; line-height:1.8; margin-bottom:24px; max-width:440px; margin-left:auto; margin-right:auto; }
+.discord-perks { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px; }
+.discord-perk { background:#0A0A0C; border:1px solid rgba(88,101,242,0.2); border-radius:4px; padding:14px; text-align:left; }
+.discord-perk strong { display:block; color:#7289DA; font-family:'Space Mono',monospace; font-size:11px; font-weight:700; letter-spacing:1px; margin-bottom:4px; }
+.discord-perk span { font-size:12px; color:#555566; line-height:1.6; }
+.discord-btn { display:inline-flex; align-items:center; gap:8px; background:#5865F2; color:#fff; border:none; border-radius:4px; padding:14px 32px; font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; cursor:pointer; text-decoration:none; transition:background 0.2s, transform 0.15s; }
+.discord-btn:hover { background:#4752c4; transform:translateY(-2px); }
+
+.email-reminder { background:#0F0F12; border-left:3px solid #A61E2E; border-radius:0 4px 4px 0; padding:20px 24px; }
+.email-reminder p { font-size:14px; color:#666677; line-height:1.8; }
+.email-reminder strong { color:#E8E8EC; }
+
+@media(max-width:600px){ .discord-perks{grid-template-columns:1fr;} .step-card{padding:20px;} }
 </style>
 </head>
 <body>
-  <div class="nav">
-    <div class="nav-bar"></div>
-    <div>
-      <span class="nav-edge">EDGE</span>
-      <span class="nav-matrix">MATRIX</span>
-    </div>
-  </div>
-  <div class="ty-hero">
-    <div class="checkmark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#A61E2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<script src="em-shared.js"></script>
+<script>EM.injectGlobalStyles(); EM.buildNav('');</script>
+
+<div class="ty-hero">
+  <div class="ty-hero-glow"></div>
+  <canvas id="ty-particles"></canvas>
+  <div class="ty-hero-content">
+    <div class="ty-check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1DB954" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"/>
       </svg>
     </div>
-    <h1>You're In.<br/><span>Let's Get You Set Up.</span></h1>
-    <p>Welcome to EdgeMatrix. Your free session indicator is ready right now. Follow the steps below and you will have it on your chart in under two minutes.</p>
+    <h1>You're in.<br/><em>Let's get you set up.</em></h1>
+    <p>Welcome to EdgeMatrix. Your free session indicator is ready right now. Follow the steps below and you'll have it on your chart in under two minutes.</p>
   </div>
-  <div class="steps">
-    <div class="step-card">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <h4>Add the session indicator to your chart</h4>
-        <p>Open TradingView and search for this exact name in the Indicators tab:</p>
-        <div class="indicator-name">EdgeMatrix Sessions</div>
-        <p class="indicator-sub">Make sure it says EdgeMatrix Sessions exactly.</p>
-        <ul class="indicator-steps">
-          <li><span>→</span> Open TradingView and go to your chart</li>
-          <li><span>→</span> Click the Indicators button at the top</li>
-          <li><span>→</span> Type EdgeMatrix Sessions in the search bar</li>
-          <li><span>→</span> Click add and your session ranges appear on the chart immediately</li>
+</div>
+
+<div class="em-divider"></div>
+
+<section class="em-section">
+  <div class="em-container">
+    <div class="steps-col">
+
+      <!-- Step 1 -->
+      <div class="step-card em-reveal">
+        <div class="step-circle">1</div>
+        <div>
+          <h4>Add the session indicator to your chart</h4>
+          <p>Open TradingView and search for this exact name in the Indicators tab:</p>
+          <div class="indicator-name">EdgeMatrix Sessions</div>
+          <p style="font-size:12px; color:#444455; margin-top:4px;">Make sure it says EdgeMatrix Sessions exactly.</p>
+          <ul class="indicator-steps">
+            <li>Open TradingView and go to your chart</li>
+            <li>Click the Indicators button at the top</li>
+            <li>Type EdgeMatrix Sessions in the search bar</li>
+            <li>Click add — your session ranges appear immediately</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Pro Teaser -->
+      <div class="pro-teaser em-reveal" data-delay="80">
+        <div class="pro-teaser-glow"></div>
+        <div class="pro-teaser-tag">Available Now — EdgeMatrix Pro</div>
+        <h3>Lock In Your Discipline</h3>
+        <div class="pro-teaser-quote">
+          "Sessions show you <strong>where price has been.</strong> Pro shows you whether you should actually take the trade. The full checklist, live score, and position calculator — right on your chart. No more entering on feel."
+        </div>
+        <ul class="pro-features">
+          <li>Customizable checklist with up to 10 confluences — your system, your labels</li>
+          <li>Live trade score out of 100 — green, orange, red — updates in real time</li>
+          <li>Position size calculator for Futures, Forex, and CFDs</li>
+          <li>Get the indicator delivered to your TradingView within 24 hours</li>
         </ul>
+        <a href="pro.html" class="em-btn em-btn-primary">Get EdgeMatrix Pro →</a>
       </div>
-    </div>
-    <div class="coming-soon-card">
-      <div class="bg-glow"></div>
-      <div class="cs-tag">COMING SOON</div>
-      <h3>EdgeMatrix Pro — The Trade Checklist</h3>
-      <div class="personal">
-        "I built EdgeMatrix Pro because I kept watching traders take setups that only checked two or three boxes just because the trade <strong>felt right.</strong> Pro keeps your full checklist visible on your chart so you only pull the trigger when your actual criteria are met. It works around your strategy, not mine."
-      </div>
-      <ul class="feature-list">
-        <li><span>→</span> Fully customizable so you can label each confluence to match your own system</li>
-        <li><span>→</span> Live trade score that updates in real time as you work through your criteria</li>
-        <li><span>→</span> Works with any approach whether that is ICT, SMC, supply and demand or anything else</li>
-        <li><span>→</span> Everyone on the email list gets access before it opens to the public</li>
-      </ul>
-    </div>
-    <div class="discord-box">
-      <div class="discord-top">
-        <svg viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+
+      <!-- Discord -->
+      <div class="discord-box em-reveal" data-delay="160">
         <h3>Join the Community</h3>
+        <p>500+ traders already inside. Live trade breakdowns, Pro user discussions, and traders who actually take their craft seriously.</p>
+        <div class="discord-perks">
+          <div class="discord-perk"><strong>Pro Support</strong><span>Get help dialing in your checklist setup</span></div>
+          <div class="discord-perk"><strong>Live Trades</strong><span>Real setups on live charts daily</span></div>
+          <div class="discord-perk"><strong>500+ Traders</strong><span>Active community at every level</span></div>
+          <div class="discord-perk"><strong>New Tools First</strong><span>Hear about new releases before email</span></div>
+        </div>
+        <a class="discord-btn" href="https://discord.gg/bqnkyTuyHg" target="_blank">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          Join the Community →
+        </a>
       </div>
-      <p>500 plus traders are already inside. This is where live trade breakdowns happen, where EdgeMatrix Pro gets announced first, and where you will find traders who actually take their craft seriously.</p>
-      <div class="discord-perks">
-        <div class="discord-perk"><strong>Early Access</strong>EdgeMatrix Pro announcement goes here before anywhere else</div>
-        <div class="discord-perk"><strong>Live Trades</strong>Real setups and breakdowns using EdgeMatrix on live charts</div>
-        <div class="discord-perk"><strong>500 Plus Traders</strong>An active community of traders at every level already inside</div>
-        <div class="discord-perk"><strong>Founder's Price</strong>Community members get a special rate when Pro launches</div>
+
+      <!-- Email Reminder -->
+      <div class="email-reminder em-reveal" data-delay="240">
+        <p>One last thing. Add <strong>hello@edgematrixhq.com</strong> to your contacts right now. That's where your TradingView invite and all EdgeMatrix updates will come from. You don't want that going to spam when the release drops.</p>
       </div>
-      <a class="discord-btn" href="https://discord.gg/bqnkyTuyHg" target="_blank">JOIN THE COMMUNITY →</a>
-    </div>
-    <div class="email-note">
-      <p>One last thing. Add <strong>hello@edgematrixhq.com</strong> to your contacts right now. That is where your early access notification and all EdgeMatrix Pro updates will come from. You do not want that going to spam when the release drops.</p>
+
     </div>
   </div>
-  <div class="footer">
-    <a href="https://www.instagram.com/edgematrixhq?igsh=NTc4MTIwNjQ2YQ%3D%3D&utm_source=qr" target="_blank">Instagram</a>
-    <a href="https://www.tiktok.com/@edgematrixhq?_r=1&_t=ZP-95y4evVmmnn" target="_blank">TikTok</a>
-    <span>© 2026 EdgeMatrix</span>
-  </div>
+</section>
+
+<script>
+  EM.buildFooter();
+  EM.initReveal();
+  EM.initParticles('ty-particles');
+</script>
 </body>
 </html>

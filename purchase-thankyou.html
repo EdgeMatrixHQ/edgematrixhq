@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Welcome to EdgeMatrix Pro — You're In</title>
+<style>
+.purchase-hero { padding:160px 24px 60px; text-align:center; position:relative; overflow:hidden; }
+#purchase-particles { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.purchase-hero-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:800px; height:500px; background:radial-gradient(ellipse,rgba(166,30,46,0.15),transparent 65%); pointer-events:none; }
+.purchase-hero-content { position:relative; z-index:2; max-width:760px; margin:0 auto; }
+
+.success-check { width:84px; height:84px; background:rgba(166,30,46,0.1); border:2px solid rgba(166,30,46,0.5); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 32px; box-shadow:0 0 40px rgba(166,30,46,0.25); animation:check-pop 0.7s ease both; }
+.success-check svg { width:36px; height:36px; }
+@keyframes check-pop {
+  0% { transform:scale(0); opacity:0; }
+  60% { transform:scale(1.18); }
+  100% { transform:scale(1); opacity:1; }
+}
+
+.purchase-hero h1 { font-size:clamp(40px,6vw,76px); font-weight:700; letter-spacing:-3px; line-height:1.0; margin-bottom:20px; }
+.purchase-hero h1 em { font-style:normal; color:#D42B40; }
+.purchase-hero p { font-size:18px; color:#888899; line-height:1.8; max-width:560px; margin:0 auto; }
+
+/* ── VIDEO SECTION ─── */
+.video-section { padding:64px 24px 80px; position:relative; }
+.video-container { max-width:920px; margin:0 auto; }
+.video-label-row { display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:24px; }
+.video-label-line { flex:1; max-width:80px; height:1px; background:linear-gradient(90deg,transparent,rgba(166,30,46,0.4),transparent); }
+.video-label { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:3px; color:#A61E2E; text-transform:uppercase; }
+
+.video-frame { position:relative; aspect-ratio:16/9; background:#0F0F12; border:1px solid rgba(166,30,46,0.3); border-radius:8px; overflow:hidden; box-shadow:0 0 60px rgba(166,30,46,0.12), 0 20px 80px rgba(0,0,0,0.5); }
+.video-frame::before { content:''; position:absolute; top:-1px; left:-1px; right:-1px; height:2px; background:linear-gradient(90deg,transparent,#A61E2E,transparent); animation:scan-line 4s linear infinite; }
+@keyframes scan-line {
+  0% { transform:translateX(-100%); }
+  100% { transform:translateX(100%); }
+}
+
+.video-corners span { position:absolute; width:18px; height:18px; border:1.5px solid #A61E2E; pointer-events:none; }
+.video-corners span:nth-child(1) { top:10px; left:10px; border-right:none; border-bottom:none; }
+.video-corners span:nth-child(2) { top:10px; right:10px; border-left:none; border-bottom:none; }
+.video-corners span:nth-child(3) { bottom:10px; left:10px; border-right:none; border-top:none; }
+.video-corners span:nth-child(4) { bottom:10px; right:10px; border-left:none; border-top:none; }
+
+.video-placeholder { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; cursor:pointer; transition:background 0.3s; }
+.video-placeholder:hover { background:rgba(166,30,46,0.04); }
+.video-placeholder-bg { position:absolute; inset:0; background:radial-gradient(circle at 50% 50%, rgba(166,30,46,0.15), transparent 60%); }
+.play-btn { position:relative; width:84px; height:84px; background:#A61E2E; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:transform 0.2s, box-shadow 0.3s; box-shadow:0 0 0 0 rgba(166,30,46,0.5); animation:play-pulse 2s ease-in-out infinite; }
+.video-placeholder:hover .play-btn { transform:scale(1.1); background:#D42B40; }
+.play-btn svg { width:32px; height:32px; margin-left:5px; }
+@keyframes play-pulse {
+  0%,100% { box-shadow:0 0 0 0 rgba(166,30,46,0.5); }
+  50% { box-shadow:0 0 0 20px rgba(166,30,46,0); }
+}
+.video-placeholder-text { position:relative; text-align:center; }
+.video-placeholder-text h3 { font-size:22px; font-weight:700; letter-spacing:-0.5px; margin-bottom:8px; color:#E8E8EC; }
+.video-placeholder-text p { font-family:'Space Mono',monospace; font-size:11px; color:#666677; letter-spacing:2px; text-transform:uppercase; }
+
+.video-meta { display:flex; justify-content:space-between; padding-top:20px; font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; color:#444455; text-transform:uppercase; }
+.video-meta-left { display:flex; gap:20px; align-items:center; }
+.video-meta-dot { width:6px; height:6px; background:#1DB954; border-radius:50%; box-shadow:0 0 6px #1DB954; animation:pulse-dot 2s infinite; }
+
+/* ── INSTRUCTIONS ─── */
+.instructions-section { padding:0 24px 80px; }
+.instructions-wrap { max-width:780px; margin:0 auto; }
+.instructions-header { text-align:center; margin-bottom:48px; }
+.instructions-header h2 { font-size:clamp(28px,3.5vw,40px); font-weight:700; letter-spacing:-1.5px; margin-bottom:12px; }
+.instructions-header p { font-size:16px; color:#888899; line-height:1.8; max-width:520px; margin:0 auto; }
+
+.steps-list { display:flex; flex-direction:column; gap:14px; }
+.step-row { background:#0F0F12; border:1px solid rgba(166,30,46,0.18); border-left:3px solid #A61E2E; border-radius:4px; padding:24px 28px; display:flex; gap:22px; align-items:flex-start; transition:border-color 0.3s, background 0.3s; }
+.step-row:hover { background:#141418; border-color:rgba(166,30,46,0.4); }
+.step-num { min-width:36px; height:36px; background:rgba(166,30,46,0.12); border:1px solid rgba(166,30,46,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; font-size:13px; font-weight:700; color:#D42B40; flex-shrink:0; }
+.step-content { flex:1; }
+.step-content h4 { font-size:16px; font-weight:700; margin-bottom:6px; }
+.step-content p { font-size:14px; color:#888899; line-height:1.8; }
+.step-content code { font-family:'Space Mono',monospace; font-size:13px; color:#D42B40; background:rgba(166,30,46,0.08); padding:2px 8px; border-radius:3px; border:1px solid rgba(166,30,46,0.15); }
+
+/* ── INFO GRID ─── */
+.info-section { padding:0 24px 100px; }
+.info-grid { max-width:920px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.info-card { background:#0F0F12; border:1px solid rgba(166,30,46,0.15); border-radius:6px; padding:32px 28px; transition:border-color 0.3s, transform 0.2s; position:relative; overflow:hidden; }
+.info-card:hover { border-color:rgba(166,30,46,0.4); transform:translateY(-3px); }
+.info-card-icon { font-family:'Space Mono',monospace; font-size:9px; font-weight:700; letter-spacing:3px; color:#A61E2E; text-transform:uppercase; margin-bottom:14px; display:block; }
+.info-card h3 { font-size:17px; font-weight:700; margin-bottom:10px; letter-spacing:-0.3px; }
+.info-card p { font-size:13px; color:#666677; line-height:1.7; margin-bottom:16px; }
+.info-card a { font-family:'Space Mono',monospace; font-size:11px; color:#D42B40; text-decoration:none; letter-spacing:1.5px; text-transform:uppercase; transition:color 0.2s; }
+.info-card a:hover { color:#fff; }
+
+/* ── EMAIL ALERT ─── */
+.email-alert { max-width:920px; margin:0 auto 60px; padding:0 24px; }
+.email-alert-inner { background:linear-gradient(90deg, rgba(166,30,46,0.08), rgba(166,30,46,0.02)); border:1px solid rgba(166,30,46,0.25); border-left:3px solid #A61E2E; border-radius:0 6px 6px 0; padding:24px 28px; display:flex; gap:18px; align-items:flex-start; }
+.email-alert-icon { width:36px; height:36px; background:rgba(166,30,46,0.15); border:1px solid rgba(166,30,46,0.3); border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.email-alert-icon svg { width:18px; height:18px; }
+.email-alert-content h4 { font-size:14px; font-weight:700; margin-bottom:6px; letter-spacing:-0.2px; }
+.email-alert-content p { font-size:13px; color:#888899; line-height:1.7; }
+.email-alert-content strong { color:#E8E8EC; }
+.email-alert-content code { font-family:'Space Mono',monospace; font-size:12px; color:#D42B40; }
+
+@keyframes pulse-dot {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.4; transform:scale(0.7); }
+}
+
+@media(max-width:900px){ .info-grid{grid-template-columns:1fr;} }
+@media(max-width:600px){
+  .step-row{padding:20px;}
+  .video-corners span{width:14px; height:14px;}
+  .video-placeholder-text h3{font-size:18px;}
+  .play-btn{width:64px; height:64px;}
+  .play-btn svg{width:24px; height:24px;}
+}
+</style>
+<script src="https://player.vimeo.com/api/player.js"></script>
+</head>
+<body>
+<script src="em-shared.js"></script>
+<script>EM.injectGlobalStyles(); EM.buildNav('');</script>
+
+<!-- HERO -->
+<div class="purchase-hero">
+  <div class="purchase-hero-glow"></div>
+  <canvas id="purchase-particles"></canvas>
+  <div class="purchase-hero-content">
+    <div class="success-check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#D42B40" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <div class="em-badge" style="margin-bottom:24px;">
+      <div style="width:5px; height:5px; background:#D42B40; border-radius:50%; box-shadow:0 0 8px #D42B40;"></div>
+      Purchase Confirmed
+    </div>
+    <h1>Welcome to<br/><em>EdgeMatrix Pro.</em></h1>
+    <p>Your purchase is confirmed. Watch the video below — it walks you through everything you need to set up your indicator and get the most out of the system.</p>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<section class="video-section">
+  <div class="video-container em-reveal">
+    <div class="video-label-row">
+      <div class="video-label-line"></div>
+      <span class="video-label">// Welcome — Watch First</span>
+      <div class="video-label-line"></div>
+    </div>
+
+    <div class="video-frame" id="video-frame">
+      <div class="video-corners"><span></span><span></span><span></span><span></span></div>
+      <iframe src="https://player.vimeo.com/video/1190650966?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="EdgeMatrix Pro — Welcome"></iframe>
+    </div>
+
+    <div class="video-meta">
+      <div class="video-meta-left">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="video-meta-dot"></div>
+          <span>Welcome Message</span>
+        </div>
+        <span>HD · 1080p</span>
+      </div>
+      <div>// EDGEMATRIX_PRO_v1.0</div>
+    </div>
+  </div>
+</section>
+
+<div class="em-divider" style="margin:0 24px;"></div>
+
+<!-- EMAIL ALERT -->
+<section style="padding:60px 0 0;">
+  <div class="email-alert em-reveal">
+    <div class="email-alert-inner">
+      <div class="email-alert-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#D42B40" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </div>
+      <div class="email-alert-content">
+        <h4>Check your inbox.</h4>
+        <p>You'll receive a confirmation email at the address you used at checkout. Your <strong>TradingView indicator invite</strong> will follow within 24 hours. Add <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f79f929b9b98b7929390929a9683859e8f9f86d994989a">[email&#160;protected]</a></code> to your contacts so it doesn't get caught in spam.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section class="instructions-section">
+  <div class="instructions-wrap">
+    <div class="instructions-header em-reveal">
+      <div class="em-section-label">Getting Set Up</div>
+      <h2>Three steps to live.</h2>
+      <p>Follow the video, or use these steps as your reference.</p>
+    </div>
+    <div class="steps-list">
+      <div class="step-row em-reveal">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h4>Send your TradingView username</h4>
+          <p>Reply to your confirmation email with your <strong>TradingView username</strong> (not your email). We'll send your private indicator invite within 24 hours.</p>
+        </div>
+      </div>
+      <div class="step-row em-reveal" data-delay="80">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h4>Accept the invite on TradingView</h4>
+          <p>You'll receive a notification on TradingView. Open <code>Settings → Invite-Only Scripts</code> and accept the EdgeMatrix Pro invite. The indicator now lives in your library.</p>
+        </div>
+      </div>
+      <div class="step-row em-reveal" data-delay="160">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h4>Add to chart, customize, and trade</h4>
+          <p>Open any chart, click <code>Indicators</code>, find <strong>EdgeMatrix Pro</strong> under Invite-Only. Set your confluences in the indicator settings. You're live.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="em-divider" style="margin:0 24px;"></div>
+
+<!-- INFO GRID -->
+<section class="info-section" style="padding-top:80px;">
+  <div style="text-align:center; max-width:500px; margin:0 auto 48px; padding:0 24px;" class="em-reveal">
+    <div class="em-section-label">Resources</div>
+    <h2 style="font-size:clamp(28px,3.5vw,40px); font-weight:700; letter-spacing:-1.5px;">You're not alone.</h2>
+  </div>
+  <div class="info-grid">
+    <div class="info-card em-reveal">
+      <span class="info-card-icon">// Community</span>
+      <h3>Join Discord</h3>
+      <p>500+ traders inside. Real-time setups, walkthroughs, and direct access to other Pro members.</p>
+      <a href="https://discord.gg/bqnkyTuyHg" target="_blank">Join Discord →</a>
+    </div>
+    <div class="info-card em-reveal" data-delay="80">
+      <span class="info-card-icon">// Support</span>
+      <h3>Need help?</h3>
+      <p>Email us anytime. We respond fast — usually under 12 hours, often much faster.</p>
+      <a href="/cdn-cgi/l/email-protection#1078757c7c7f50757477757d716462796878613e737f7d"><span class="__cf_email__" data-cfemail="4f272a2323200f2a2b282a222e3b3d2637273e612c2022">[email&#160;protected]</span> →</a>
+    </div>
+    <div class="info-card em-reveal" data-delay="160">
+      <span class="info-card-icon">// Updates</span>
+      <h3>Stay in the loop</h3>
+      <p>Follow on Instagram for trade examples, strategy breakdowns, and feature drops.</p>
+      <a href="https://www.instagram.com/edgematrixhq" target="_blank">@edgematrixhq →</a>
+    </div>
+  </div>
+</section>
+
+<div class="em-divider" style="margin:80px 24px 0;"></div>
+
+<!-- TUTORIAL VIDEO -->
+<section class="video-section" style="padding-top:80px;">
+  <div class="video-wrap">
+    <div class="video-header em-reveal">
+      <div class="em-section-label">Tutorial</div>
+      <h2>How to use it like a pro.</h2>
+      <p>A deeper walkthrough — building your checklist, dialing in your scoring thresholds, and using the position calculator on every trade.</p>
+    </div>
+
+    <div class="video-label-row">
+      <div class="video-label-line"></div>
+      <span class="video-label">// Deep Dive — 12 Minutes</span>
+      <div class="video-label-line"></div>
+    </div>
+
+    <div class="video-frame" id="tutorial-frame">
+      <div class="video-corners"><span></span><span></span><span></span><span></span></div>
+      <iframe src="https://player.vimeo.com/video/1190652580?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="EdgeMatrix Pro — Full Tutorial"></iframe>
+    </div>
+
+    <div class="video-meta">
+      <div class="video-meta-left">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="video-meta-dot"></div>
+          <span>Full Walkthrough</span>
+        </div>
+        <span>HD · 1080p</span>
+      </div>
+      <div>// EDGEMATRIX_PRO_TUTORIAL_v1.0</div>
+    </div>
+  </div>
+</section>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  EM.buildFooter();
+  EM.initReveal();
+  EM.initParticles('purchase-particles');
+</script>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                

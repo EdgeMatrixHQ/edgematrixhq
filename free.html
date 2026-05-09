@@ -1,646 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EdgeMatrix Sessions — Free Trading Tool</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-main: #1A1A1D;
-            --bg-dark: #141416;
-            --accent: #8B1E2D;
-            --text-light: #E5E5E5;
-            --text-muted: #B8B8B8;
-            --text-dim: #888888;
-            --green: #2E8B57;
-            --red: #D64545;
-            --orange: #E5820A;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-light);
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 400;
-            line-height: 1.6;
-        }
-
-        /* Navigation */
-        nav {
-            background-color: var(--bg-dark);
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(139, 30, 45, 0.2);
-        }
-
-        .logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            text-transform: uppercase;
-        }
-
-        .logo-edge {
-            color: var(--text-light);
-        }
-
-        .logo-matrix {
-            color: var(--accent);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        .nav-cta {
-            background-color: var(--accent);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-
-        .nav-cta:hover {
-            background-color: #a8263a;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .hamburger span {
-            width: 25px;
-            height: 3px;
-            background-color: var(--text-light);
-            margin: 5px 0;
-            transition: 0.3s;
-            border-radius: 2px;
-        }
-
-        /* Hero */
-        .hero {
-            padding: 6rem 2rem;
-            text-align: center;
-            background: linear-gradient(135deg, rgba(139,30,45,0.1) 0%, transparent 100%);
-        }
-
-        .hero h1 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            margin-bottom: 3rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Section */
-        section {
-            padding: 5rem 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            text-transform: uppercase;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        /* What It Does */
-        .features-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .feature-item {
-            background-color: var(--bg-dark);
-            padding: 2.5rem;
-            border-radius: 4px;
-            border-top: 3px solid var(--accent);
-        }
-
-        .feature-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.3px;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-
-        .feature-item p {
-            color: var(--text-muted);
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
-
-        .features-highlight {
-            background-color: var(--bg-dark);
-            padding: 2rem;
-            border-radius: 4px;
-            border-left: 4px solid var(--accent);
-            margin-bottom: 3rem;
-        }
-
-        .features-highlight h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.3px;
-            margin-bottom: 1.5rem;
-        }
-
-        .highlight-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 2rem;
-        }
-
-        .highlight-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .highlight-item strong {
-            color: var(--accent);
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 0.3px;
-        }
-
-        .highlight-item p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        /* Form Section */
-        .form-container {
-            background-color: var(--bg-dark);
-            padding: 3rem;
-            border-radius: 4px;
-            border: 2px solid rgba(139, 30, 45, 0.3);
-            margin-bottom: 4rem;
-        }
-
-        .form-container h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-
-        .form-container p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-
-        form {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        label {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.3px;
-            color: var(--text-light);
-        }
-
-        input[type="text"],
-        input[type="email"] {
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(139, 30, 45, 0.4);
-            color: var(--text-light);
-            padding: 1rem;
-            border-radius: 4px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus {
-            outline: none;
-            border-color: var(--accent);
-            background-color: rgba(139, 30, 45, 0.1);
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn-primary {
-            background-color: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #a8263a;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--text-light);
-            border: 2px solid var(--accent);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(139, 30, 45, 0.2);
-        }
-
-        .form-submit {
-            width: 100%;
-            background-color: var(--accent);
-            color: white;
-            padding: 1.25rem;
-            border-radius: 4px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.95rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .form-submit:hover {
-            background-color: #a8263a;
-            transform: translateY(-2px);
-        }
-
-        /* Next Steps */
-        .next-steps {
-            background-color: var(--bg-dark);
-            padding: 2.5rem;
-            border-radius: 4px;
-            border-left: 4px solid var(--green);
-            margin-bottom: 3rem;
-        }
-
-        .next-steps h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.3px;
-            margin-bottom: 1.5rem;
-            color: var(--green);
-        }
-
-        .next-steps p {
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        /* Upsell Section */
-        .upsell-section {
-            background-color: rgba(139, 30, 45, 0.1);
-            padding: 3rem;
-            border-radius: 4px;
-            border: 2px solid rgba(139, 30, 45, 0.3);
-            text-align: center;
-        }
-
-        .upsell-section h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            margin-bottom: 1rem;
-        }
-
-        .upsell-section p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-        }
-
-        .upsell-section .btn {
-            width: 100%;
-            max-width: 300px;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--bg-dark);
-            padding: 3rem 2rem;
-            border-top: 1px solid rgba(139, 30, 45, 0.2);
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            text-align: left;
-        }
-
-        .footer-section h4 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-section a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-section a:hover {
-            color: var(--accent);
-        }
-
-        .footer-copyright {
-            grid-column: 1 / -1;
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(139, 30, 45, 0.2);
-            margin-top: 1rem;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .section-title {
-                font-size: 1.75rem;
-            }
-
-            section {
-                padding: 3rem 1.5rem;
-            }
-
-            .features-list,
-            .highlight-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-container {
-                padding: 2rem;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .footer-section {
-                text-align: center;
-            }
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EdgeMatrix Sessions — Free TradingView Indicator</title>
+<style>
+.free-hero {
+  position: relative; padding: 160px 24px 100px;
+  text-align: center; overflow: hidden;
+}
+#free-particles { position: absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.free-hero-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:700px; height:400px; background:radial-gradient(ellipse, rgba(166,30,46,0.12), transparent 65%); pointer-events:none; }
+.free-hero-content { position:relative; z-index:2; max-width:720px; margin:0 auto; }
+.free-hero h1 { font-size:clamp(38px,6vw,78px); font-weight:700; letter-spacing:-3px; line-height:1.0; margin-bottom:24px; }
+.free-hero h1 em { font-style:normal; color:#1DB954; }
+.free-hero p { font-size:18px; color:#888899; line-height:1.8; max-width:540px; margin:0 auto 40px; }
+
+.sessions-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:2px; margin-top:56px; background:rgba(166,30,46,0.08); border:1px solid rgba(166,30,46,0.1); }
+.session-block { background:#0A0A0C; padding:36px 32px; transition:background 0.3s; }
+.session-block:hover { background:#0F0F12; }
+.session-time { font-family:'Space Mono',monospace; font-size:11px; color:#A61E2E; letter-spacing:2px; margin-bottom:12px; display:block; }
+.session-block h3 { font-size:20px; font-weight:700; margin-bottom:10px; }
+.session-block p { font-size:14px; color:#666677; line-height:1.8; }
+
+.why-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:48px; background:rgba(166,30,46,0.06); border:1px solid rgba(166,30,46,0.1); }
+.why-block { background:#0A0A0C; padding:28px 24px; text-align:center; transition:background 0.3s; }
+.why-block:hover { background:#0F0F12; }
+.why-block-icon { font-family:'Space Mono',monospace; font-size:9px; color:#A61E2E; letter-spacing:2px; margin-bottom:12px; display:block; text-transform:uppercase; }
+.why-block h4 { font-size:15px; font-weight:700; margin-bottom:8px; }
+.why-block p { font-size:13px; color:#666677; line-height:1.7; }
+
+.form-container { max-width:560px; margin:0 auto; background:#0F0F12; border:1px solid rgba(166,30,46,0.3); border-radius:6px; padding:48px; }
+.form-container h2 { font-size:26px; font-weight:700; letter-spacing:-0.5px; margin-bottom:10px; }
+.form-container > p { font-size:15px; color:#888899; line-height:1.7; margin-bottom:32px; }
+.form-group { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+.form-group label { font-family:'Space Mono',monospace; font-size:9px; font-weight:700; letter-spacing:3px; color:#888899; text-transform:uppercase; }
+.form-submit { width:100%; background:#A61E2E; color:#fff; border:none; border-radius:4px; padding:16px; font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:700; letter-spacing:0.5px; cursor:pointer; transition:background 0.2s, transform 0.15s, box-shadow 0.2s; margin-top:8px; }
+.form-submit:hover { background:#D42B40; transform:translateY(-2px); box-shadow:0 0 30px rgba(166,30,46,0.35); }
+.form-privacy { font-size:12px; color:#444455; text-align:center; margin-top:12px; }
+
+.upsell-box { background:rgba(166,30,46,0.07); border:1px solid rgba(166,30,46,0.25); border-radius:6px; padding:48px; text-align:center; }
+.upsell-box h2 { font-size:28px; font-weight:700; letter-spacing:-0.5px; margin-bottom:12px; }
+.upsell-box p { font-size:16px; color:#888899; line-height:1.8; max-width:480px; margin:0 auto 32px; }
+
+@media(max-width:900px){ .sessions-grid{grid-template-columns:1fr;} .why-grid{grid-template-columns:repeat(2,1fr);} }
+@media(max-width:600px){ .why-grid{grid-template-columns:1fr;} .form-container{padding:32px 24px;} }
+</style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">
-            <span class="logo-edge">EDGE</span><span class="logo-matrix">MATRIX</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="pro.html">Pro</a></li>
-            <li><a href="free.html">Free Tool</a></li>
-            <li><a href="tools.html">Tools</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="blog.html">Blog</a></li>
-        </ul>
-        <a href="free.html" class="nav-cta">Join Waitlist</a>
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </nav>
+<script src="em-shared.js"></script>
+<script>EM.injectGlobalStyles(); EM.buildNav('free-tool');</script>
 
-    <!-- Hero -->
-    <section class="hero">
-        <h1>Get the Free Tool</h1>
-        <p>EdgeMatrix Sessions. Session highs and lows on every chart. Free forever.</p>
-    </section>
+<div class="free-hero">
+  <div class="free-hero-glow"></div>
+  <canvas id="free-particles"></canvas>
+  <div class="free-hero-content">
+    <div class="em-badge" style="margin-bottom:32px; border-color:rgba(29,185,84,0.4); color:#1DB954;">Free Forever</div>
+    <h1>Know where<br/><em>price has been.</em></h1>
+    <p>EdgeMatrix Sessions marks the Asia, London, New York, and Sydney session highs and lows directly on your TradingView chart. The levels where price actually moves. Free forever.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="#get-access" class="em-btn em-btn-primary em-btn-lg">Get Free Access →</a>
+    </div>
+  </div>
+</div>
 
-    <!-- What It Does -->
-    <section>
-        <h2 class="section-title">What You Get</h2>
-        <div class="features-list">
-            <div class="feature-item">
-                <div class="feature-title">Asia Session</div>
-                <p>20:00 - 23:00 EST. The session where London opens. Asian traders at work. Volume builds in this window.</p>
-            </div>
-            <div class="feature-item">
-                <div class="feature-title">London Session</div>
-                <p>03:00 - 12:00 EST. The European open. Highest volatility. Major economic releases. Your A-setups often live here.</p>
-            </div>
-            <div class="feature-item">
-                <div class="feature-title">New York Session</div>
-                <p>08:00 - 17:00 EST. US market hours. When most traders are watching. Highest volume and directional moves.</p>
-            </div>
-            <div class="feature-item">
-                <div class="feature-title">Sydney Session</div>
-                <p>16:00 - 01:00 EST. The Asian open. Where US Friday traders collide with Asian Monday traders. Real edge here.</p>
-            </div>
-        </div>
+<div class="em-divider"></div>
 
-        <div class="features-highlight">
-            <h3>Why Sessions Matter</h3>
-            <div class="highlight-grid">
-                <div class="highlight-item">
-                    <strong>Any Timeframe</strong>
-                    <p>1-minute charts to daily. Works everywhere.</p>
-                </div>
-                <div class="highlight-item">
-                    <strong>Any Instrument</strong>
-                    <p>Forex, indices, crypto, futures, commodities.</p>
-                </div>
-                <div class="highlight-item">
-                    <strong>Real Edge</strong>
-                    <p>Session highs and lows are where price reverses.</p>
-                </div>
-                <div class="highlight-item">
-                    <strong>Free Forever</strong>
-                    <p>No subscription. No hidden fees. Always free.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Sessions -->
+<section class="em-section">
+  <div class="em-grid-bg"></div>
+  <div class="em-container">
+    <div class="em-reveal" style="max-width:560px;">
+      <div class="em-section-label">What You Get</div>
+      <h2 class="em-section-title">Four sessions.<br/>One indicator.</h2>
+      <p class="em-section-sub">Session highs and lows are the levels where institutions placed their orders. Knowing these gives you real, structural context on every chart.</p>
+    </div>
+    <div class="sessions-grid">
+      <div class="session-block em-reveal">
+        <span class="session-time">20:00 – 23:00 EST</span>
+        <h3>Asia Session</h3>
+        <p>The opening of Asian markets. Volume builds here, setting the stage for London. Liquidity forms above and below these highs and lows throughout the night.</p>
+      </div>
+      <div class="session-block em-reveal" data-delay="80">
+        <span class="session-time">03:00 – 12:00 EST</span>
+        <h3>London Session</h3>
+        <p>The European open. Highest volatility of the day. Major economic data releases. Your A-setups often start right here — London raids Asian liquidity constantly.</p>
+      </div>
+      <div class="session-block em-reveal" data-delay="160">
+        <span class="session-time">08:00 – 17:00 EST</span>
+        <h3>New York Session</h3>
+        <p>US market hours. When most retail traders are watching. Highest volume and the biggest directional moves of the week. Don't miss the open.</p>
+      </div>
+      <div class="session-block em-reveal" data-delay="240">
+        <span class="session-time">16:00 – 01:00 EST</span>
+        <h3>Sydney Session</h3>
+        <p>The Asian open. Where US Friday traders collide with Asian Monday momentum. Less followed — which means more edge for those who know it.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Email Capture Form -->
-    <section>
-        <div class="form-container">
-            <h2>Get Free Access</h2>
-            <p>Sign up and you'll receive instructions to find EdgeMatrix Sessions on TradingView. Takes 2 minutes.</p>
-            <form action="YOUR_BREVO_FORM_URL" method="POST">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" placeholder="Your name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="your@email.com" required>
-                </div>
-                <input type="hidden" name="tags" value="free_tool">
-                <button type="submit" class="form-submit">Get Free Access</button>
-            </form>
-        </div>
-    </section>
+<div class="em-divider"></div>
 
-    <!-- Next Steps -->
-    <section>
-        <div class="next-steps">
-            <h3>What Happens Next</h3>
-            <p>Check your email. Your instructions will be there within seconds. Open TradingView. Go to the indicator search bar. Search "EdgeMatrix Sessions". Click to add. That's it. The indicator is live on your chart.</p>
-        </div>
-    </section>
+<!-- Why It Matters -->
+<section class="em-section" style="padding-bottom:64px;">
+  <div class="em-container">
+    <div class="em-reveal" style="text-align:center; max-width:500px; margin:0 auto;">
+      <div class="em-section-label">Why Sessions Matter</div>
+      <h2 class="em-section-title">Real edge. Not theory.</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-block em-reveal">
+        <span class="why-block-icon">// Timeframe</span>
+        <h4>Any Timeframe</h4>
+        <p>1-minute charts to daily. Works everywhere you trade.</p>
+      </div>
+      <div class="why-block em-reveal" data-delay="80">
+        <span class="why-block-icon">// Instrument</span>
+        <h4>Any Instrument</h4>
+        <p>Forex, indices, crypto, futures, commodities. All of them.</p>
+      </div>
+      <div class="why-block em-reveal" data-delay="160">
+        <span class="why-block-icon">// Edge</span>
+        <h4>Real Edge</h4>
+        <p>Session highs and lows are where price reverses. Fact.</p>
+      </div>
+      <div class="why-block em-reveal" data-delay="240">
+        <span class="why-block-icon">// Cost</span>
+        <h4>Free Forever</h4>
+        <p>No subscription. No hidden fees. No catch. Always free.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Upsell Section -->
-    <section>
-        <div class="upsell-section">
-            <h2>Want More?</h2>
-            <p>Sessions is your edge. EdgeMatrix Pro makes you unstoppable. Customizable checklist. Live trade score. Position calculator. Enforce your rules on every trade.</p>
-            <a href="pro.html" class="btn btn-primary">Learn About EdgeMatrix Pro</a>
-        </div>
-    </section>
+<div class="em-divider"></div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>EdgeMatrix</h4>
-                <p style="color: var(--text-muted); margin-bottom: 1rem;">The execution system for serious traders.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Product</h4>
-                <ul>
-                    <li><a href="pro.html">EdgeMatrix Pro</a></li>
-                    <li><a href="free.html">EdgeMatrix Sessions</a></li>
-                    <li><a href="tools.html">Tools</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Company</h4>
-                <ul>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="mailto:hello@edgematrixhq.com">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Follow</h4>
-                <ul>
-                    <li><a href="#">@EdgeMatrixHQ on Instagram</a></li>
-                    <li><a href="#">@EdgeMatrixHQ on TikTok</a></li>
-                    <li><a href="mailto:hello@edgematrixhq.com">hello@edgematrixhq.com</a></li>
-                </ul>
-            </div>
-            <div class="footer-copyright">
-                © 2026 EdgeMatrix. All rights reserved.
-            </div>
+<!-- Form -->
+<section class="em-section" id="get-access">
+  <div class="em-container">
+    <div class="form-container em-reveal">
+      <div class="em-section-label" style="margin-bottom:12px;">Get Free Access</div>
+      <h2>Start trading sessions today.</h2>
+      <p>Sign up and you'll receive instructions to find EdgeMatrix Sessions on TradingView. Takes 2 minutes to set up. Free forever.</p>
+      <form action="https://0b81c5db.sibforms.com/serve/MUIFAFBKG8R4bnmnCzYjayRyIuMUW48Vq3VC-I9NqVASnf8eoQc0tpE_Y6b_DfS_8Q9oV5D7oIJUOovhYOnjxUSrsDiL2r3Cg8fxJoYWfbcEX-rcX3z_G41c7kPQWrbWLPVva7ndPR3SKsjJe4tIzUbqalFpj9FYcBLo1CaOIyGtM_Y9K8xqst0KwnNSYj15QyX9LxVJxYtE3c1gsQ==" method="POST" target="_self">
+        <div class="form-group">
+          <label for="fn">First Name</label>
+          <input type="text" id="fn" name="FIRSTNAME" class="em-input" placeholder="Your first name" required/>
         </div>
-    </footer>
+        <div class="form-group">
+          <label for="em">Email Address</label>
+          <input type="email" id="em" name="EMAIL" class="em-input" placeholder="your@email.com" required/>
+        </div>
+        <input type="hidden" name="redirect_url" value="https://edgematrixhq.com/thankyou"/>
+        <button type="submit" class="form-submit">GET FREE ACCESS — EDGEMATRIX SESSIONS →</button>
+      </form>
+      <p class="form-privacy">No spam. No selling your data. Unsubscribe anytime.</p>
+    </div>
+  </div>
+</section>
+
+<div class="em-divider"></div>
+
+<!-- Upsell -->
+<section class="em-section">
+  <div class="em-container">
+    <div class="upsell-box em-reveal">
+      <div class="em-section-label" style="display:inline-block; margin-bottom:16px;">Want More?</div>
+      <h2>Sessions is your foundation.<br/>Pro makes it unbreakable.</h2>
+      <p>Customizable checklist. Live trade score. Position calculator. Enforce your rules on every single trade — no more exceptions.</p>
+      <a href="pro.html" class="em-btn em-btn-primary em-btn-lg">See EdgeMatrix Pro →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  EM.buildFooter();
+  EM.initReveal();
+  EM.initParticles('free-particles');
+</script>
 </body>
 </html>
