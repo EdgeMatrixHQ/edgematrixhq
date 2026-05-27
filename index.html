@@ -1057,16 +1057,8 @@
     </div>
 
     <div class="video-embed-wrap em-reveal" data-delay="100">
-      <!--
-        SETUP INSTRUCTIONS:
-        1. Render edgematrix_product_demo.mp4 via: npm run render:demo
-        2. Upload the MP4 to YouTube → set visibility to Unlisted
-        3. Copy the video ID from the URL (e.g. youtube.com/watch?v=XXXXXXXXXXX)
-        4. Replace YOUR_YOUTUBE_VIDEO_ID below with that ID
-        5. Push to GitHub
-      -->
       <iframe
-        src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID?rel=0&modestbranding=1&color=white&iv_load_policy=3"
+        src="https://www.youtube.com/embed/B7Re2g4jP88?rel=0&modestbranding=1&color=white&iv_load_policy=3"
         title="EdgeMatrix Pro — Product Demo"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
@@ -1401,4 +1393,68 @@
       <div class="faq-item em-reveal" data-delay="120">
         <div class="faq-q">What happens after I purchase? <span class="faq-icon">+</span></div>
         <div class="faq-a"><div class="faq-a-inner">You'll enter your TradingView username at checkout. We manually send your private indicator invite within 24 hours. Then you add it to any chart and set your confluences. That's it.</div></div>
-   
+      </div>
+      <div class="faq-item em-reveal" data-delay="180">
+        <div class="faq-q">Which trading methods does it support? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">All of them. The checklist is fully customizable — you write your own confluence labels. Whether you trade ICT, SMC, supply &amp; demand, price action, or anything else, it works around your system.</div></div>
+      </div>
+      <div class="faq-item em-reveal" data-delay="240">
+        <div class="faq-q">Is there a refund policy? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Due to the digital nature of the product, all sales are final. If you have any issue at all, email hello@edgematrixhq.com and we'll make it right.</div></div>
+      </div>
+      <div class="faq-item em-reveal" data-delay="300">
+        <div class="faq-q">What's the difference between monthly and lifetime? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Monthly is $9.99/month and can be cancelled anytime. Lifetime is a one-time payment of $97 and you never get billed again — all future updates included.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ───────────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="cta-bg-glow"></div>
+  <div class="cta-content em-reveal">
+    <div class="em-section-label" style="display:inline-block; margin-bottom:16px;">Ready to trade with discipline?</div>
+    <h2>Your system.<br/>Every trade.</h2>
+    <p>Join 500+ traders who stopped guessing and started enforcing their edge with EdgeMatrix.</p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href="pro.html" class="em-btn em-btn-primary em-btn-lg">Get EdgeMatrix Pro →</a>
+      <a href="free.html" class="em-btn em-btn-ghost em-btn-lg">Try Sessions Free</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Init shared utilities
+  EM.buildFooter();
+  EM.initReveal();
+
+  // Particle canvas — attach mouse to the overlay
+  const canvas = document.getElementById('particle-canvas');
+  const interact = document.getElementById('hero-interact');
+  EM.initParticles('particle-canvas');
+
+  // Re-wire mouse from interact overlay to canvas particle engine
+  const ctx2 = canvas.getContext('2d');
+  interact.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    canvas.dispatchEvent(new MouseEvent('mousemove', {
+      clientX: e.clientX,
+      clientY: e.clientY
+    }));
+  });
+  interact.addEventListener('mouseleave', () => {
+    canvas.dispatchEvent(new MouseEvent('mouseleave'));
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
