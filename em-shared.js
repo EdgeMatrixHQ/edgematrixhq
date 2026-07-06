@@ -56,6 +56,34 @@ const EM = {
         line-height: 1.6;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
+        padding-top: 38px;
+      }
+
+      /* Announcement bar */
+      .em-announce {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 1001;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+        color: #fff;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-align: center;
+        text-decoration: none;
+        padding: 0 16px;
+        transition: filter 0.2s;
+      }
+      .em-announce:hover { filter: brightness(1.08); }
+      .em-announce .em-announce-arrow { font-weight: 700; }
+      @media (max-width: 600px) {
+        .em-announce { font-size: 10px; letter-spacing: 0.3px; }
       }
 
       /* Scrollbar */
@@ -66,7 +94,7 @@ const EM = {
       /* Nav */
       .em-nav {
         position: fixed;
-        top: 0; left: 0; right: 0;
+        top: 38px; left: 0; right: 0;
         z-index: 1000;
         display: flex;
         align-items: center;
@@ -194,7 +222,7 @@ const EM = {
       .em-mobile-menu {
         display: none;
         position: fixed;
-        top: 68px; left: 0; right: 0;
+        top: 106px; left: 0; right: 0;
         background: rgba(10,10,12,0.98);
         backdrop-filter: blur(20px);
         border-bottom: 1px solid var(--border);
@@ -513,7 +541,17 @@ const EM = {
     document.head.appendChild(style);
   },
 
+  buildAnnounce() {
+    if (document.querySelector('.em-announce')) return;
+    const bar = document.createElement('a');
+    bar.className = 'em-announce';
+    bar.href = 'pro.html';
+    bar.innerHTML = `NEW · START EDGEMATRIX PRO WITH A 7-DAY FREE TRIAL · CANCEL ANYTIME <span class="em-announce-arrow">→</span>`;
+    document.body.prepend(bar);
+  },
+
   buildNav(activePage) {
+    this.buildAnnounce();
     const pages = [
       { href: 'index.html', label: 'Home' },
       { href: 'pro.html', label: 'Pro' },
