@@ -644,7 +644,7 @@ const EM = {
           </div>
         </div>
         <div class="em-footer-bottom">
-          <span class="em-footer-copy">© 2026 EDGEMATRIX — ALL RIGHTS RESERVED</span>
+          <span class="em-footer-copy">© 2026 EDGEMATRIX — ALL RIGHTS RESERVED · <a href="https://billing.stripe.com/p/login/9B6cN72rYdrlc0zgMU4ZG00" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Manage subscription</a></span>
           <div class="em-footer-social">
             <a href="https://www.instagram.com/edgematrixhq" target="_blank">INSTAGRAM</a>
             <a href="https://www.tiktok.com/@edgematrixhq" target="_blank">TIKTOK</a>
