@@ -424,11 +424,12 @@
 }
 @media(max-width:600px){ .hero-proof-quote { font-size:15px; } }
 
-.tst-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:20px; max-width:940px; margin:0 auto; align-items:start; }
+.tst-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; max-width:1120px; margin:0 auto; align-items:stretch; }
 .tst-card {
   position:relative; background:#0F0F12;
   border:1px solid rgba(166,30,46,0.18); border-radius:6px;
-  padding:48px 44px 36px; margin:0;
+  padding:48px 36px 32px; margin:0;
+  display:flex; flex-direction:column;
   transition:border-color .3s, box-shadow .3s;
 }
 .tst-card:hover { border-color:rgba(166,30,46,0.4); box-shadow:0 12px 60px rgba(166,30,46,0.08); }
@@ -443,9 +444,10 @@
 }
 .tst-author {
   display:flex; align-items:center; gap:14px;
-  margin-top:30px; padding-top:24px;
+  margin-top:auto; padding-top:24px;
   border-top:1px solid rgba(255,255,255,0.05);
 }
+.tst-text { margin-bottom:30px !important; }
 .tst-avatar {
   flex-shrink:0; width:44px; height:44px; border-radius:50%;
   background:linear-gradient(140deg, #D42B40, #A61E2E);
@@ -498,6 +500,19 @@
           <div class="tst-avatar">JB</div>
           <div class="tst-meta">
             <span class="tst-name">Jorisb16</span>
+            <span class="tst-role">✓ Verified EdgeMatrix Member</span>
+          </div>
+        </figcaption>
+      </figure>
+      <figure class="tst-card em-reveal" data-delay="200">
+        <div class="tst-quote-mark">&ldquo;</div>
+        <blockquote class="tst-text">
+          Using EdgeMatrix has helped me a lot during my trading journey. Being able to use the checklist and calculating the lot size for MNQ has made trading faster and easier for me.
+        </blockquote>
+        <figcaption class="tst-author">
+          <div class="tst-avatar">M</div>
+          <div class="tst-meta">
+            <span class="tst-name">Michael</span>
             <span class="tst-role">✓ Verified EdgeMatrix Member</span>
           </div>
         </figcaption>
