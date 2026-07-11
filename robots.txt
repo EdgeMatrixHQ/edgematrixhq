@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /checkout.html
+Disallow: /thankyou.html
+Disallow: /purchase-thankyou.html
+
+Sitemap: https://edgematrixhq.com/sitemap.xml
