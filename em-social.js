@@ -19,15 +19,21 @@
   wrap.id = "em-sp-wrap";
   document.body.appendChild(wrap);
 
-  // Real members only (Nicks' own test account excluded). Update as real signups grow.
+  // Real members + real free-trial starters (Nicks' own test account excluded). Update as signups grow.
   var members = [
-    { n: "Willy S.", p: "Lifetime member" },
-    { n: "Leandro P.", p: "Lifetime member" },
-    { n: "Leroy P.", p: "Lifetime member" },
-    { n: "Vyacheslav M.", p: "Pro member" },
-    { n: "Sukhchain S.", p: "Pro member" },
-    { n: "Judah O.", p: "Pro member" },
-    { n: "Christian D.", p: "Pro member" }
+    { n: "Willy S.", h: "joined EdgeMatrix Pro", p: "Lifetime member" },
+    { n: "Leandro P.", h: "joined EdgeMatrix Pro", p: "Lifetime member" },
+    { n: "Leroy P.", h: "joined EdgeMatrix Pro", p: "Lifetime member" },
+    { n: "Vyacheslav M.", h: "joined EdgeMatrix Pro", p: "Pro member" },
+    { n: "Sukhchain S.", h: "joined EdgeMatrix Pro", p: "Pro member" },
+    { n: "Judah O.", h: "joined EdgeMatrix Pro", p: "Pro member" },
+    { n: "Christian D.", h: "joined EdgeMatrix Pro", p: "Pro member" },
+    { n: "Luis A.", h: "started a 7-day free trial", p: "Free trial" },
+    { n: "Emilis", h: "started a 7-day free trial", p: "Free trial" },
+    { n: "Christian G.", h: "started a 7-day free trial", p: "Free trial" },
+    { n: "Adebanjo O.", h: "started a 7-day free trial", p: "Free trial" },
+    { n: "Julio C.", h: "started a 7-day free trial", p: "Free trial" },
+    { n: "Anmol S.", h: "started a 7-day free trial", p: "Free trial" }
   ];
   for (var i = members.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
@@ -43,7 +49,7 @@
     card.innerHTML =
       '<div class="em-sp-x">&times;</div>' +
       '<div class="em-sp-av">' + m.n.charAt(0) + "</div>" +
-      '<div><div class="em-sp-name">' + m.n + " joined EdgeMatrix Pro</div>" +
+      '<div><div class="em-sp-name">' + m.n + " " + m.h + "</div>" +
       '<div class="em-sp-sub"><b>&#10003; Verified</b> &middot; ' + m.p + "</div></div>";
     wrap.appendChild(card);
     requestAnimationFrame(function () { card.classList.add("show"); });
