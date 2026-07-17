@@ -752,6 +752,21 @@
     if (window.tolt_referral) { updateButtonUrls(); }
   });
 </script>
+<!-- GA conversion: checkout intent when a Stripe payment button is clicked -->
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest ? e.target.closest('a[href^="https://buy.stripe.com"]') : null;
+    if(!a) return;
+    var isTrial = a.href.indexOf('eVqaEZd6C72X9Sr54c4ZG09') !== -1;
+    if (typeof gtag === 'function') {
+      gtag('event', 'begin_checkout', {
+        currency: 'USD',
+        value: isTrial ? 9.99 : 97,
+        items: [{ item_name: isTrial ? 'EdgeMatrix Pro — 7-Day Trial' : 'EdgeMatrix Pro — Lifetime' }]
+      });
+    }
+  }, true);
+</script>
 <script src="em-social.js"></script>
 </body>
 </html>
