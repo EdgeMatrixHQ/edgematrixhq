@@ -24,6 +24,7 @@
     { n: "Willy S.", h: "joined EdgeMatrix Pro", p: "Lifetime member" },
     { n: "Leandro P.", h: "joined EdgeMatrix Pro", p: "Lifetime member" },
     { n: "Leroy P.", h: "joined EdgeMatrix Pro", p: "Lifetime member" },
+    { n: "Lesley F.", h: "joined EdgeMatrix Pro", p: "Lifetime member" },
     { n: "Vyacheslav M.", h: "joined EdgeMatrix Pro", p: "Pro member" },
     { n: "Sukhchain S.", h: "joined EdgeMatrix Pro", p: "Pro member" },
     { n: "Judah O.", h: "joined EdgeMatrix Pro", p: "Pro member" },
