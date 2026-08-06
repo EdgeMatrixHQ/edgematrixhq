@@ -555,7 +555,6 @@ const EM = {
     const pages = [
       { href: 'index.html', label: 'Home' },
       { href: 'pro.html', label: 'Pro' },
-      { href: 'free.html', label: 'Free Tool' },
       { href: 'creators.html', label: 'Creators' },
       { href: 'about.html', label: 'About' },
       { href: 'blog.html', label: 'Blog' },
