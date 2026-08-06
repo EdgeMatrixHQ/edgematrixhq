@@ -545,8 +545,8 @@ const EM = {
     if (document.querySelector('.em-announce')) return;
     const bar = document.createElement('a');
     bar.className = 'em-announce';
-    bar.href = 'pro.html';
-    bar.innerHTML = `NEW · START EDGEMATRIX PRO WITH A 7-DAY FREE TRIAL · CANCEL ANYTIME <span class="em-announce-arrow">→</span>`;
+    bar.href = 'creators.html';
+    bar.innerHTML = `NEW · YOUR FAVORITE CREATORS' INDICATORS ARE COMING TO EDGEMATRIX · JOIN THE WAITLIST <span class="em-announce-arrow">→</span>`;
     document.body.prepend(bar);
   },
 
@@ -556,7 +556,7 @@ const EM = {
       { href: 'index.html', label: 'Home' },
       { href: 'pro.html', label: 'Pro' },
       { href: 'free.html', label: 'Free Tool' },
-      { href: 'tools.html', label: 'Tools' },
+      { href: 'creators.html', label: 'Creators' },
       { href: 'about.html', label: 'About' },
       { href: 'blog.html', label: 'Blog' },
     ];
@@ -621,7 +621,7 @@ const EM = {
             <ul>
               <li><a href="pro.html">EdgeMatrix Pro</a></li>
               <li><a href="free.html">Sessions (Free)</a></li>
-              <li><a href="tools.html">All Tools</a></li>
+              <li><a href="creators.html">Creators</a></li>
               <li><a href="checkout.html">Pricing</a></li>
             </ul>
           </div>
