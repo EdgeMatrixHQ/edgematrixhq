@@ -539,6 +539,19 @@ const EM = {
       }
     `;
     document.head.appendChild(style);
+
+    // Favicon (applies to every page's browser tab)
+    if (!document.querySelector('link[rel="icon"]')) {
+      const fav = document.createElement('link');
+      fav.rel = 'icon';
+      fav.href = '/favicon.ico';
+      document.head.appendChild(fav);
+      const favPng = document.createElement('link');
+      favPng.rel = 'icon';
+      favPng.type = 'image/png';
+      favPng.href = '/favicon-96x96.png';
+      document.head.appendChild(favPng);
+    }
   },
 
   buildAnnounce() {
