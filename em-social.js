@@ -29,6 +29,7 @@
     { n: "Sukhchain S.", h: "joined EdgeMatrix Pro", p: "Pro member" },
     { n: "Judah O.", h: "joined EdgeMatrix Pro", p: "Pro member" },
     { n: "Christian D.", h: "joined EdgeMatrix Pro", p: "Pro member" },
+    { n: "Bryan G.", h: "joined EdgeMatrix Pro", p: "Pro member" },
     { n: "Luis A.", h: "started a 7-day free trial", p: "Free trial" },
     { n: "Emilis", h: "started a 7-day free trial", p: "Free trial" },
     { n: "Christian G.", h: "started a 7-day free trial", p: "Free trial" },
