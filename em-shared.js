@@ -568,7 +568,7 @@ const EM = {
     const pages = [
       { href: 'index.html', label: 'Home' },
       { href: 'pro.html', label: 'Pro' },
-      { href: 'creators.html', label: 'Creators' },
+      { href: 'creators.html', label: 'Indicators' },
       { href: 'about.html', label: 'About' },
       { href: 'blog.html', label: 'Blog' },
     ];
