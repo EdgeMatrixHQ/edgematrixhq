@@ -648,24 +648,44 @@ const EM = {
           <div class="em-footer-col">
             <h5>Follow</h5>
             <ul>
-              <li><a href="https://www.instagram.com/edgematrixhq" target="_blank">Instagram</a></li>
-              <li><a href="https://www.tiktok.com/@edgematrixhq" target="_blank">TikTok</a></li>
-              <li><a href="https://discord.gg/bqnkyTuyHg" target="_blank">Discord</a></li>
+              <li><a href="https://www.instagram.com/edgematrixhq" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+              <li><a href="https://www.tiktok.com/@edgematrixhq" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+              <li><a href="https://discord.gg/bqnkyTuyHg" target="_blank" rel="noopener noreferrer">Discord</a></li>
               <li><a href="mailto:hello@edgematrixhq.com">hello@edgematrixhq.com</a></li>
             </ul>
           </div>
         </div>
         <div class="em-footer-bottom">
-          <span class="em-footer-copy">© 2026 EDGEMATRIX — ALL RIGHTS RESERVED · <a href="https://billing.stripe.com/p/login/9B6cN72rYdrlc0zgMU4ZG00" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Manage subscription</a></span>
+          <span class="em-footer-copy">© 2026 EDGEMATRIX · ALL RIGHTS RESERVED</span>
           <div class="em-footer-social">
-            <a href="https://www.instagram.com/edgematrixhq" target="_blank">INSTAGRAM</a>
-            <a href="https://www.tiktok.com/@edgematrixhq" target="_blank">TIKTOK</a>
-            <a href="https://discord.gg/bqnkyTuyHg" target="_blank">DISCORD</a>
+            <a href="https://www.instagram.com/edgematrixhq" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
+            <a href="https://www.tiktok.com/@edgematrixhq" target="_blank" rel="noopener noreferrer">TIKTOK</a>
+            <a href="https://discord.gg/bqnkyTuyHg" target="_blank" rel="noopener noreferrer">DISCORD</a>
           </div>
         </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.06); margin-top:22px; padding-top:20px; display:flex; flex-wrap:wrap; gap:10px 22px; justify-content:center;">
+          <a href="privacy.html" style="font-size:12px; color:#6a6a77; text-decoration:none;">Privacy Policy</a>
+          <a href="terms.html" style="font-size:12px; color:#6a6a77; text-decoration:none;">Terms of Service</a>
+          <a href="disclaimer.html" style="font-size:12px; color:#6a6a77; text-decoration:none;">Disclaimer</a>
+          <a href="https://billing.stripe.com/p/login/9B6cN72rYdrlc0zgMU4ZG00" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:#6a6a77; text-decoration:none;">Manage Subscription</a>
+        </div>
+        <p style="max-width:920px; margin:16px auto 0; text-align:center; font-size:11px; line-height:1.75; color:#4a4a55;">
+          EdgeMatrix provides charting and execution tools that run on TradingView. It is not financial advice, and nothing on this site is a recommendation to buy or sell any financial instrument. Trading carries a substantial risk of loss and is not suitable for every investor. Individual results vary, and past performance does not guarantee future results. By using this site and our products you agree to our <a href="terms.html" style="color:#5a5a66;">Terms of Service</a> and <a href="privacy.html" style="color:#5a5a66;">Privacy Policy</a>.
+        </p>
       </div>
     `;
     document.body.appendChild(footer);
+
+    // Cookie consent notice (shows once, remembered locally)
+    try {
+      if (!localStorage.getItem('em_cookie_ok')) {
+        var cn = document.createElement('div');
+        cn.style.cssText = 'position:fixed; left:16px; right:16px; bottom:16px; max-width:440px; margin:0 auto; z-index:9998; background:#141416; border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:15px 17px; display:flex; gap:14px; align-items:center; box-shadow:0 14px 44px rgba(0,0,0,0.55);';
+        cn.innerHTML = '<span style="font-size:12.5px; color:#c9c9d0; line-height:1.6;">We use cookies for analytics to improve the site. See our <a href="privacy.html" style="color:#C0303F; text-decoration:none;">Privacy Policy</a>.</span><button type="button" style="flex:none; background:#8B1E2D; color:#fff; border:none; border-radius:8px; padding:8px 16px; font-size:13px; font-weight:600; cursor:pointer;">Got it</button>';
+        cn.querySelector('button').addEventListener('click', function(){ try { localStorage.setItem('em_cookie_ok','1'); } catch(e){} cn.remove(); });
+        document.body.appendChild(cn);
+      }
+    } catch (e) {}
   },
 
   initReveal() {
