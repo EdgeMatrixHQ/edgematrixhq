@@ -348,6 +348,17 @@
   .pro-hero h1 { letter-spacing: -2px; }
   .pain-block { padding: 20px; }
 }
+
+/* ── VIDEO DEMO ─────────────────────────────────────── */
+.video-section { padding: 80px 24px 96px; text-align: center; position: relative; }
+.video-section-inner { max-width: 880px; margin: 0 auto; }
+.video-prompt { font-size: 15px; color: #888899; letter-spacing: 0.5px; margin-bottom: 32px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.video-prompt-icon { width: 28px; height: 28px; background: rgba(212,43,64,0.12); border: 1px solid rgba(212,43,64,0.35); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.video-prompt-icon svg { width: 10px; height: 10px; fill: #D42B40; margin-left: 2px; }
+.video-embed-wrap { position: relative; width: 100%; padding-bottom: 56.25%; background: #0D0D10; border: 1px solid rgba(166,30,46,0.25); border-radius: 8px; overflow: hidden; box-shadow: 0 32px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(166,30,46,0.08); }
+.video-embed-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+.video-caption { margin-top: 20px; font-size: 13px; color: #444455; letter-spacing: 0.5px; }
+@media (max-width: 640px) { .video-section { padding: 56px 16px 72px; } }
 </style>
 </head>
 <body>
@@ -382,6 +393,38 @@
     </div>
   </div>
 </div>
+
+<div class="em-divider"></div>
+
+<!-- ── VIDEO DEMO ────────────────────────────────────────── -->
+<section class="video-section em-reveal" id="video">
+  <div class="video-section-inner">
+    <div class="em-section-label">See It In Action</div>
+    <h2 class="em-section-title" style="font-size:clamp(28px,3.5vw,44px); margin-bottom:16px;">
+      Watch EdgeMatrix Pro work.
+    </h2>
+    <p class="em-section-sub" style="margin-bottom:36px; max-width:560px; margin-left:auto; margin-right:auto;">
+      Two minutes. Checklist, live score, and position size calculator, all running inside TradingView.
+    </p>
+    <div class="video-prompt">
+      <div class="video-prompt-icon">
+        <svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 10,6 0,12"/></svg>
+      </div>
+      Watch the full product walkthrough below
+    </div>
+
+    <div class="video-embed-wrap em-reveal" data-delay="100">
+      <iframe
+        src="https://www.youtube.com/embed/B7Re2g4jP88?rel=0&modestbranding=1&color=white&iv_load_policy=3"
+        title="EdgeMatrix Pro — Product Demo"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <p class="video-caption">EdgeMatrix Pro — available now on TradingView · 7-day free trial, then $9.99/month</p>
+  </div>
+</section>
 
 <div class="em-divider"></div>
 
