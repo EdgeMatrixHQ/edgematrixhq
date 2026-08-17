@@ -642,7 +642,7 @@ const EM = {
             <ul>
               <li><a href="about.html">About</a></li>
               <li><a href="blog.html">Blog</a></li>
-              <li><a href="mailto:hello@edgematrixhq.com">Contact</a></li>
+              <li><a href="mailto:hello@edgematrixhq.com" class="em-contact">Contact</a></li>
             </ul>
           </div>
           <div class="em-footer-col">
@@ -651,7 +651,7 @@ const EM = {
               <li><a href="https://www.instagram.com/edgematrixhq" target="_blank" rel="noopener noreferrer">Instagram</a></li>
               <li><a href="https://www.tiktok.com/@edgematrixhq" target="_blank" rel="noopener noreferrer">TikTok</a></li>
               <li><a href="https://discord.gg/bqnkyTuyHg" target="_blank" rel="noopener noreferrer">Discord</a></li>
-              <li><a href="mailto:hello@edgematrixhq.com">hello@edgematrixhq.com</a></li>
+              <li><a href="mailto:hello@edgematrixhq.com" class="em-contact">hello@edgematrixhq.com</a></li>
             </ul>
           </div>
         </div>
@@ -675,6 +675,18 @@ const EM = {
       </div>
     `;
     document.body.appendChild(footer);
+
+    // Contact links: always work. Copy the address + toast, and still open a mail app if one exists.
+    footer.querySelectorAll('.em-contact').forEach(function(a){
+      a.addEventListener('click', function(){
+        try { if (navigator.clipboard) navigator.clipboard.writeText('hello@edgematrixhq.com'); } catch(e){}
+        var t = document.createElement('div');
+        t.textContent = 'Email copied: hello@edgematrixhq.com';
+        t.style.cssText = 'position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:9999; background:#141416; color:#E5E5E5; border:1px solid rgba(139,30,45,0.55); border-radius:10px; padding:12px 18px; font-size:13px; box-shadow:0 12px 40px rgba(0,0,0,0.55);';
+        document.body.appendChild(t);
+        setTimeout(function(){ t.remove(); }, 2600);
+      });
+    });
 
     // Cookie consent notice (shows once, remembered locally)
     try {
