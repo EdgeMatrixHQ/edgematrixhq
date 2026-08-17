@@ -559,7 +559,7 @@ const EM = {
     const bar = document.createElement('a');
     bar.className = 'em-announce';
     bar.href = 'creators.html';
-    bar.innerHTML = `NEW · YOUR FAVORITE CREATORS' INDICATORS ARE COMING TO EDGEMATRIX · JOIN THE WAITLIST <span class="em-announce-arrow">→</span>`;
+    bar.innerHTML = `NEW · NOLIMIT BY LUCA IS LIVE ON EDGEMATRIX · GET IT NOW <span class="em-announce-arrow">→</span>`;
     document.body.prepend(bar);
   },
 

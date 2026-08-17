@@ -12,7 +12,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Creators — Trading Indicators From the Traders You Follow | EdgeMatrix</title>
-<meta name="description" content="Indicators built with the traders you follow, powered by EdgeMatrix. The tools top traders actually use, all in one place, plus the EdgeMatrix Pro discipline system. Join the waitlist for the next drop."/>
+<meta name="description" content="Indicators built with the traders you follow, powered by EdgeMatrix. NOLIMIT, built with Luca, is live now, plus the EdgeMatrix Pro discipline system. All the tools top traders actually use, in one place."/>
 <link rel="canonical" href="https://edgematrixhq.com/creators.html"/>
 <meta name="robots" content="index, follow"/>
 <meta property="og:type" content="website"/>
@@ -51,7 +51,7 @@
 .cr-card .em-btn { margin-top:auto; }
 
 /* Creator drop — coming soon card */
-.drop { margin-top:24px; background:#0F0F12; border:1px solid rgba(166,30,46,0.2); border-radius:8px; overflow:hidden; display:grid; grid-template-columns:1fr 1fr; }
+.drop { margin-top:24px; background:#0F0F12; border:1px solid rgba(166,30,46,0.2); border-radius:8px; overflow:hidden; }
 .drop-preview { position:relative; background:#0A0A0C; border-right:1px solid rgba(166,30,46,0.12); padding:40px; display:flex; align-items:center; justify-content:center; min-height:320px; }
 .drop-blur { filter:blur(7px); opacity:0.55; pointer-events:none; user-select:none; width:100%; }
 .drop-chip { display:flex; align-items:center; justify-content:space-between; background:#0F0F12; border:1px solid rgba(166,30,46,0.2); border-radius:4px; padding:12px 16px; margin-bottom:10px; font-family:'Space Mono',monospace; font-size:12px; color:#888899; }
@@ -66,6 +66,9 @@
 .drop-info .cr-by { margin-bottom:16px; }
 .drop-info > p { font-size:15px; color:#888899; line-height:1.8; margin-bottom:20px; }
 .drop-info .cr-features { margin-bottom:26px; }
+
+/* Creator banner */
+.drop-banner { display:block; width:100%; height:auto; border-bottom:1px solid rgba(166,30,46,0.15); }
 
 /* Waitlist form */
 .wl { margin-top:auto; }
@@ -112,26 +115,18 @@
     <div class="em-reveal" style="max-width:600px;">
       <div class="em-section-label">Creator Drops</div>
       <h2 class="em-section-title">Built with the traders you follow.</h2>
-      <p class="em-section-sub">We build custom indicators with the traders you already follow and drop them right here, first. The next one is loading. Get on the list before it goes live.</p>
+      <p class="em-section-sub">We build custom indicators with the traders you already follow and drop them right here, first. NOLIMIT, built with Luca, is live now.</p>
     </div>
 
     <div class="drop em-reveal" data-delay="80">
-      <div class="drop-preview">
-        <div class="drop-blur">
-          <div class="drop-chip"><span>Sessions + Power Hour</span><b>ON</b></div>
-          <div class="drop-chip"><span>3 SMMAs · 8 / 50 / 200</span><b>ON</b></div>
-          <div class="drop-chip"><span>ATR + Position Sizer</span><b>ON</b></div>
-          <div class="drop-chip"><span>Previous Day High / Low</span><b>ON</b></div>
-        </div>
-        <div class="drop-lock">
-          <div class="drop-lock-icon">&#128274;</div>
-          <div class="drop-lock-text">Coming Soon</div>
-        </div>
-      </div>
+      <img class="drop-banner" src="luca-banner.jpg" alt="NOLIMIT by Luca — what's inside the indicator, powered by EdgeMatrix" />
       <div class="drop-info">
-        <div class="drop-badge">Coming Soon</div>
+        <div class="drop-badge" style="background:rgba(29,185,84,0.1); color:#1DB954; border-color:rgba(29,185,84,0.25);">Live Now</div>
         <h3>NOLIMIT</h3>
-        <div class="cr-by">by <a href="https://instagram.com/luca.nolimit" target="_blank" style="color:#A61E2E; text-decoration:none;"><b>Luca</b></a> · powered by EdgeMatrix</div>
+        <div class="cr-by">by <a href="https://instagram.com/luca.nolimit" target="_blank" rel="noopener noreferrer" style="color:#A61E2E; text-decoration:none;"><b>Luca</b></a> · powered by EdgeMatrix</div>
+        <div style="display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap;">
+          <a href="https://instagram.com/luca.nolimit" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:#888899; text-decoration:none; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:6px 12px;">Instagram</a>
+        </div>
         <p>An all-in-one chart toolkit built around the way Luca actually trades. Sessions, a Power Hour marker, three SMMAs, ATR, previous-day levels, and an ATR-based position sizer, all in one indicator.</p>
         <ul class="cr-features">
           <li>Session boxes + Power Hour</li>
@@ -139,18 +134,11 @@
           <li>ATR position size calculator</li>
           <li>Previous day high &amp; low</li>
         </ul>
-        <div class="wl">
-          <div class="wl-label">Be first to get it</div>
-          <form class="wl-form" id="wl-form" action="https://0b81c5db.sibforms.com/serve/MUIFANVOHLhbaMUeJVPbUa1kvg6MQDAYSoS561anTtiDnOanEcvjX6_mIeFV7MNXBLmnharjQomoRR3CJ9ShfZvx9bqYUc2YW5sNy9qyePdTtR9R49rwRoqouHP2fcpe-RP8t3oBDRLD7dv7dt2e2uY3UWYrRcRQAYP22L2FlO9PIz1fMQcHHRRFwoDWjtdx-Ck2sgCTlvYMNPIi8Q==" method="POST" target="wl-sink">
-            <input type="email" name="EMAIL" class="em-input" placeholder="you@email.com" required/>
-            <input type="text" name="email_address_check" value="" style="display:none;" tabindex="-1" autocomplete="off"/>
-            <input type="hidden" name="locale" value="en"/>
-            <input type="hidden" name="html_type" value="simple"/>
-            <button type="submit" class="em-btn em-btn-primary">Join the Waitlist →</button>
-          </form>
-          <p class="wl-note">No spam. One email the day it drops.</p>
-          <p class="wl-success" id="wl-success">You're on the list. We'll email you the second it's live.</p>
+        <div style="margin-top:auto; display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="https://buy.stripe.com/9B614p9Uqcnh5CbdAI4ZG0a" target="_blank" rel="noopener noreferrer" class="em-btn em-btn-primary">Get NOLIMIT · $9.99/mo →</a>
+          <a href="https://buy.stripe.com/9B6eVf3w2871d4D68g4ZG0b" target="_blank" rel="noopener noreferrer" class="em-btn em-btn-ghost">Lifetime · $97 ↗</a>
         </div>
+        <p class="wl-note" style="margin-top:14px;">Delivered to your TradingView within 24 hours.</p>
       </div>
     </div>
   </div>
