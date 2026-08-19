@@ -38,24 +38,50 @@
     { n: "Julio C.", h: "started a 7-day free trial", p: "Free trial" },
     { n: "Anmol S.", h: "started a 7-day free trial", p: "Free trial" },
 
-    /* NOLIMIT buyers — real paid customers, no trials on this product. */
-    { n: "Kristian C.", h: "got the NOLIMIT indicator", p: "$97 Lifetime" },
-    { n: "Daniel F.", h: "got the NOLIMIT indicator", p: "$97 Lifetime" },
-    { n: "Kadir G.", h: "got the NOLIMIT indicator", p: "$97 Lifetime" },
-    { n: "Ryan S.", h: "got the NOLIMIT indicator", p: "$9.99/mo" },
-    { n: "Jennifer C.", h: "got the NOLIMIT indicator", p: "$9.99/mo" },
-    { n: "Brandon S.", h: "got the NOLIMIT indicator", p: "$9.99/mo" },
-    { n: "Albert T.", h: "got the NOLIMIT indicator", p: "$9.99/mo" }
+    /* NOLIMIT buyers — real paid customers, no trials on this product.
+       nl:true weights these to show more often (see rotation below). */
+    { n: "Kristian C.", h: "got the NOLIMIT indicator", p: "$97 Lifetime", nl: true },
+    { n: "Daniel F.", h: "got the NOLIMIT indicator", p: "$97 Lifetime", nl: true },
+    { n: "Kadir G.", h: "got the NOLIMIT indicator", p: "$97 Lifetime", nl: true },
+    { n: "Ryan S.", h: "got the NOLIMIT indicator", p: "$9.99/mo", nl: true },
+    { n: "Jennifer C.", h: "got the NOLIMIT indicator", p: "$9.99/mo", nl: true },
+    { n: "Brandon S.", h: "got the NOLIMIT indicator", p: "$9.99/mo", nl: true },
+    { n: "Albert T.", h: "got the NOLIMIT indicator", p: "$9.99/mo", nl: true }
   ];
-  for (var i = members.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var t = members[i]; members[i] = members[j]; members[j] = t;
+
+  /* Rotation: NOLIMIT gets 2 of every 3 slots because it's the new product.
+     Each pool cycles through fully before reshuffling, so nothing repeats
+     back to back and every real customer gets shown. */
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  var nlPool = shuffle(members.filter(function (m) { return m.nl; }));
+  var otherPool = shuffle(members.filter(function (m) { return !m.nl; }));
+  var nlAt = 0, otherAt = 0, slot = 0;
+
+  function nextMember() {
+    var wantNL = (slot % 3 !== 2);
+    slot++;
+    if (wantNL && nlPool.length) {
+      if (nlAt >= nlPool.length) { shuffle(nlPool); nlAt = 0; }
+      return nlPool[nlAt++];
+    }
+    if (!otherPool.length) {
+      if (nlAt >= nlPool.length) { shuffle(nlPool); nlAt = 0; }
+      return nlPool[nlAt++];
+    }
+    if (otherAt >= otherPool.length) { shuffle(otherPool); otherAt = 0; }
+    return otherPool[otherAt++];
   }
 
-  var idx = 0, dismissed = false;
+  var dismissed = false;
   function show() {
     if (dismissed) return;
-    var m = members[idx % members.length]; idx++;
+    var m = nextMember();
     var card = document.createElement("div");
     card.className = "em-sp";
     card.innerHTML =
@@ -73,5 +99,5 @@
     setTimeout(hide, 6000);
     setTimeout(show, 30000); // next in 30s
   }
-  setTimeout(show, 10000); // first at 10s
+  setTimeout(show, 5000);  // first at 5s
 })();
