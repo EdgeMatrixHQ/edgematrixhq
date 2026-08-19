@@ -36,7 +36,16 @@
     { n: "Christian G.", h: "started a 7-day free trial", p: "Free trial" },
     { n: "Adebanjo O.", h: "started a 7-day free trial", p: "Free trial" },
     { n: "Julio C.", h: "started a 7-day free trial", p: "Free trial" },
-    { n: "Anmol S.", h: "started a 7-day free trial", p: "Free trial" }
+    { n: "Anmol S.", h: "started a 7-day free trial", p: "Free trial" },
+
+    /* NOLIMIT buyers — real paid customers, no trials on this product. */
+    { n: "Kristian C.", h: "got the NOLIMIT indicator", p: "$97 Lifetime" },
+    { n: "Daniel F.", h: "got the NOLIMIT indicator", p: "$97 Lifetime" },
+    { n: "Kadir G.", h: "got the NOLIMIT indicator", p: "$97 Lifetime" },
+    { n: "Ryan S.", h: "got the NOLIMIT indicator", p: "$9.99/mo" },
+    { n: "Jennifer C.", h: "got the NOLIMIT indicator", p: "$9.99/mo" },
+    { n: "Brandon S.", h: "got the NOLIMIT indicator", p: "$9.99/mo" },
+    { n: "Albert T.", h: "got the NOLIMIT indicator", p: "$9.99/mo" }
   ];
   for (var i = members.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
@@ -62,7 +71,7 @@
     }
     card.querySelector(".em-sp-x").addEventListener("click", function () { dismissed = true; hide(); });
     setTimeout(hide, 6000);
-    setTimeout(show, 48000 + Math.random() * 22000); // next in ~48-70s
+    setTimeout(show, 30000); // next in 30s
   }
-  setTimeout(show, 5000); // first at 5s
+  setTimeout(show, 10000); // first at 10s
 })();

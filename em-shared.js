@@ -847,3 +847,29 @@ const EM = {
 };
 
 window.EM = EM;
+
+/* ---------------------------------------------------------------
+   Social proof popup loader.
+   em-social.js has been in the repo since the "name add" commit but
+   no page ever loaded it, so the popup never ran. This injects it on
+   selling pages only, skipping checkout, thank-you and legal pages.
+   --------------------------------------------------------------- */
+(function () {
+  var path = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  if (path === '') path = 'index.html';
+  var skip = [
+    'checkout.html',
+    'thankyou.html',
+    'purchase-thankyou.html',
+    'creators-thankyou.html',
+    'nolimit-thankyou.html',
+    'privacy.html',
+    'terms.html',
+    'disclaimer.html'
+  ];
+  if (skip.indexOf(path) !== -1) return;
+  var s = document.createElement('script');
+  s.src = 'em-social.js';
+  s.defer = true;
+  document.head.appendChild(s);
+})();
