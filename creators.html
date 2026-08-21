@@ -70,6 +70,13 @@
 /* Creator banner */
 .drop-banner { display:block; width:100%; height:auto; border-bottom:1px solid rgba(166,30,46,0.15); }
 
+/* Creator video */
+.drop-video { position:relative; width:100%; padding-top:56.25%; background:#0A0A0C; border-bottom:1px solid rgba(166,30,46,0.15); }
+.drop-video iframe { position:absolute; inset:0; width:100%; height:100%; border:0; display:block; }
+.drop-vlabel { display:flex; align-items:center; gap:8px; font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:2px; color:#A61E2E; text-transform:uppercase; padding:16px 44px 0; }
+.drop-vlabel::before { content:''; width:5px; height:5px; background:#D42B40; border-radius:50%; box-shadow:0 0 6px #D42B40; flex-shrink:0; }
+@media(max-width:900px){ .drop-vlabel { padding:14px 32px 0; } }
+
 
 /* Waitlist form */
 .wl { margin-top:auto; }
@@ -121,12 +128,23 @@
 
     <div class="drop em-reveal" data-delay="80">
       <img class="drop-banner" src="luca-banner.jpg" alt="NOLIMIT by Luca — what's inside the indicator, powered by EdgeMatrix" />
+      <div class="drop-vlabel">Luca walks you through it</div>
+      <div class="drop-video">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/XRmMGT7x9iw?rel=0&amp;modestbranding=1"
+          title="ALL-IN-ONE Trading Indicator: Auto Stop Loss + Risk Calculator + Sessions — NOLIMIT by Luca"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
       <div class="drop-info">
         <div class="drop-badge" style="background:rgba(29,185,84,0.1); color:#1DB954; border-color:rgba(29,185,84,0.25);">Live Now</div>
         <h3>NOLIMIT</h3>
         <div class="cr-by">by <a href="https://instagram.com/luca.nolimit" target="_blank" rel="noopener noreferrer" style="color:#A61E2E; text-decoration:none;"><b>Luca</b></a> · powered by EdgeMatrix</div>
         <div style="display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap;">
           <a href="https://instagram.com/luca.nolimit" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:#888899; text-decoration:none; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:6px 12px;">Instagram</a>
+          <a href="https://www.youtube.com/@Luca.nolimit" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:#888899; text-decoration:none; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:6px 12px;">YouTube</a>
         </div>
         <p>An all-in-one chart toolkit built around the way Luca actually trades. Sessions, a Power Hour marker, three SMMAs, ATR, previous-day levels, and an ATR-based position sizer, all in one indicator.</p>
         <ul class="cr-features">
