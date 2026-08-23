@@ -111,6 +111,28 @@
 .tl-chip.on { color:#E8E8EC; border-color:rgba(166,30,46,0.45); background:#141418; }
 .tl-chip.off { opacity:0.4; }
 
+/* currency dropdown */
+.tl-cur-wrap { position:relative; }
+.tl-cur-btn { background:#0A0A0C; border:1px solid rgba(255,255,255,0.08); color:#E8E8EC; font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; padding:8px 13px; border-radius:4px; cursor:pointer; display:flex; align-items:center; gap:8px; transition:all 0.2s; }
+.tl-cur-btn:hover, .tl-cur-btn.open { border-color:rgba(166,30,46,0.45); background:#141418; }
+.tl-cur-btn .caret { color:#666677; font-size:8px; transition:transform 0.2s; }
+.tl-cur-btn.open .caret { transform:rotate(180deg); }
+.tl-cur-count { background:rgba(166,30,46,0.18); color:#D42B40; border-radius:2px; padding:1px 6px; font-size:9px; }
+.tl-cur-panel { display:none; position:absolute; right:0; top:calc(100% + 8px); z-index:60; width:260px;
+  background:#0F0F12; border:1px solid rgba(166,30,46,0.28); border-radius:8px; padding:10px; box-shadow:0 18px 60px rgba(0,0,0,0.7); }
+.tl-cur-panel.show { display:block; }
+.tl-cur-head { display:flex; justify-content:space-between; align-items:center; padding:4px 6px 10px; border-bottom:1px solid rgba(255,255,255,0.06); margin-bottom:8px; }
+.tl-cur-head span { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1.5px; color:#666677; text-transform:uppercase; }
+.tl-cur-head button { background:none; border:none; color:#D42B40; font-family:'Space Mono',monospace; font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; cursor:pointer; padding:2px 6px; }
+.tl-cur-head button:hover { color:#E8E8EC; }
+.tl-cur-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; }
+.tl-cur-item { display:flex; align-items:center; gap:9px; padding:8px 8px; border-radius:4px; cursor:pointer; transition:background 0.15s; }
+.tl-cur-item:hover { background:rgba(255,255,255,0.04); }
+.tl-cur-box { width:14px; height:14px; border-radius:3px; border:1px solid rgba(255,255,255,0.18); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:9px; color:#fff; }
+.tl-cur-item.on .tl-cur-box { background:#A61E2E; border-color:#A61E2E; }
+.tl-cur-code { font-family:'Space Mono',monospace; font-size:11px; font-weight:700; color:#E8E8EC; letter-spacing:0.5px; }
+.tl-cur-item:not(.on) .tl-cur-code { color:#666677; }
+
 .tl-daygroup { margin-bottom:26px; }
 .tl-dayhead { display:flex; align-items:baseline; gap:12px; padding:0 0 10px; border-bottom:1px solid rgba(166,30,46,0.18); margin-bottom:4px; flex-wrap:wrap; }
 .tl-dayhead h4 { font-size:15px; font-weight:700; letter-spacing:-0.3px; }
@@ -173,7 +195,13 @@
   .tl-tab .sm { display:inline; }
   .tl-tabs { width:100%; }
   .tl-chip { padding:11px 14px; min-height:40px; }
-  .tl-filters { justify-content:space-between; }
+  .tl-filters { justify-content:space-between; position:relative; }
+  /* anchor the dropdown to the whole filter row so it can never hang off screen */
+  .tl-cur-wrap { position:static; }
+  .tl-cur-btn { min-height:40px; }
+  .tl-cur-panel { left:0; right:0; width:auto; }
+  .tl-cur-grid { grid-template-columns:1fr 1fr 1fr; }
+  .tl-cur-item { padding:11px 6px; justify-content:center; }
   .tl-row-name { width:56px; font-size:9px; }
   .tl-axis { padding-left:68px; }
   .tl-axis span:nth-child(even) { display:none; }
@@ -264,6 +292,16 @@
           <div class="tl-chip on" data-imp="high"><i style="background:#D42B40"></i> High</div>
           <div class="tl-chip on" data-imp="med"><i style="background:#E5820A"></i> Medium</div>
           <div class="tl-chip on" data-imp="low"><i style="background:#555566"></i> Low</div>
+          <div class="tl-cur-wrap">
+            <button class="tl-cur-btn" id="tl-cur-btn">Currencies <span class="tl-cur-count" id="tl-cur-count">All</span> <span class="caret">▼</span></button>
+            <div class="tl-cur-panel" id="tl-cur-panel">
+              <div class="tl-cur-head">
+                <span>Show</span>
+                <div><button data-all="1">All</button><button data-all="0">None</button></div>
+              </div>
+              <div class="tl-cur-grid" id="tl-cur-grid"></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -461,7 +499,8 @@ function renderLive(){
    ECONOMIC CALENDAR ENGINE
    Everything is generated from a rule or a published schedule.
    ========================================================= */
-var ET = 'America/New_York', LN = 'Europe/London', TK = 'Asia/Tokyo', SY = 'Australia/Sydney', FR = 'Europe/Berlin';
+var ET = 'America/New_York', LN = 'Europe/London', TK = 'Asia/Tokyo', SY = 'Australia/Sydney',
+    FR = 'Europe/Berlin', NZ = 'Pacific/Auckland', CH = 'Europe/Zurich', CN = 'Asia/Shanghai';
 
 function nthWeekdayOfMonth(y, m, weekday, n){        /* m 1-12, weekday 0=Sun */
   var d = new Date(Date.UTC(y, m-1, 1));
@@ -599,6 +638,37 @@ function buildMonth(y, m){
   var rbaTue = nthWeekdayOfMonth(y, m, 2, 1);
   out.push(ev(SY,y,m,rbaTue.getUTCDate(),14,30,'AUD','high','RBA Rate Decision','Reserve Bank of Australia', true));
   out.push(ev(SY,y,m,18,11,30,'AUD','high','Australia Employment Change','Aussie jobs data', true));
+
+  /* ---- New Zealand ---- */
+  var RBNZ_MONTHS = [2,4,5,7,8,10,11];      /* the RBNZ meets seven times a year */
+  if (RBNZ_MONTHS.indexOf(m) !== -1){
+    var rbnzWed = nthWeekdayOfMonth(y, m, 3, 4);
+    out.push(ev(NZ,y,m,rbnzWed.getUTCDate(),14,0,'NZD','high','RBNZ Rate Decision','Reserve Bank of New Zealand', true));
+  }
+  if ([1,4,7,10].indexOf(m) !== -1)
+    out.push(ev(NZ,y,m,17,10,45,'NZD','high','New Zealand CPI','Quarterly inflation, drives RBNZ pricing', true));
+  if ([2,5,8,11].indexOf(m) !== -1)
+    out.push(ev(NZ,y,m,5,10,45,'NZD','high','New Zealand Employment Change','Quarterly jobs and unemployment rate', true));
+  if ([3,6,9,12].indexOf(m) !== -1)
+    out.push(ev(NZ,y,m,19,10,45,'NZD','med','New Zealand GDP','Quarterly growth', true));
+
+  /* ---- Switzerland ---- */
+  if ([3,6,9,12].indexOf(m) !== -1){
+    var snbThu = nthWeekdayOfMonth(y, m, 4, 3);
+    out.push(ev(CH,y,m,snbThu.getUTCDate(),9,30,'CHF','high','SNB Policy Rate','The Swiss National Bank meets quarterly', true));
+  }
+  out.push(ev(CH,y,m,3,8,30,'CHF','med','Swiss CPI','Swiss inflation', true));
+  out.push(ev(CH,y,m,30,9,0,'CHF','low','KOF Economic Barometer','Leading indicator for the Swiss economy', true));
+
+  /* ---- China ---- */
+  out.push(ev(CN,y,m,1,9,45,'CNY','med','Caixin Manufacturing PMI','Private sector factory survey', true));
+  out.push(ev(CN,y,m,7,10,0,'CNY','med','China Trade Balance','Exports and imports, a global demand read', true));
+  out.push(ev(CN,y,m,9,9,30,'CNY','med','China CPI','Chinese inflation', true));
+  out.push(ev(CN,y,m,15,10,0,'CNY','med','China Retail Sales and Industrial Production','Monthly activity data', true));
+  if ([1,4,7,10].indexOf(m) !== -1)
+    out.push(ev(CN,y,m,17,10,0,'CNY','high','China GDP','Quarterly growth in the second largest economy', true));
+  var lastDay = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  out.push(ev(CN,y,m,lastDay,9,30,'CNY','high','China Manufacturing PMI','Official NBS survey, above 50 is expansion', true));
 
   /* ---- Canada ---- */
   out.push(ev(ET,y,m,nfp.getUTCDate(),8,30,'CAD','high','Canada Employment Change','Often lands the same minute as US payrolls'));
@@ -849,6 +919,84 @@ var WHY = {
     down:'Falling orders warn of a pullback in investment.',
     watch:'A single aircraft order can swing the headline by double digits. Look at orders excluding transport for the real signal.'
   },
+  'RBNZ Rate Decision': {
+    what:'The Reserve Bank of New Zealand sets the Official Cash Rate. New Zealand is a small open economy, so the kiwi reacts sharply to policy surprises.',
+    up:'A hike or hawkish statement lifts the <b>New Zealand dollar</b>, often more violently than the equivalent move elsewhere because liquidity is thinner.',
+    down:'A cut or dovish tone <b>weakens the kiwi</b>.',
+    watch:'NZD is one of the least liquid majors. Moves overshoot and then retrace, so the first candle is rarely the honest one.'
+  },
+  'New Zealand CPI': {
+    what:'New Zealand publishes inflation quarterly rather than monthly, which makes each release carry three months of information at once.',
+    up:'Hotter inflation forces the RBNZ to stay tight and <b>supports the kiwi</b>.',
+    down:'A soft print opens the door to cuts and <b>pressures it</b>.',
+    watch:'Because it is quarterly, the surprise is usually bigger than a monthly print elsewhere. Expect a larger move than the currency size suggests.'
+  },
+  'New Zealand Employment Change': {
+    what:'Quarterly jobs data including the unemployment rate and labour cost index.',
+    up:'Strong hiring <b>supports the New Zealand dollar</b>.',
+    down:'Weak jobs <b>weigh on it</b>.',
+    watch:'The labour cost index inside the report is the wage inflation read the RBNZ actually watches.'
+  },
+  'New Zealand GDP': {
+    what:'Quarterly economic output for New Zealand.',
+    up:'Faster growth <b>supports the kiwi</b>.',
+    down:'Contraction <b>weakens it</b>.',
+    watch:'It arrives late relative to other data, so much of the story is already known and the reaction is usually modest.'
+  },
+  'SNB Policy Rate': {
+    what:'The Swiss National Bank sets rates just four times a year, so each meeting carries a full quarter of expectation.',
+    up:'A hike or hawkish shift strengthens the <b>Swiss franc</b>.',
+    down:'A cut <b>weakens it</b>.',
+    watch:'The franc is a safe haven, so it often moves on global fear rather than Swiss data. A risk off day can overwhelm whatever the SNB just said.'
+  },
+  'Swiss CPI': {
+    what:'Swiss inflation, which has historically run far lower than the rest of Europe.',
+    up:'Higher inflation is hawkish for the SNB and <b>supports the franc</b>.',
+    down:'Soft inflation <b>weighs on it</b>.',
+    watch:'Swiss inflation is usually so contained that this rarely moves price much. It matters when it breaks out of its normal range.'
+  },
+  'KOF Economic Barometer': {
+    what:'A leading indicator combining many Swiss economic signals into one number.',
+    up:'A rising barometer points to expansion ahead.',
+    down:'A falling reading warns of slowdown.',
+    watch:'A minor release. Worth knowing about only if you specifically trade franc crosses.'
+  },
+  'China Manufacturing PMI': {
+    what:'The official government survey of Chinese factories. Above 50 means expansion. China is the largest buyer of industrial commodities on earth.',
+    up:'Chinese factory strength lifts commodity demand, which typically <b>supports the Australian and New Zealand dollars</b> and industrial metals.',
+    down:'Contraction in China <b>drags the Aussie and kiwi lower</b> and hits copper and iron ore.',
+    watch:'This moves AUD and NZD more than most Australian or New Zealand data does. If you trade those currencies, treat Chinese data as their real driver.'
+  },
+  'Caixin Manufacturing PMI': {
+    what:'A private survey of Chinese factories, weighted toward smaller and export focused firms than the official version.',
+    up:'Strength suggests broad based demand and <b>supports commodity currencies</b>.',
+    down:'Weakness <b>pressures them</b>.',
+    watch:'It frequently disagrees with the official PMI because it samples different companies. When the two conflict, the market usually trusts the official number.'
+  },
+  'China GDP': {
+    what:'Quarterly growth for the second largest economy in the world.',
+    up:'Faster Chinese growth lifts global demand expectations and <b>supports the Australian dollar</b> and commodities.',
+    down:'A miss raises global slowdown fears and <b>hits risk currencies</b>.',
+    watch:'Chinese GDP tends to land very close to the official target, so the surprise is usually small. The retail sales and industrial production released alongside it often tell more.'
+  },
+  'China CPI': {
+    what:'Chinese inflation. Persistent weakness here has been read as a signal of soft domestic demand.',
+    up:'Higher inflation suggests demand is recovering, which is mildly positive for <b>commodity currencies</b>.',
+    down:'Falling prices point to weak domestic demand and <b>weigh on the Aussie</b>.',
+    watch:'Unlike in the West, low Chinese inflation is treated as bad news rather than good, because it signals a demand problem rather than price stability.'
+  },
+  'China Trade Balance': {
+    what:'Chinese exports and imports. Imports in particular show how much raw material China is pulling in.',
+    up:'Strong imports mean strong commodity demand, which <b>supports the Australian dollar</b>.',
+    down:'Falling imports point to a slowdown and <b>pressure commodity currencies</b>.',
+    watch:'The release date drifts and the data is often distorted by Lunar New Year timing in the first quarter.'
+  },
+  'China Retail Sales and Industrial Production': {
+    what:'Monthly activity data covering both the Chinese consumer and Chinese factories.',
+    up:'Broad strength <b>supports commodity currencies</b> and global risk appetite.',
+    down:'Weakness <b>drags them lower</b>.',
+    watch:'Industrial production matters more than retail sales for the Aussie, because it drives demand for iron ore and coal.'
+  },
   'Industrial Production': {
     what:'Total output from factories, mines and utilities.',
     up:'Higher output is growth positive.',
@@ -906,7 +1054,9 @@ function renderCal(){
     groupBy = 'month';
   }
 
-  var evs = rangeEvents(from.getTime(), to.getTime()).filter(function(e){ return IMPS[e.imp]; });
+  var evs = rangeEvents(from.getTime(), to.getTime()).filter(function(e){
+    return IMPS[e.imp] && CURS[e.cur] !== false;
+  });
   var box = document.getElementById('tl-cal');
 
   var rolledNote = dayRolled
@@ -983,7 +1133,7 @@ document.getElementById('tl-tabs').addEventListener('click', function(e){
   if (VIEW === 'year' && prev !== 'year'){
     SAVED_IMPS = { high:IMPS.high, med:IMPS.med, low:IMPS.low };
     IMPS.med = false; IMPS.low = false;
-    syncChips();
+    syncChips();   /* deliberately not saved, this is a view quirk not a choice */
   } else if (prev === 'year' && VIEW !== 'year' && SAVED_IMPS){
     IMPS.high = SAVED_IMPS.high; IMPS.med = SAVED_IMPS.med; IMPS.low = SAVED_IMPS.low;
     SAVED_IMPS = null;
@@ -1002,7 +1152,92 @@ document.getElementById('tl-filters').addEventListener('click', function(e){
   var c = e.target.closest('.tl-chip'); if (!c) return;
   var k = c.getAttribute('data-imp');
   IMPS[k] = !IMPS[k];
-  syncChips(); renderCal();
+  syncChips(); renderCal(); savePrefs();
+});
+
+/* ---- currency filter ---- */
+var CUR_LIST = [
+  ['USD','US Dollar'], ['EUR','Euro'], ['GBP','Pound'], ['JPY','Yen'],
+  ['AUD','Aussie'], ['NZD','Kiwi'], ['CAD','Loonie'], ['CHF','Franc'], ['CNY','Yuan']
+];
+var CURS = {};
+CUR_LIST.forEach(function(c){ CURS[c[0]] = true; });
+
+/* ---------------------------------------------------------
+   REMEMBER THEIR FILTERS
+   Stored on their own device only. No account, nothing sent
+   anywhere, and it is a preference rather than tracking.
+   Every access is guarded because localStorage throws outright
+   in private mode and when a browser blocks site data.
+   --------------------------------------------------------- */
+var PREF_KEY = 'em_tools_prefs_v1';
+
+function savePrefs(){
+  try {
+    localStorage.setItem(PREF_KEY, JSON.stringify({ curs:CURS, imps:IMPS }));
+  } catch(e){ /* storage unavailable, the page still works, it just forgets */ }
+}
+
+function loadPrefs(){
+  try {
+    var raw = localStorage.getItem(PREF_KEY);
+    if (!raw) return;
+    var p = JSON.parse(raw);
+    if (p && p.curs){
+      CUR_LIST.forEach(function(c){
+        if (typeof p.curs[c[0]] === 'boolean') CURS[c[0]] = p.curs[c[0]];
+      });
+    }
+    if (p && p.imps){
+      ['high','med','low'].forEach(function(k){
+        if (typeof p.imps[k] === 'boolean') IMPS[k] = p.imps[k];
+      });
+    }
+    /* never restore a state that shows an empty page */
+    var anyCur = CUR_LIST.some(function(c){ return CURS[c[0]]; });
+    var anyImp = IMPS.high || IMPS.med || IMPS.low;
+    if (!anyCur) CUR_LIST.forEach(function(c){ CURS[c[0]] = true; });
+    if (!anyImp) IMPS.high = IMPS.med = IMPS.low = true;
+  } catch(e){ /* corrupt or blocked, fall through to defaults */ }
+}
+loadPrefs();
+
+function buildCurGrid(){
+  document.getElementById('tl-cur-grid').innerHTML = CUR_LIST.map(function(c){
+    return '<div class="tl-cur-item '+(CURS[c[0]]?'on':'')+'" data-cur="'+c[0]+'">'+
+      '<span class="tl-cur-box">'+(CURS[c[0]]?'✓':'')+'</span>'+
+      '<span class="tl-cur-code">'+c[0]+'</span></div>';
+  }).join('');
+  var on = CUR_LIST.filter(function(c){ return CURS[c[0]]; }).length;
+  var lbl = document.getElementById('tl-cur-count');
+  lbl.textContent = on === CUR_LIST.length ? 'All' : (on === 0 ? 'None' : on);
+}
+buildCurGrid();
+syncChips();
+
+document.getElementById('tl-cur-btn').addEventListener('click', function(e){
+  e.stopPropagation();
+  this.classList.toggle('open');
+  document.getElementById('tl-cur-panel').classList.toggle('show');
+});
+document.getElementById('tl-cur-panel').addEventListener('click', function(e){
+  e.stopPropagation();
+  var all = e.target.closest('button[data-all]');
+  if (all){
+    var v = all.getAttribute('data-all') === '1';
+    CUR_LIST.forEach(function(c){ CURS[c[0]] = v; });
+    buildCurGrid(); renderCal(); savePrefs(); return;
+  }
+  var item = e.target.closest('.tl-cur-item'); if (!item) return;
+  var k = item.getAttribute('data-cur');
+  CURS[k] = !CURS[k];
+  buildCurGrid(); renderCal(); savePrefs();
+});
+/* click anywhere else closes it */
+document.addEventListener('click', function(){
+  var b = document.getElementById('tl-cur-btn'), p = document.getElementById('tl-cur-panel');
+  if (b) b.classList.remove('open');
+  if (p) p.classList.remove('show');
 });
 
 /* expand and collapse the explainer under a row */
