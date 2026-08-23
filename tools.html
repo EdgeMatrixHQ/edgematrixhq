@@ -545,6 +545,31 @@ var FOMC_2026 = [
 ];
 
 /* =========================================================
+   SPEECHES
+   Central bank appearances are announced days ahead rather
+   than following a rule, so they cannot be generated. The
+   speech agent writes speeches.json from the official bank
+   calendars and this merges it in. Missing file is fine, the
+   page simply shows the scheduled events on their own.
+   ========================================================= */
+var SPEECHES = [];
+function loadSpeeches(){
+  return fetch('speeches.json?v=' + Math.floor(Date.now()/900000))
+    .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+    .then(function(j){
+      if (!j || !j.events) throw 0;
+      SPEECHES = j.events.map(function(e){
+        return { ts: typeof e.ts === 'number' ? e.ts : Date.parse(e.ts),
+                 cur: e.cur || '', imp: e.imp || 'med',
+                 name: e.name || '', note: e.note || '', est:false, speech:true };
+      }).filter(function(e){ return e.ts && e.name && e.cur; });
+      CAL_CACHE = {};
+      return SPEECHES.length;
+    })
+    .catch(function(){ SPEECHES = []; return 0; });
+}
+
+/* =========================================================
    SCHEDULE ENGINE
    Every release is one row in SPEC. Rules mirror how the
    agencies actually publish, so a month generates itself.
@@ -749,6 +774,92 @@ var HOLIDAYS = [
   {cur:'CNY',tz:CN,m:5,d:1,n:'Labour Day'}
 ];
 
+/* ---------------------------------------------------------
+   CENTRAL BANK COMMUNICATIONS
+   Minutes, accounts, reports and testimony all run on fixed
+   offsets from the decision, so they generate from a rule the
+   same way the decisions do. These are the scheduled half of
+   what ForexFactory shows as speech rows.
+   --------------------------------------------------------- */
+var CB_COMMS = [
+  /* United States */
+  {cur:'USD',tz:ET,name:'Fed Beige Book',imp:'med',off:-14,from:'fomc',H:14,M:0,
+   note:'Anecdotal economic survey published two weeks before each decision'},
+  {cur:'USD',tz:ET,name:'Fed Chair Testimony',imp:'high',rule:{nth:[3,3],months:[2,7]},H:10,M:0,
+   note:'Semi annual monetary policy report to Congress, two days running'},
+
+  /* Euro area */
+  {cur:'EUR',tz:FR,name:'ECB Monetary Policy Meeting Accounts',imp:'med',off:28,from:'ecb',H:13,M:30,
+   note:'The eurozone equivalent of the Fed minutes'},
+  {cur:'EUR',tz:FR,name:'ECB Economic Bulletin',imp:'low',off:14,from:'ecb',H:10,M:0,note:''},
+
+  /* United Kingdom */
+  {cur:'GBP',tz:LN,name:'BoE Monetary Policy Report',imp:'high',rule:{nth:[4,1],months:[2,5,8,11]},H:12,M:0,
+   note:'Quarterly forecasts, published alongside the decision'},
+
+  /* Japan */
+  {cur:'JPY',tz:TK,name:'BoJ Summary of Opinions',imp:'med',off:10,from:'boj',H:8,M:50,
+   note:'Early read on what the board actually argued about'},
+  {cur:'JPY',tz:TK,name:'BoJ Outlook Report',imp:'high',rule:{day:19,months:[1,4,7,10]},H:12,M:0,
+   note:'Quarterly growth and inflation forecasts'},
+  {cur:'JPY',tz:TK,name:'BoJ Monetary Policy Meeting Minutes',imp:'low',off:55,from:'boj',H:8,M:50,note:''},
+
+  /* Australia */
+  {cur:'AUD',tz:SY,name:'RBA Meeting Minutes',imp:'med',off:14,from:'rba',H:11,M:30,
+   note:'Two weeks after the decision, often shifts rate expectations'},
+  {cur:'AUD',tz:SY,name:'RBA Statement on Monetary Policy',imp:'high',rule:{nth:[5,1],months:[2,5,8,11]},H:11,M:30,
+   note:'Quarterly forecasts'},
+  {cur:'AUD',tz:SY,name:'RBA Governor Testimony',imp:'med',rule:{nth:[5,2],months:[2,8]},H:9,M:30,note:''},
+
+  /* Canada */
+  {cur:'CAD',tz:ET,name:'BoC Summary of Deliberations',imp:'med',off:13,from:'boc',H:13,M:30,
+   note:'Canada version of the minutes'},
+  {cur:'CAD',tz:ET,name:'BoC Monetary Policy Report',imp:'high',rule:{nth:[3,2],months:[1,4,7,10]},H:9,M:45,
+   note:'Quarterly forecasts, released with the decision'},
+
+  /* New Zealand */
+  {cur:'NZD',tz:NZ,name:'RBNZ Monetary Policy Statement',imp:'high',rule:{nth:[3,4],months:[2,5,8,11]},H:14,M:0,
+   note:'Quarterly forecasts and the projected rate track'},
+
+  /* Switzerland */
+  {cur:'CHF',tz:CH,name:'SNB Quarterly Bulletin',imp:'low',rule:{nth:[4,3],months:[3,6,9,12]},H:9,M:30,note:''}
+];
+
+/* base dates each offset is measured from */
+function commsBase(y, m, from){
+  var out = [];
+  if (from === 'fomc'){
+    FOMC_2026.forEach(function(f){ out.push(Date.UTC(y, f.m-1, f.d)); });
+  } else {
+    var rule = { ecb:{nth:[4,2]}, boj:{day:19}, rba:{nth:[2,1]}, boc:{nth:[3,2]} }[from];
+    if (!rule) return out;
+    /* look at the surrounding months so an offset can cross a boundary */
+    for (var k=-2;k<=2;k++){
+      var mm = m + k, yy = y;
+      while (mm < 1){ mm += 12; yy--; }
+      while (mm > 12){ mm -= 12; yy++; }
+      daysForRule(yy, mm, rule).forEach(function(d){ out.push(Date.UTC(yy, mm-1, d)); });
+    }
+  }
+  return out;
+}
+
+function addComms(y, m, out){
+  CB_COMMS.forEach(function(c){
+    if (c.rule){
+      daysForRule(y, m, c.rule).forEach(function(d){
+        out.push(ev(c.tz, y, m, d, c.H, c.M, c.cur, c.imp, c.name, c.note, 1));
+      });
+      return;
+    }
+    commsBase(y, m, c.from).forEach(function(baseMs){
+      var d = new Date(baseMs + c.off*86400000);
+      if (d.getUTCFullYear() !== y || d.getUTCMonth() !== m-1) return;
+      out.push(ev(c.tz, y, m, d.getUTCDate(), c.H, c.M, c.cur, c.imp, c.name, c.note, 1));
+    });
+  });
+}
+
 /* resolve a rule to a list of days in the month */
 function daysForRule(y, m, r){
   if (r.months && r.months.indexOf(m) === -1) return [];
@@ -815,6 +926,16 @@ function buildMonth(y, m){
       out.push(ev(ET,y,m,CPI_2026[m],8,30,'USD','high','Core CPI m/m','Strips food and energy, the number that matters most'));
       out.push(ev(ET,y,m,CPI_2026[m],8,30,'USD','med','Consumer Price Index y/y',''));
     }
+  }
+
+  addComms(y, m, out);
+
+  /* speeches and other ad hoc appearances, loaded from speeches.json if present */
+  if (SPEECHES.length){
+    SPEECHES.forEach(function(e){
+      var d = new Date(e.ts);
+      if (d.getFullYear() === y && d.getMonth() === m-1) out.push(e);
+    });
   }
 
   /* bank holidays */
@@ -1286,6 +1407,96 @@ var WHY = {
     down:'Weak lending suggests stimulus is not reaching the real economy.',
     watch:'The release date is not fixed and can arrive with little warning anywhere in a multi day window.'
   },
+  'Fed Beige Book': {
+    what:'A written survey of business conditions gathered from contacts across all twelve Federal Reserve districts, published two weeks before each policy decision.',
+    up:'Reports of strengthening activity or renewed price pressure read as hawkish and mildly <b>support the dollar</b>.',
+    down:'Widespread reports of softening demand read as dovish and <b>weigh on it</b>.',
+    watch:'It is anecdotes rather than numbers, so it rarely moves price on its own. Its value is as a preview of the tone officials will bring to the meeting.'
+  },
+  'Fed Chair Testimony': {
+    what:'The Fed Chair delivers the semi annual monetary policy report to Congress and then takes questions, once to the House and once to the Senate on consecutive days.',
+    up:'Hawkish answers push yields and the <b>dollar higher</b>.',
+    down:'Any hint of concern about growth or willingness to ease <b>sends the dollar lower</b>.',
+    watch:'The prepared statement is released in advance and is usually bland. The move comes from the unscripted questions, and it can run for two hours.'
+  },
+  'ECB Monetary Policy Meeting Accounts': {
+    what:'The eurozone equivalent of the Fed minutes, published about four weeks after each decision.',
+    up:'Evidence of hawkish dissent <b>lifts the euro</b>.',
+    down:'A dovish consensus <b>weighs on it</b>.',
+    watch:'By the time it lands the market has usually heard several officials speak, so it confirms more than it surprises.'
+  },
+  'BoJ Summary of Opinions': {
+    what:'A short digest of what Bank of Japan board members argued, published about ten days after the meeting.',
+    up:'Any hint that members are leaning toward tightening causes <b>yen strength</b>.',
+    down:'Confirmation of the dovish stance keeps the <b>yen soft</b>.',
+    watch:'Because the BoJ is the last major holdout on policy, this document gets read far more closely than its length suggests.'
+  },
+  'RBA Meeting Minutes': {
+    what:'Released two weeks after the Reserve Bank of Australia decision, showing what the board weighed.',
+    up:'Hawkish language <b>lifts the Australian dollar</b>.',
+    down:'Dovish language <b>weakens it</b>.',
+    watch:'The minutes regularly move AUD more than the decision itself, because the decision is usually fully priced.'
+  },
+  'BoC Summary of Deliberations': {
+    what:'The Bank of Canada version of the minutes, published roughly two weeks after the decision.',
+    up:'Hawkish tone <b>supports the loonie</b>.',
+    down:'Dovish tone <b>presses it lower</b>.',
+    watch:'A relatively new publication and still finding its weight with the market.'
+  },
+  'BoE Monetary Policy Report': {
+    what:'Quarterly Bank of England forecasts for growth and inflation, published alongside the February, May, August and November decisions.',
+    up:'Upgraded inflation forecasts are hawkish and <b>lift the pound</b>.',
+    down:'Downgrades <b>weigh on it</b>.',
+    watch:'The forecast horizon matters. What the Bank projects for inflation two years out is what actually drives rate pricing.'
+  },
+  'RBA Statement on Monetary Policy': {
+    what:'Quarterly RBA forecasts published four times a year.',
+    up:'Upgraded forecasts <b>support the Australian dollar</b>.',
+    down:'Downgrades <b>weigh on it</b>.',
+    watch:'Read alongside the minutes from the same cycle for the fuller picture.'
+  },
+  'RBNZ Monetary Policy Statement': {
+    what:'Quarterly Reserve Bank of New Zealand forecasts, including a published projection of where it expects its own rate to go.',
+    up:'A steeper projected rate track <b>lifts the kiwi</b> sharply.',
+    down:'A flatter or falling track <b>sends it lower</b>.',
+    watch:'The RBNZ is unusual in publishing an explicit rate path. That projection moves NZD more than the decision does.'
+  },
+  'BoJ Outlook Report': {
+    what:'Quarterly Bank of Japan forecasts for growth and inflation.',
+    up:'Raised inflation forecasts hint at eventual tightening and <b>strengthen the yen</b>.',
+    down:'Lowered forecasts keep policy loose and the <b>yen weak</b>.',
+    watch:'Watch the projection for core inflation two years ahead. That is the number the BoJ has tied its policy shift to.'
+  },
+  'BoC Monetary Policy Report': {
+    what:'Quarterly Bank of Canada forecasts, released with the January, April, July and October decisions.',
+    up:'Upgraded forecasts <b>support the Canadian dollar</b>.',
+    down:'Downgrades <b>weigh on it</b>.',
+    watch:'Released at the same moment as the decision, so the two get read together.'
+  },
+  'RBA Governor Testimony': {
+    what:'The RBA Governor appears before a parliamentary committee twice a year and takes open questions.',
+    up:'Hawkish answers <b>lift the Australian dollar</b>.',
+    down:'Dovish answers <b>weaken it</b>.',
+    watch:'Unscripted, so it carries more surprise risk than the scheduled statements.'
+  },
+  'ECB Economic Bulletin': {
+    what:'A detailed economic review published two weeks after each ECB decision.',
+    up:'Hawkish framing is mildly <b>euro supportive</b>.',
+    down:'Dovish framing weighs on it.',
+    watch:'Largely a restatement of known positions. It rarely moves price.'
+  },
+  'SNB Quarterly Bulletin': {
+    what:'The Swiss National Bank quarterly review of monetary policy and the economy.',
+    up:'Hawkish framing mildly <b>supports the franc</b>.',
+    down:'Dovish framing weighs on it.',
+    watch:'A minor publication. The franc takes its direction from global risk sentiment far more than from this.'
+  },
+  'BoJ Monetary Policy Meeting Minutes': {
+    what:'Full minutes of a Bank of Japan meeting, published roughly two months later.',
+    up:'Hawkish detail can still move the <b>yen</b> even this late.',
+    down:'Dovish detail confirms the status quo.',
+    watch:'So delayed that the Summary of Opinions released weeks earlier has already told the market the story.'
+  },
   'Industrial Production': {
     what:'Total output from factories, mines and utilities.',
     up:'Higher output is growth positive.',
@@ -1294,7 +1505,15 @@ var WHY = {
   }
 };
 
+var WHY_SPEECH = {
+  what:'A rate setting official is speaking in public. There is no number attached, but markets listen closely because this is where policy signals leak before they appear in any statement.',
+  up:'Hawkish language, meaning any hint that rates stay higher for longer or that inflation is not beaten, lifts yields and <b>strengthens that currency</b>.',
+  down:'Dovish language, or concern about growth and jobs, <b>weakens it</b>.',
+  watch:'The reaction depends far more on who is speaking than on what the calendar says. The head of a central bank can move price hard, while a regional official rarely does. Prepared remarks are usually tame, and it is the unscripted questions afterwards that cause the move.'
+};
+
 var WHY_ALIAS = [
+  ['Speaks','__SPEECH__'], ['Testimony','__SPEECH__'],
   ['Non Farm Payrolls','Non Farm Payrolls'], ['Unemployment Rate','Unemployment Rate'],
   ['Average Hourly Earnings','Average Hourly Earnings'], ['Core CPI','Consumer Price Index'],
   ['Consumer Price Index','Consumer Price Index'], ['CPI Flash','Euro Area CPI Flash'],
@@ -1332,6 +1551,7 @@ function whyFor(name){
   for (var i=0;i<WHY_ALIAS.length;i++){
     if (name.indexOf(WHY_ALIAS[i][0]) !== -1){
       if (WHY_ALIAS[i][1] === '__HOLIDAY__') return WHY_HOLIDAY;
+      if (WHY_ALIAS[i][1] === '__SPEECH__') return WHY_SPEECH;
       return WHY[WHY_ALIAS[i][1]] || null;
     }
   }
@@ -1647,6 +1867,9 @@ function renderNext(){
 renderLive();
 renderCal();
 renderNext();
+loadSpeeches().then(function(n){
+  if (n){ CAL_CACHE = {}; renderCal(); NEXT_EV = null; renderNext(); }
+});
 setInterval(renderNext, 1000);
 setInterval(renderLive, 1000);
 window.addEventListener('resize', function(){ renderLive(); renderCal(); });
