@@ -133,6 +133,16 @@
 .tl-cur-code { font-family:'Space Mono',monospace; font-size:11px; font-weight:700; color:#E8E8EC; letter-spacing:0.5px; }
 .tl-cur-item:not(.on) .tl-cur-code { color:#666677; }
 
+.tl-legend-row { display:flex; gap:20px; flex-wrap:wrap; align-items:center; padding:0 12px 16px; font-size:11.5px; color:#666677; }
+.tl-legend-row span { display:flex; align-items:center; gap:7px; }
+.lg-dot { width:8px; height:8px; border-radius:50%; display:block; flex-shrink:0; }
+.lg-dot.high { background:#D42B40; box-shadow:0 0 6px rgba(212,43,64,0.5); }
+.lg-dot.med { background:#E5820A; }
+.lg-dot.low { background:#555566; }
+.lg-dot.hol { background:transparent; border:1px solid #5A5A62; }
+.lg-hint { margin-left:auto; color:#A61E2E; font-family:'Space Mono',monospace; font-size:9.5px; letter-spacing:1.2px; text-transform:uppercase; }
+.dh-hi { font-family:'Space Mono',monospace; font-size:9px; font-weight:700; letter-spacing:1.2px; color:#D42B40; text-transform:uppercase; margin-left:auto; }
+.dh-quiet { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1.2px; color:#3A3A44; text-transform:uppercase; margin-left:auto; }
 .tl-daygroup { margin-bottom:26px; }
 .tl-dayhead { display:flex; align-items:baseline; gap:12px; padding:0 0 10px; border-bottom:1px solid rgba(166,30,46,0.18); margin-bottom:4px; flex-wrap:wrap; }
 .tl-dayhead h4 { font-size:15px; font-weight:700; letter-spacing:-0.3px; }
@@ -146,12 +156,16 @@
 .tl-ev.open-row .tl-chev { transform:rotate(90deg); color:#D42B40; }
 .tl-ev.open-row { background:rgba(255,255,255,0.025); border-bottom-color:transparent; }
 .tl-ev.past { opacity:0.4; }
+.tl-ev.hol-row { background:rgba(255,255,255,0.018); }
+.tl-ev.hol-row .tl-ev-name { color:#8A8A93; font-style:italic; }
 .tl-ev-time { font-family:'Space Mono',monospace; font-size:12px; color:#888899; letter-spacing:-0.2px; font-variant-numeric:tabular-nums; }
+.tl-allday { font-size:9.5px; letter-spacing:0.9px; text-transform:uppercase; color:#6A6A74; }
 .tl-ev-cur { font-family:'Space Mono',monospace; font-size:11px; font-weight:700; color:#E8E8EC; letter-spacing:0.5px; }
 .tl-imp { width:9px; height:9px; border-radius:50%; display:block; margin:0 auto; }
 .tl-imp.high { background:#D42B40; box-shadow:0 0 7px rgba(212,43,64,0.55); }
 .tl-imp.med { background:#E5820A; }
 .tl-imp.low { background:#555566; }
+.tl-imp.hol { background:transparent; border:1px solid #5A5A62; }
 .tl-ev-name { font-size:14px; color:#E8E8EC; line-height:1.45; }
 .tl-ev-note { font-size:11.5px; color:#666677; margin-top:2px; }
 .tl-est { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; color:#666677; border:1px solid rgba(255,255,255,0.1); padding:2px 6px; border-radius:2px; text-transform:uppercase; white-space:nowrap; }
@@ -179,6 +193,11 @@
 
 @media(max-width:980px){ .tl-sessions { grid-template-columns:repeat(2,1fr); } }
 @media(max-width:640px){
+  /* the filter chips already carry the same coloured dots and labels, so the
+     written key is redundant on a phone and only pushes the calendar off screen.
+     The one line worth keeping is the one that tells you rows open. */
+  .tl-legend-row .lg-key { display:none; }
+  .tl-legend-row { justify-content:center; padding:0 12px 12px; }
   .tl-sessions { grid-template-columns:1fr; }
   .tl-livecard { padding:24px; }
   .tl-next { flex-direction:column; align-items:flex-start; gap:14px; padding:18px 20px; }
@@ -292,6 +311,7 @@
           <div class="tl-chip on" data-imp="high"><i style="background:#D42B40"></i> High</div>
           <div class="tl-chip on" data-imp="med"><i style="background:#E5820A"></i> Medium</div>
           <div class="tl-chip on" data-imp="low"><i style="background:#555566"></i> Low</div>
+          <div class="tl-chip on" data-imp="hol"><i style="background:transparent;border:1px solid #666677"></i> Holidays</div>
           <div class="tl-cur-wrap">
             <button class="tl-cur-btn" id="tl-cur-btn">Currencies <span class="tl-cur-count" id="tl-cur-count">All</span> <span class="caret">▼</span></button>
             <div class="tl-cur-panel" id="tl-cur-panel">
@@ -303,6 +323,14 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="tl-legend-row">
+        <span class="lg-key"><i class="lg-dot high"></i> High, expect a sharp move</span>
+        <span class="lg-key"><i class="lg-dot med"></i> Medium, expect a spike</span>
+        <span class="lg-key"><i class="lg-dot low"></i> Low, background noise</span>
+        <span class="lg-key"><i class="lg-dot hol"></i> Bank holiday, thin liquidity</span>
+        <span class="lg-hint">Tap any row for what moves price</span>
       </div>
 
       <div id="tl-cal"></div>
@@ -587,13 +615,13 @@ var SPEC = [
 /* ---------------- UNITED STATES ---------------- */
 [ET,'USD','high','ISM Manufacturing PMI',      {bd:1},        10,0,'First real read on the new month'],
 [ET,'USD','med' ,'ISM Manufacturing Prices',   {bd:1},        10,0,'Input cost gauge inside the ISM report'],
-[ET,'USD','high','ISM Services PMI',           {bd:3},        10,0,'Services carry most of the US economy'],
+[ET,'USD','med' ,'ISM Services PMI',           {bd:3},        10,0,'Services carry most of the US economy'],
 [ET,'USD','med' ,'ISM Services Prices',        {bd:3},        10,0,'Services inflation signal'],
 [ET,'USD','med' ,'JOLTS Job Openings',         {bd:2},        10,0,'Labour demand, watched closely by the Fed',1],
 [ET,'USD','med' ,'ADP Non Farm Employment Change',{nth:[3,1]}, 8,15,'Private payrolls, two days before the official number',1],
 [ET,'USD','high','Non Farm Payrolls',          {nth:[5,1]},    8,30,'The single biggest scheduled mover of the month'],
 [ET,'USD','high','Unemployment Rate',          {nth:[5,1]},    8,30,'Released alongside payrolls'],
-[ET,'USD','med' ,'Average Hourly Earnings m/m',{nth:[5,1]},    8,30,'Wage growth, feeds the inflation picture'],
+[ET,'USD','high','Average Hourly Earnings m/m',{nth:[5,1]},    8,30,'Wage growth, feeds the inflation picture'],
 [ET,'USD','low' ,'Labour Force Participation Rate',{nth:[5,1]},8,30,''],
 [ET,'USD','med' ,'Initial Jobless Claims',     {weekly:4},     8,30,'Weekly labour pulse'],
 [ET,'USD','low' ,'Continuing Jobless Claims',  {weekly:4},     8,30,''],
@@ -604,7 +632,7 @@ var SPEC = [
 [ET,'USD','med' ,'Consumer Price Index y/y',   {day:12},       8,30,'',1],
 [ET,'USD','med' ,'Producer Price Index m/m',   {day:13},       8,30,'Factory gate inflation, lands just after CPI',1],
 [ET,'USD','low' ,'Core PPI m/m',               {day:13},       8,30,'',1],
-[ET,'USD','high','Retail Sales m/m',           {day:15},       8,30,'Consumer spending, drives GDP expectations',1],
+[ET,'USD','med' ,'Retail Sales m/m',           {day:15},       8,30,'Consumer spending, drives GDP expectations',1],
 [ET,'USD','med' ,'Core Retail Sales m/m',      {day:15},       8,30,'Excludes autos, the cleaner signal',1],
 [ET,'USD','low' ,'Industrial Production m/m',  {day:15},       9,15,'Factory output',1],
 [ET,'USD','low' ,'Capacity Utilisation Rate',  {day:15},       9,15,'',1],
@@ -636,8 +664,8 @@ var SPEC = [
 [FR,'EUR','med' ,'French Flash Manufacturing PMI',{day:23},    9,15,'',1],
 [FR,'EUR','med' ,'Euro Area Flash Manufacturing PMI',{day:23},10,0 ,'First look at activity this month',1],
 [FR,'EUR','med' ,'Euro Area Flash Services PMI',{day:23},     10,0 ,'',1],
-[FR,'EUR','high','CPI Flash Estimate y/y',     {lastDay:1},   11,0 ,'First inflation estimate for the bloc',1],
-[FR,'EUR','high','Core CPI Flash Estimate y/y',{lastDay:1},   11,0 ,'Strips energy and food',1],
+[FR,'EUR','med' ,'CPI Flash Estimate y/y',     {lastDay:1},   11,0 ,'First inflation estimate for the bloc',1],
+[FR,'EUR','med' ,'Core CPI Flash Estimate y/y',{lastDay:1},   11,0 ,'Strips energy and food',1],
 [FR,'EUR','med' ,'German Preliminary CPI m/m', {day:29},      14,0 ,'Leaks the bloc number a day early',1],
 [FR,'EUR','med' ,'German Factory Orders m/m',  {bd:4},         8,0 ,'',1],
 [FR,'EUR','med' ,'German Industrial Production m/m',{bd:6},    8,0 ,'',1],
@@ -653,7 +681,7 @@ var SPEC = [
 [LN,'GBP','high','Consumer Price Index y/y',   {day:16},       7,0 ,'Sets the tone for Bank of England pricing',1],
 [LN,'GBP','med' ,'Core CPI y/y',               {day:16},       7,0 ,'',1],
 [LN,'GBP','low' ,'PPI Input m/m',              {day:16},       7,0 ,'',1],
-[LN,'GBP','med' ,'Claimant Count Change',      {day:11},       7,0 ,'Monthly jobless claims',1],
+[LN,'GBP','high','Claimant Count Change',      {day:11},       7,0 ,'Monthly jobless claims',1],
 [LN,'GBP','med' ,'Average Earnings Index 3m/y',{day:11},       7,0 ,'UK wage growth',1],
 [LN,'GBP','low' ,'UK Unemployment Rate',       {day:11},       7,0 ,'',1],
 [LN,'GBP','med' ,'UK GDP m/m',                 {day:12},       7,0 ,'Monthly growth print',1],
@@ -687,9 +715,11 @@ var SPEC = [
 
 /* ---------------- CANADA ---------------- */
 [ET,'CAD','high','Canada Employment Change',   {nth:[5,1]},    8,30,'Often lands the same minute as US payrolls'],
-[ET,'CAD','med' ,'Canada Unemployment Rate',   {nth:[5,1]},    8,30,''],
-[ET,'CAD','med' ,'Canada CPI m/m',             {day:17},       8,30,'Bank of Canada inflation read',1],
-[ET,'CAD','med' ,'Canada Core CPI m/m',        {day:17},       8,30,'',1],
+[ET,'CAD','high','Canada Unemployment Rate',   {nth:[5,1]},    8,30,''],
+[ET,'CAD','high','Canada CPI m/m',             {day:17},       8,30,'Bank of Canada inflation read',1],
+[ET,'CAD','high','Canada Median CPI y/y',      {day:17},       8,30,'One of the core measures the Bank of Canada targets',1],
+[ET,'CAD','high','Canada Trimmed CPI y/y',     {day:17},       8,30,'',1],
+[ET,'CAD','med' ,'Canada Common CPI y/y',      {day:17},       8,30,'',1],
 [ET,'CAD','med' ,'Canada GDP m/m',             {last:5},       8,30,'',1],
 [ET,'CAD','med' ,'Canada Retail Sales m/m',    {day:22},       8,30,'',1],
 [ET,'CAD','low' ,'Ivey PMI',                   {bd:5},        10,0 ,'',1],
@@ -721,10 +751,11 @@ var SPEC_Q = [
 [NZ,'NZD','high','RBNZ Rate Decision',         {nth:[3,4], months:[2,4,5,7,8,10,11]},14,0,'Reserve Bank of New Zealand',1],
 [NZ,'NZD','high','New Zealand CPI q/q',        {day:17, months:[1,4,7,10]},10,45,'Quarterly inflation, drives RBNZ pricing',1],
 [NZ,'NZD','high','New Zealand Employment Change q/q',{day:5, months:[2,5,8,11]},10,45,'Quarterly jobs and unemployment rate',1],
-[NZ,'NZD','med' ,'New Zealand GDP q/q',        {day:19, months:[3,6,9,12]},10,45,'Quarterly growth',1],
+[NZ,'NZD','high','New Zealand GDP q/q',        {day:19, months:[3,6,9,12]},10,45,'Quarterly growth',1],
 [CH,'CHF','high','SNB Policy Rate',            {nth:[4,3], months:[3,6,9,12]},9,30,'The Swiss National Bank meets quarterly',1],
 [CN,'CNY','high','China GDP y/y',              {day:17, months:[1,4,7,10]},10,0,'Quarterly growth in the second largest economy',1],
 [SY,'AUD','high','Australia CPI q/q',          {day:28, months:[1,4,7,10]},11,30,'Quarterly inflation',1],
+[SY,'AUD','high','Australia GDP q/q',          {day:3, months:[3,6,9,12]},11,30,'Quarterly growth',1],
 [SY,'AUD','med' ,'Australia Wage Price Index q/q',{day:19, months:[2,5,8,11]},11,30,'',1],
 [TK,'JPY','med' ,'Japan GDP q/q',              {day:16, months:[2,5,8,11]},8,50,'',1],
 [TK,'JPY','med' ,'Tankan Manufacturing Index', {bd:1, months:[1,4,7,10]},8,50,'',1],
@@ -740,39 +771,151 @@ var CB = [
   {cur:'JPY',tz:TK,name:'BoJ Policy Rate',imp:'high',rule:{day:19},H:12,M:0,note:'Moves yen pairs hard when it surprises',
    extra:[{name:'BoJ Press Conference',imp:'high',H:15,M:30,note:''}]},
   {cur:'AUD',tz:SY,name:'RBA Rate Decision',imp:'high',rule:{nth:[2,1]},H:14,M:30,note:'Reserve Bank of Australia',
-   extra:[{name:'RBA Governor Press Conference',imp:'med',H:15,M:30,note:''}]},
+   extra:[{name:'RBA Governor Press Conference',imp:'high',H:15,M:30,note:''}]},
   {cur:'CAD',tz:ET,name:'BoC Rate Decision',imp:'high',rule:{nth:[3,2]},H:9,M:45,note:'Bank of Canada policy rate',
-   extra:[{name:'BoC Press Conference',imp:'med',H:10,M:30,note:''}]}
+   extra:[{name:'BoC Press Conference',imp:'high',H:10,M:30,note:'The tone here often reverses the decision move'}]}
 ];
 
-/* bank holidays that close a market. Fixed date ones only, which is
-   most of what actually matters for liquidity. */
+/* Easter Sunday by the anonymous Gregorian algorithm. Good Friday and
+   Easter Monday close markets across the UK, Europe, Australia, New
+   Zealand, Canada and Switzerland, and they move every year. */
+function easterSunday(y){
+  var a=y%19, b=Math.floor(y/100), c=y%100, d=Math.floor(b/4), e=b%4,
+      f=Math.floor((b+8)/25), g=Math.floor((b-f+1)/3), h=(19*a+b-d-g+15)%30,
+      i=Math.floor(c/4), k=c%4, l=(32+2*e+2*i-h-k)%7,
+      m=Math.floor((a+11*h+22*l)/451),
+      mo=Math.floor((h+l-7*m+114)/31), da=((h+l-7*m+114)%31)+1;
+  return new Date(Date.UTC(y, mo-1, da));
+}
+function offsetFromEaster(y, days){
+  return new Date(easterSunday(y).getTime() + days*86400000);
+}
+
 var HOLIDAYS = [
-  {cur:'USD',tz:ET,m:1,d:1,n:'New Year Day'},   {cur:'USD',tz:ET,m:7,d:4,n:'Independence Day'},
-  {cur:'USD',tz:ET,m:12,d:25,n:'Christmas Day'},{cur:'USD',tz:ET,m:11,rule:{nth:[4,4]},n:'Thanksgiving'},
+  /* United States */
+  {cur:'USD',tz:ET,m:1,d:1,n:'New Year Day'},
   {cur:'USD',tz:ET,m:1,rule:{nth:[1,3]},n:'Martin Luther King Day'},
   {cur:'USD',tz:ET,m:2,rule:{nth:[1,3]},n:'Presidents Day'},
+  {cur:'USD',tz:ET,easter:-2,n:'Good Friday'},
   {cur:'USD',tz:ET,m:5,rule:{last:1},n:'Memorial Day'},
+  {cur:'USD',tz:ET,m:6,d:19,n:'Juneteenth'},
+  {cur:'USD',tz:ET,m:7,d:4,n:'Independence Day'},
   {cur:'USD',tz:ET,m:9,rule:{nth:[1,1]},n:'Labor Day'},
-  {cur:'GBP',tz:LN,m:1,d:1,n:'New Year Day'},   {cur:'GBP',tz:LN,m:12,d:25,n:'Christmas Day'},
-  {cur:'GBP',tz:LN,m:12,d:26,n:'Boxing Day'},   {cur:'GBP',tz:LN,m:5,rule:{nth:[1,1]},n:'Early May Bank Holiday'},
+  {cur:'USD',tz:ET,m:11,rule:{nth:[4,4]},n:'Thanksgiving'},
+  {cur:'USD',tz:ET,m:12,d:25,n:'Christmas Day'},
+
+  /* United Kingdom */
+  {cur:'GBP',tz:LN,m:1,d:1,n:'New Year Day'},
+  {cur:'GBP',tz:LN,easter:-2,n:'Good Friday'},
+  {cur:'GBP',tz:LN,easter:1,n:'Easter Monday'},
+  {cur:'GBP',tz:LN,m:5,rule:{nth:[1,1]},n:'Early May Bank Holiday'},
+  {cur:'GBP',tz:LN,m:5,rule:{last:1},n:'Spring Bank Holiday'},
   {cur:'GBP',tz:LN,m:8,rule:{last:1},n:'Summer Bank Holiday'},
-  {cur:'EUR',tz:FR,m:1,d:1,n:'New Year Day'},   {cur:'EUR',tz:FR,m:5,d:1,n:'Labour Day'},
-  {cur:'EUR',tz:FR,m:12,d:25,n:'Christmas Day'},{cur:'EUR',tz:FR,m:12,d:26,n:'Boxing Day'},
+  {cur:'GBP',tz:LN,m:12,d:25,n:'Christmas Day'},
+  {cur:'GBP',tz:LN,m:12,d:26,n:'Boxing Day'},
+
+  /* Euro area */
+  {cur:'EUR',tz:FR,m:1,d:1,n:'New Year Day'},
+  {cur:'EUR',tz:FR,easter:-2,n:'Good Friday'},
+  {cur:'EUR',tz:FR,easter:1,n:'Easter Monday'},
+  {cur:'EUR',tz:FR,m:5,d:1,n:'Labour Day'},
+  {cur:'EUR',tz:FR,easter:39,n:'Ascension Day'},
+  {cur:'EUR',tz:FR,easter:50,n:'Whit Monday'},
   {cur:'EUR',tz:FR,m:10,d:3,n:'German Unity Day'},
-  {cur:'CAD',tz:ET,m:1,d:1,n:'New Year Day'},   {cur:'CAD',tz:ET,m:7,d:1,n:'Canada Day'},
-  {cur:'CAD',tz:ET,m:12,d:25,n:'Christmas Day'},{cur:'CAD',tz:ET,m:9,rule:{nth:[1,1]},n:'Labour Day'},
-  {cur:'JPY',tz:TK,m:1,d:1,n:'New Year Day'},   {cur:'JPY',tz:TK,m:5,d:3,n:'Constitution Day'},
-  {cur:'JPY',tz:TK,m:5,d:5,n:'Children Day'},   {cur:'JPY',tz:TK,m:2,d:11,n:'National Foundation Day'},
-  {cur:'AUD',tz:SY,m:1,d:1,n:'New Year Day'},   {cur:'AUD',tz:SY,m:1,d:26,n:'Australia Day'},
-  {cur:'AUD',tz:SY,m:12,d:25,n:'Christmas Day'},{cur:'AUD',tz:SY,m:4,d:25,n:'Anzac Day'},
-  {cur:'NZD',tz:NZ,m:1,d:1,n:'New Year Day'},   {cur:'NZD',tz:NZ,m:2,d:6,n:'Waitangi Day'},
-  {cur:'NZD',tz:NZ,m:12,d:25,n:'Christmas Day'},{cur:'NZD',tz:NZ,m:4,d:25,n:'Anzac Day'},
-  {cur:'CHF',tz:CH,m:1,d:1,n:'New Year Day'},   {cur:'CHF',tz:CH,m:8,d:1,n:'Swiss National Day'},
+  {cur:'EUR',tz:FR,m:12,d:25,n:'Christmas Day'},
+  {cur:'EUR',tz:FR,m:12,d:26,n:'Boxing Day'},
+
+  /* Canada */
+  {cur:'CAD',tz:ET,m:1,d:1,n:'New Year Day'},
+  {cur:'CAD',tz:ET,easter:-2,n:'Good Friday'},
+  {cur:'CAD',tz:ET,m:5,rule:{lastMonBefore25:1},n:'Victoria Day'},
+  {cur:'CAD',tz:ET,m:7,d:1,n:'Canada Day'},
+  {cur:'CAD',tz:ET,m:8,rule:{nth:[1,1]},n:'Civic Holiday'},
+  {cur:'CAD',tz:ET,m:9,rule:{nth:[1,1]},n:'Labour Day'},
+  {cur:'CAD',tz:ET,m:10,rule:{nth:[1,2]},n:'Thanksgiving'},
+  {cur:'CAD',tz:ET,m:12,d:25,n:'Christmas Day'},
+  {cur:'CAD',tz:ET,m:12,d:26,n:'Boxing Day'},
+
+  /* Japan */
+  {cur:'JPY',tz:TK,m:1,d:1,n:'New Year Day'},
+  {cur:'JPY',tz:TK,m:1,rule:{nth:[1,2]},n:'Coming of Age Day'},
+  {cur:'JPY',tz:TK,m:2,d:11,n:'National Foundation Day'},
+  {cur:'JPY',tz:TK,m:2,d:23,n:'Emperor Birthday'},
+  {cur:'JPY',tz:TK,m:4,d:29,n:'Showa Day'},
+  {cur:'JPY',tz:TK,m:5,d:3,n:'Constitution Day'},
+  {cur:'JPY',tz:TK,m:5,d:4,n:'Greenery Day'},
+  {cur:'JPY',tz:TK,m:5,d:5,n:'Children Day'},
+  {cur:'JPY',tz:TK,m:7,rule:{nth:[1,3]},n:'Marine Day'},
+  {cur:'JPY',tz:TK,m:8,d:11,n:'Mountain Day'},
+  {cur:'JPY',tz:TK,m:9,rule:{nth:[1,3]},n:'Respect for the Aged Day'},
+  {cur:'JPY',tz:TK,m:10,rule:{nth:[1,2]},n:'Sports Day'},
+  {cur:'JPY',tz:TK,m:11,d:3,n:'Culture Day'},
+  {cur:'JPY',tz:TK,m:11,d:23,n:'Labour Thanksgiving Day'},
+
+  /* Australia */
+  {cur:'AUD',tz:SY,m:1,d:1,n:'New Year Day'},
+  {cur:'AUD',tz:SY,m:1,d:26,n:'Australia Day'},
+  {cur:'AUD',tz:SY,easter:-2,n:'Good Friday'},
+  {cur:'AUD',tz:SY,easter:1,n:'Easter Monday'},
+  {cur:'AUD',tz:SY,m:4,d:25,n:'Anzac Day'},
+  {cur:'AUD',tz:SY,m:6,rule:{nth:[1,2]},n:'King Birthday'},
+  {cur:'AUD',tz:SY,m:12,d:25,n:'Christmas Day'},
+  {cur:'AUD',tz:SY,m:12,d:26,n:'Boxing Day'},
+
+  /* New Zealand */
+  {cur:'NZD',tz:NZ,m:1,d:1,n:'New Year Day'},
+  {cur:'NZD',tz:NZ,m:1,d:2,n:'Day After New Year'},
+  {cur:'NZD',tz:NZ,m:2,d:6,n:'Waitangi Day'},
+  {cur:'NZD',tz:NZ,easter:-2,n:'Good Friday'},
+  {cur:'NZD',tz:NZ,easter:1,n:'Easter Monday'},
+  {cur:'NZD',tz:NZ,m:4,d:25,n:'Anzac Day'},
+  {cur:'NZD',tz:NZ,m:6,rule:{nth:[1,1]},n:'King Birthday'},
+  {cur:'NZD',tz:NZ,m:10,rule:{nth:[1,4]},n:'Labour Day'},
+  {cur:'NZD',tz:NZ,m:12,d:25,n:'Christmas Day'},
+  {cur:'NZD',tz:NZ,m:12,d:26,n:'Boxing Day'},
+
+  /* Switzerland */
+  {cur:'CHF',tz:CH,m:1,d:1,n:'New Year Day'},
+  {cur:'CHF',tz:CH,m:1,d:2,n:'Berchtold Day'},
+  {cur:'CHF',tz:CH,easter:-2,n:'Good Friday'},
+  {cur:'CHF',tz:CH,easter:1,n:'Easter Monday'},
+  {cur:'CHF',tz:CH,m:5,d:1,n:'Labour Day'},
+  {cur:'CHF',tz:CH,easter:39,n:'Ascension Day'},
+  {cur:'CHF',tz:CH,easter:50,n:'Whit Monday'},
+  {cur:'CHF',tz:CH,m:8,d:1,n:'Swiss National Day'},
   {cur:'CHF',tz:CH,m:12,d:25,n:'Christmas Day'},
-  {cur:'CNY',tz:CN,m:1,d:1,n:'New Year Day'},   {cur:'CNY',tz:CN,m:10,d:1,n:'National Day'},
-  {cur:'CNY',tz:CN,m:5,d:1,n:'Labour Day'}
+  {cur:'CHF',tz:CH,m:12,d:26,n:'St Stephen Day'},
+
+  /* China. Lunar dates shift each year, so the two long weeks are
+     listed for the years we cover rather than computed. */
+  {cur:'CNY',tz:CN,m:1,d:1,n:'New Year Day'},
+  {cur:'CNY',tz:CN,m:5,d:1,n:'Labour Day'},
+  {cur:'CNY',tz:CN,m:10,d:1,n:'National Day, week long'},
+  {cur:'CNY',tz:CN,y:2026,m:2,d:17,n:'Lunar New Year, week long'},
+  {cur:'CNY',tz:CN,y:2027,m:2,d:6,n:'Lunar New Year, week long'},
+  {cur:'CNY',tz:CN,y:2026,m:6,d:19,n:'Dragon Boat Festival'},
+  {cur:'CNY',tz:CN,y:2027,m:6,d:9,n:'Dragon Boat Festival'},
+  {cur:'CNY',tz:CN,y:2026,m:9,d:25,n:'Mid Autumn Festival'},
+  {cur:'CNY',tz:CN,y:2027,m:9,d:15,n:'Mid Autumn Festival'}
 ];
+
+function holidayDay(y, m, h){
+  if (h.y && h.y !== y) return null;
+  if (h.easter !== undefined){
+    var e = offsetFromEaster(y, h.easter);
+    return (e.getUTCMonth() === m-1) ? e.getUTCDate() : null;
+  }
+  if (h.m !== m) return null;
+  if (h.d) return h.d;
+  if (h.rule && h.rule.lastMonBefore25){
+    for (var d=24; d>=18; d--){
+      if (new Date(Date.UTC(y, m-1, d)).getUTCDay() === 1) return d;
+    }
+    return null;
+  }
+  if (h.rule) return daysForRule(y, m, h.rule)[0] || null;
+  return null;
+}
 
 /* ---------------------------------------------------------
    CENTRAL BANK COMMUNICATIONS
@@ -938,16 +1081,69 @@ function buildMonth(y, m){
     });
   }
 
-  /* bank holidays */
-  HOLIDAYS.forEach(function(h){
-    if (h.m !== m) return;
-    var d = h.d ? h.d : (h.rule ? daysForRule(y, m, h.rule)[0] : null);
-    if (!d) return;
-    out.push({ ts: zonedToUTC(h.tz, y, m, d, 0, 0), cur:h.cur, imp:'low',
-               name:'Bank Holiday, ' + h.n, note:'Thin liquidity in this currency all day', est:false, holiday:true });
-  });
+  /* bank holidays, resolved in date order so substitute days can step over
+     each other, which is what Christmas and Boxing Day do on a weekend year */
+  var taken = {};
+  HOLIDAYS.map(function(h){ return { h:h, d:holidayDay(y, m, h) }; })
+    .filter(function(r){ return r.d; })
+    .sort(function(a,b){ return a.d - b.d; })
+    .forEach(function(r){
+      var obs = observedDate(r.h.cur, y, m, r.d, taken);
+      if (!obs) return;                     /* falls on a weekend with no substitute */
+      var k = obs.cur + '|' + obs.y + '|' + obs.m + '|' + obs.d;
+      taken[k] = 1;
+      var moved = (obs.y !== y || obs.m !== m || obs.d !== r.d);
+      /* a bank holiday is a calendar date, not an instant, so it carries its own
+         y/m/d and the renderer pins it to that date in the visitor's own clock.
+         ts is midday UTC purely so range filtering and past/future still work. */
+      out.push({ ts: Date.UTC(obs.y, obs.m-1, obs.d, 12, 0), cur:r.h.cur, imp:'hol',
+                 name:'Bank Holiday, ' + r.h.n + (moved ? ' observed' : ''),
+                 note:'Markets closed, thin liquidity in this currency all day',
+                 est:false, holiday:true, allday:true, cy:obs.y, cm:obs.m, cd:obs.d });
+    });
 
   return out;
+}
+
+/* ---------------------------------------------------------
+   WEEKEND OBSERVANCE
+   Markets are already shut on a Saturday, so a holiday landing
+   there is either moved to a weekday the exchange actually
+   closes for, or it is not worth a row at all.
+     USD  Saturday closes the Friday before, Sunday the Monday after
+     GBP CAD AUD NZD  take a substitute weekday after the holiday
+     JPY  substitutes only for a Sunday
+     EUR CHF CNY  no substitute, the day simply falls in the weekend
+   --------------------------------------------------------- */
+var SUB_FORWARD = { GBP:1, CAD:1, AUD:1, NZD:1 };
+
+function shiftDate(y, m, d, delta){
+  var t = new Date(Date.UTC(y, m-1, d + delta));
+  return { y:t.getUTCFullYear(), m:t.getUTCMonth()+1, d:t.getUTCDate() };
+}
+
+function observedDate(cur, y, m, d, taken){
+  var wd = new Date(Date.UTC(y, m-1, d)).getUTCDay();
+  if (wd !== 0 && wd !== 6) return { cur:cur, y:y, m:m, d:d };
+
+  var o;
+  if (cur === 'USD'){
+    o = shiftDate(y, m, d, wd === 6 ? -1 : 1);
+  } else if (SUB_FORWARD[cur]){
+    o = shiftDate(y, m, d, wd === 6 ? 2 : 1);
+    /* step past a weekday another holiday already claimed */
+    for (var guard = 0; guard < 6; guard++){
+      var wd2 = new Date(Date.UTC(o.y, o.m-1, o.d)).getUTCDay();
+      if (wd2 !== 0 && wd2 !== 6 && !taken[cur+'|'+o.y+'|'+o.m+'|'+o.d]) break;
+      o = shiftDate(o.y, o.m, o.d, 1);
+    }
+  } else if (cur === 'JPY' && wd === 0){
+    o = shiftDate(y, m, d, 1);
+  } else {
+    return null;
+  }
+  o.cur = cur;
+  return o;
 }
 
 var WHY = {
@@ -1566,19 +1762,43 @@ function monthEvents(y, m){
 }
 
 function rangeEvents(fromMs, toMs){
-  var out = [], d = new Date(fromMs);
+  var out = [], d = new Date(fromMs - 86400000*32);
   var y = d.getFullYear(), m = d.getMonth()+1;
-  var end = new Date(toMs), guard = 0;
+  /* one month of slack either side, because a substitute bank holiday can be
+     generated by one month and land in the next, or the one before */
+  var end = new Date(toMs + 86400000*32), guard = 0;
   while ((y < end.getFullYear() || (y === end.getFullYear() && m <= end.getMonth()+1)) && guard++ < 40){
-    monthEvents(y, m).forEach(function(e){ if (e.ts >= fromMs && e.ts <= toMs) out.push(e); });
+    monthEvents(y, m).forEach(function(e){
+      /* an all day row is judged on its own calendar date so it cannot fall out of
+         range for visitors far east or west of UTC */
+      var t = e.allday ? evDate(e).getTime() : e.ts;
+      if (t >= fromMs && t <= toMs) out.push(e);
+    });
     m++; if (m > 12){ m = 1; y++; }
   }
-  return out.sort(function(a,b){ return a.ts - b.ts; });
+  /* chronological, but an all day row, meaning a bank holiday, sits at the top of
+     its own day rather than in the middle of whatever session it converts into */
+  return out.sort(function(a,b){
+    var da = evDate(a), db = evDate(b);
+    var ka = da.getFullYear()*10000 + (da.getMonth()+1)*100 + da.getDate();
+    var kb = db.getFullYear()*10000 + (db.getMonth()+1)*100 + db.getDate();
+    if (ka !== kb) return ka - kb;
+    var aa = a.allday ? 0 : 1, ab = b.allday ? 0 : 1;
+    if (aa !== ab) return aa - ab;
+    return a.ts - b.ts;
+  });
+}
+
+/* the date a row belongs to in the visitor's own clock. A timed release converts
+   from UTC. An all day row keeps its own calendar date, so a UK bank holiday reads
+   Monday in London and Monday in Los Angeles instead of slipping a day either way. */
+function evDate(e){
+  return e.allday ? new Date(e.cy, e.cm-1, e.cd, 12, 0, 0) : new Date(e.ts);
 }
 
 /* ---- calendar rendering ---- */
 var VIEW = 'week';
-var IMPS = { high:true, med:true, low:true }, SAVED_IMPS = null;
+var IMPS = { high:true, med:true, low:true, hol:true }, SAVED_IMPS = null;
 var DAYNAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var MONNAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -1625,32 +1845,43 @@ function renderCal(){
   var html = rolledNote, lastKey = null, ROW_ID = 0;
 
   evs.forEach(function(e){
-    var d = new Date(e.ts);
+    var d = evDate(e);
     var key, head;
     if (groupBy === 'month'){
       key = d.getFullYear()+'-'+d.getMonth();
-      head = '<h4>'+MONNAMES[d.getMonth()]+' '+d.getFullYear()+'</h4>';
+      var mCount = evs.filter(function(x){ var xd=evDate(x); return xd.getFullYear()===d.getFullYear() && xd.getMonth()===d.getMonth(); }).length;
+      head = '<h4>'+MONNAMES[d.getMonth()]+' '+d.getFullYear()+'</h4><span class="dh-date">'+mCount+' events</span>';
     } else {
       var dk = new Date(d); dk.setHours(0,0,0,0);
       key = dk.getTime();
       var isToday = key === todayKey;
+      var hiCount = evs.filter(function(x){
+        if (x.imp !== 'high') return false;
+        var xd = evDate(x); xd.setHours(0,0,0,0);
+        return xd.getTime() === key;
+      }).length;
       head = '<h4>'+DAYNAMES[d.getDay()]+'</h4><span class="dh-date">'+MONNAMES[d.getMonth()].slice(0,3).toUpperCase()+' '+d.getDate()+'</span>'+
-             (isToday ? '<span class="dh-today">Today</span>' : '');
+             (isToday ? '<span class="dh-today">Today</span>' : '')+
+             (hiCount ? '<span class="dh-hi">'+hiCount+' high impact</span>' : '<span class="dh-quiet">quiet day</span>');
     }
     if (key !== lastKey){
       if (lastKey !== null) html += '</div>';
       html += '<div class="tl-daygroup"><div class="tl-dayhead">'+head+'</div>';
       lastKey = key;
     }
-    var past = e.ts < now.getTime();
+    /* an all day row only greys out once its whole date is behind the visitor */
+    var past = e.allday
+      ? (new Date(e.cy, e.cm-1, e.cd, 23, 59, 59).getTime() < now.getTime())
+      : (e.ts < now.getTime());
     var timeStr = (groupBy === 'month')
       ? (MONNAMES[d.getMonth()].slice(0,3)+' '+pad(d.getDate()))
-      : (pad(d.getHours())+':'+pad(d.getMinutes()));
+      : (e.allday ? '<span class="tl-allday">all day</span>'
+                  : (pad(d.getHours())+':'+pad(d.getMinutes())));
 
     var info = whyFor(e.name);
     var rid = 'r' + (ROW_ID++);
 
-    html += '<div class="tl-ev '+(past?'past ':'')+(info?'has':'')+'" '+(info?'data-row="'+rid+'"':'')+'>'+
+    html += '<div class="tl-ev '+(past?'past ':'')+(e.holiday?'hol-row ':'')+(info?'has':'')+'" '+(info?'data-row="'+rid+'"':'')+'>'+
       '<div class="tl-ev-time">'+timeStr+'</div>'+
       '<div class="tl-ev-cur">'+esc(e.cur)+'</div>'+
       '<div><span class="tl-imp '+e.imp+'"></span></div>'+
@@ -1684,11 +1915,11 @@ document.getElementById('tl-tabs').addEventListener('click', function(e){
   /* A whole year with every tier on is hundreds of rows, so year view narrows to
      high impact. Whatever the user had chosen is restored when they leave. */
   if (VIEW === 'year' && prev !== 'year'){
-    SAVED_IMPS = { high:IMPS.high, med:IMPS.med, low:IMPS.low };
-    IMPS.med = false; IMPS.low = false;
+    SAVED_IMPS = { high:IMPS.high, med:IMPS.med, low:IMPS.low, hol:IMPS.hol };
+    IMPS.med = false; IMPS.low = false; IMPS.hol = false;
     syncChips();   /* deliberately not saved, this is a view quirk not a choice */
   } else if (prev === 'year' && VIEW !== 'year' && SAVED_IMPS){
-    IMPS.high = SAVED_IMPS.high; IMPS.med = SAVED_IMPS.med; IMPS.low = SAVED_IMPS.low;
+    IMPS.high = SAVED_IMPS.high; IMPS.med = SAVED_IMPS.med; IMPS.low = SAVED_IMPS.low; IMPS.hol = SAVED_IMPS.hol;
     SAVED_IMPS = null;
     syncChips();
   }
@@ -1742,15 +1973,15 @@ function loadPrefs(){
       });
     }
     if (p && p.imps){
-      ['high','med','low'].forEach(function(k){
+      ['high','med','low','hol'].forEach(function(k){
         if (typeof p.imps[k] === 'boolean') IMPS[k] = p.imps[k];
       });
     }
     /* never restore a state that shows an empty page */
     var anyCur = CUR_LIST.some(function(c){ return CURS[c[0]]; });
-    var anyImp = IMPS.high || IMPS.med || IMPS.low;
+    var anyImp = IMPS.high || IMPS.med || IMPS.low || IMPS.hol;
     if (!anyCur) CUR_LIST.forEach(function(c){ CURS[c[0]] = true; });
-    if (!anyImp) IMPS.high = IMPS.med = IMPS.low = true;
+    if (!anyImp) IMPS.high = IMPS.med = IMPS.low = IMPS.hol = true;
   } catch(e){ /* corrupt or blocked, fall through to defaults */ }
 }
 loadPrefs();
