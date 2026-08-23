@@ -544,146 +544,291 @@ var FOMC_2026 = [
   { m:10, d:28, sep:false }, { m:12, d:9,  sep:true }
 ];
 
+/* =========================================================
+   SCHEDULE ENGINE
+   Every release is one row in SPEC. Rules mirror how the
+   agencies actually publish, so a month generates itself.
+
+   rule kinds
+     {nth:[wd,n]}  nth weekday, wd 0=Sun
+     {last:wd}     last weekday of the month
+     {day:n}       calendar day, rolled off weekends
+     {bd:n}        nth business day
+     {weekly:wd}   every one of that weekday
+     {lastDay:1}   final day of the month
+   optional  months:[..]  restricts to those months
+   ========================================================= */
+var SPEC = [
+/* ---------------- UNITED STATES ---------------- */
+[ET,'USD','high','ISM Manufacturing PMI',      {bd:1},        10,0,'First real read on the new month'],
+[ET,'USD','med' ,'ISM Manufacturing Prices',   {bd:1},        10,0,'Input cost gauge inside the ISM report'],
+[ET,'USD','high','ISM Services PMI',           {bd:3},        10,0,'Services carry most of the US economy'],
+[ET,'USD','med' ,'ISM Services Prices',        {bd:3},        10,0,'Services inflation signal'],
+[ET,'USD','med' ,'JOLTS Job Openings',         {bd:2},        10,0,'Labour demand, watched closely by the Fed',1],
+[ET,'USD','med' ,'ADP Non Farm Employment Change',{nth:[3,1]}, 8,15,'Private payrolls, two days before the official number',1],
+[ET,'USD','high','Non Farm Payrolls',          {nth:[5,1]},    8,30,'The single biggest scheduled mover of the month'],
+[ET,'USD','high','Unemployment Rate',          {nth:[5,1]},    8,30,'Released alongside payrolls'],
+[ET,'USD','med' ,'Average Hourly Earnings m/m',{nth:[5,1]},    8,30,'Wage growth, feeds the inflation picture'],
+[ET,'USD','low' ,'Labour Force Participation Rate',{nth:[5,1]},8,30,''],
+[ET,'USD','med' ,'Initial Jobless Claims',     {weekly:4},     8,30,'Weekly labour pulse'],
+[ET,'USD','low' ,'Continuing Jobless Claims',  {weekly:4},     8,30,''],
+[ET,'USD','med' ,'Crude Oil Inventories',      {weekly:3},    10,30,'Weekly EIA build or draw, drives oil and CAD'],
+[ET,'USD','low' ,'Natural Gas Storage',        {weekly:4},    10,30,''],
+[ET,'USD','high','Consumer Price Index m/m',   {day:12},       8,30,'Headline inflation, the Fed reacts to this',1],
+[ET,'USD','high','Core CPI m/m',               {day:12},       8,30,'Strips food and energy, the number that matters most',1],
+[ET,'USD','med' ,'Consumer Price Index y/y',   {day:12},       8,30,'',1],
+[ET,'USD','med' ,'Producer Price Index m/m',   {day:13},       8,30,'Factory gate inflation, lands just after CPI',1],
+[ET,'USD','low' ,'Core PPI m/m',               {day:13},       8,30,'',1],
+[ET,'USD','high','Retail Sales m/m',           {day:15},       8,30,'Consumer spending, drives GDP expectations',1],
+[ET,'USD','med' ,'Core Retail Sales m/m',      {day:15},       8,30,'Excludes autos, the cleaner signal',1],
+[ET,'USD','low' ,'Industrial Production m/m',  {day:15},       9,15,'Factory output',1],
+[ET,'USD','low' ,'Capacity Utilisation Rate',  {day:15},       9,15,'',1],
+[ET,'USD','med' ,'Empire State Manufacturing Index',{day:15},  8,30,'First regional factory survey of the month',1],
+[ET,'USD','med' ,'Philly Fed Manufacturing Index',{nth:[4,3]}, 8,30,'The other closely watched regional survey'],
+[ET,'USD','med' ,'Housing Starts',             {day:17},       8,30,'Construction pipeline',1],
+[ET,'USD','med' ,'Building Permits',           {day:17},       8,30,'Leads housing starts by a month or two',1],
+[ET,'USD','med' ,'Existing Home Sales',        {day:21},      10,0 ,'Largest slice of the housing market',1],
+[ET,'USD','med' ,'US Flash Manufacturing PMI', {day:23},       9,45,'S&P Global read, lands before ISM',1],
+[ET,'USD','med' ,'US Flash Services PMI',      {day:23},       9,45,'',1],
+[ET,'USD','med' ,'Durable Goods Orders m/m',   {day:25},       8,30,'Business investment appetite',1],
+[ET,'USD','med' ,'Core Durable Goods Orders m/m',{day:25},     8,30,'Excludes aircraft, the honest version',1],
+[ET,'USD','low' ,'New Home Sales',             {day:25},      10,0 ,'',1],
+[ET,'USD','med' ,'CB Consumer Confidence',     {last:2},      10,0 ,'Confidence leads spending'],
+[ET,'USD','med' ,'Michigan Consumer Sentiment',{nth:[5,2]},   10,0 ,'Survey read on the consumer'],
+[ET,'USD','med' ,'Michigan Inflation Expectations',{nth:[5,2]},10,0,'The Fed has said outright that it watches this'],
+[ET,'USD','high','Advance GDP q/q',            {day:28},       8,30,'Quarterly growth, first estimate',1],
+[ET,'USD','high','Core PCE Price Index m/m',   {day:27},       8,30,'The inflation gauge the Fed actually targets',1],
+[ET,'USD','med' ,'Personal Spending m/m',      {day:27},       8,30,'',1],
+[ET,'USD','med' ,'Personal Income m/m',        {day:27},       8,30,'',1],
+[ET,'USD','med' ,'Trade Balance',              {bd:4},         8,30,'Goods and services deficit',1],
+[ET,'USD','low' ,'Factory Orders m/m',         {bd:5},        10,0 ,'',1],
+[ET,'USD','low' ,'Wholesale Inventories m/m',  {day:9},       10,0 ,'',1],
+[ET,'USD','low' ,'Pending Home Sales m/m',     {day:29},      10,0 ,'',1],
+
+/* ---------------- EURO AREA ---------------- */
+[FR,'EUR','med' ,'German Flash Manufacturing PMI',{day:23},    9,30,'Germany reports minutes before the bloc',1],
+[FR,'EUR','med' ,'German Flash Services PMI', {day:23},        9,30,'',1],
+[FR,'EUR','med' ,'French Flash Manufacturing PMI',{day:23},    9,15,'',1],
+[FR,'EUR','med' ,'Euro Area Flash Manufacturing PMI',{day:23},10,0 ,'First look at activity this month',1],
+[FR,'EUR','med' ,'Euro Area Flash Services PMI',{day:23},     10,0 ,'',1],
+[FR,'EUR','high','CPI Flash Estimate y/y',     {lastDay:1},   11,0 ,'First inflation estimate for the bloc',1],
+[FR,'EUR','high','Core CPI Flash Estimate y/y',{lastDay:1},   11,0 ,'Strips energy and food',1],
+[FR,'EUR','med' ,'German Preliminary CPI m/m', {day:29},      14,0 ,'Leaks the bloc number a day early',1],
+[FR,'EUR','med' ,'German Factory Orders m/m',  {bd:4},         8,0 ,'',1],
+[FR,'EUR','med' ,'German Industrial Production m/m',{bd:6},    8,0 ,'',1],
+[FR,'EUR','med' ,'German ZEW Economic Sentiment',{nth:[2,2]}, 11,0 ,'Investor expectations survey'],
+[FR,'EUR','med' ,'German Ifo Business Climate',{day:25},      10,0 ,'The bellwether German survey',1],
+[FR,'EUR','med' ,'Euro Area Retail Sales m/m', {bd:3},        11,0 ,'',1],
+[FR,'EUR','low' ,'Euro Area Unemployment Rate',{bd:2},        11,0 ,'',1],
+[FR,'EUR','med' ,'Euro Area GDP q/q',          {day:14},      11,0 ,'',1],
+[FR,'EUR','low' ,'Euro Area Trade Balance',    {day:16},      11,0 ,'',1],
+[FR,'EUR','low' ,'Sentix Investor Confidence', {bd:1},        10,30,'',1],
+
+/* ---------------- UNITED KINGDOM ---------------- */
+[LN,'GBP','high','Consumer Price Index y/y',   {day:16},       7,0 ,'Sets the tone for Bank of England pricing',1],
+[LN,'GBP','med' ,'Core CPI y/y',               {day:16},       7,0 ,'',1],
+[LN,'GBP','low' ,'PPI Input m/m',              {day:16},       7,0 ,'',1],
+[LN,'GBP','med' ,'Claimant Count Change',      {day:11},       7,0 ,'Monthly jobless claims',1],
+[LN,'GBP','med' ,'Average Earnings Index 3m/y',{day:11},       7,0 ,'UK wage growth',1],
+[LN,'GBP','low' ,'UK Unemployment Rate',       {day:11},       7,0 ,'',1],
+[LN,'GBP','med' ,'UK GDP m/m',                 {day:12},       7,0 ,'Monthly growth print',1],
+[LN,'GBP','med' ,'UK Retail Sales m/m',        {day:20},       7,0 ,'Consumer spending on the high street',1],
+[LN,'GBP','med' ,'UK Flash Manufacturing PMI', {day:23},       9,30,'',1],
+[LN,'GBP','med' ,'UK Flash Services PMI',      {day:23},       9,30,'Services dominate the UK economy',1],
+[LN,'GBP','low' ,'UK Construction PMI',        {bd:4},         9,30,'',1],
+[LN,'GBP','low' ,'Nationwide House Prices m/m',{bd:1},         7,0 ,'',1],
+[LN,'GBP','low' ,'Public Sector Net Borrowing',{day:21},       7,0 ,'',1],
+
+/* ---------------- JAPAN ---------------- */
+[TK,'JPY','med' ,'Tokyo Core CPI y/y',         {nth:[5,4]},    8,30,'Leads the national number by three weeks'],
+[TK,'JPY','med' ,'National Core CPI y/y',      {day:19},       8,30,'Inflation read that shapes BoJ pricing',1],
+[TK,'JPY','med' ,'Japan Retail Sales y/y',     {day:28},       8,50,'',1],
+[TK,'JPY','low' ,'Japan Unemployment Rate',    {last:5},       8,30,'',1],
+[TK,'JPY','med' ,'Japan Industrial Production m/m',{last:5},   8,50,'',1],
+[TK,'JPY','med' ,'Japan Flash Manufacturing PMI',{day:23},     9,30,'',1],
+[TK,'JPY','low' ,'Japan Trade Balance',        {day:18},       8,50,'',1],
+
+/* ---------------- AUSTRALIA ---------------- */
+[SY,'AUD','high','Australia Employment Change',{day:18},      11,30,'Aussie jobs data',1],
+[SY,'AUD','med' ,'Australia Unemployment Rate',{day:18},      11,30,'',1],
+[SY,'AUD','med' ,'Australia Monthly CPI y/y',  {day:26},      11,30,'',1],
+[SY,'AUD','med' ,'Australia Retail Sales m/m', {bd:3},        11,30,'',1],
+[SY,'AUD','low' ,'Australia Trade Balance',    {bd:5},        11,30,'',1],
+[SY,'AUD','low' ,'Australia Building Approvals m/m',{bd:2},   11,30,'',1],
+
+/* ---------------- NEW ZEALAND ---------------- */
+[NZ,'NZD','low' ,'NZ Trade Balance',           {day:24},      10,45,'',1],
+[NZ,'NZD','low' ,'ANZ Business Confidence',    {last:4},      13,0 ,'',1],
+
+/* ---------------- CANADA ---------------- */
+[ET,'CAD','high','Canada Employment Change',   {nth:[5,1]},    8,30,'Often lands the same minute as US payrolls'],
+[ET,'CAD','med' ,'Canada Unemployment Rate',   {nth:[5,1]},    8,30,''],
+[ET,'CAD','med' ,'Canada CPI m/m',             {day:17},       8,30,'Bank of Canada inflation read',1],
+[ET,'CAD','med' ,'Canada Core CPI m/m',        {day:17},       8,30,'',1],
+[ET,'CAD','med' ,'Canada GDP m/m',             {last:5},       8,30,'',1],
+[ET,'CAD','med' ,'Canada Retail Sales m/m',    {day:22},       8,30,'',1],
+[ET,'CAD','low' ,'Ivey PMI',                   {bd:5},        10,0 ,'',1],
+[ET,'CAD','low' ,'Canada Trade Balance',       {bd:4},         8,30,'',1],
+
+/* ---------------- SWITZERLAND ---------------- */
+[CH,'CHF','med' ,'CPI m/m',                    {day:3},        8,30,'Swiss inflation',1],
+[CH,'CHF','low' ,'Swiss Retail Sales y/y',     {last:4},       8,30,'',1],
+[CH,'CHF','low' ,'Swiss Unemployment Rate',    {bd:5},         6,45,'',1],
+[CH,'CHF','low' ,'KOF Economic Barometer',     {day:30},       9,0 ,'Leading indicator for the Swiss economy',1],
+[CH,'CHF','low' ,'Swiss Trade Balance',        {day:18},       8,0 ,'',1],
+
+/* ---------------- CHINA ---------------- */
+[CN,'CNY','high','China Manufacturing PMI',    {lastDay:1},    9,30,'Official NBS survey, above 50 is expansion',1],
+[CN,'CNY','med' ,'China Non Manufacturing PMI',{lastDay:1},    9,30,'',1],
+[CN,'CNY','med' ,'Caixin Manufacturing PMI',   {bd:1},         9,45,'Private sector factory survey',1],
+[CN,'CNY','med' ,'Caixin Services PMI',        {bd:3},         9,45,'',1],
+[CN,'CNY','med' ,'China CPI y/y',              {day:9},        9,30,'Chinese inflation',1],
+[CN,'CNY','low' ,'China PPI y/y',              {day:9},        9,30,'',1],
+[CN,'CNY','med' ,'China Trade Balance',        {day:7},       10,0 ,'Exports and imports, a global demand read',1],
+[CN,'CNY','med' ,'China Retail Sales y/y',     {day:15},      10,0 ,'Monthly activity data',1],
+[CN,'CNY','med' ,'China Industrial Production y/y',{day:15},  10,0 ,'Drives iron ore and coal demand',1],
+[CN,'CNY','low' ,'China New Loans',            {day:12},      10,0 ,'',1]
+];
+
+/* quarterly and meeting based events, kept separate because they need month filters */
+var SPEC_Q = [
+[ET,'USD','med' ,'FOMC Meeting Minutes',       {fomcMinutes:1},14,0,'Three weeks after the decision, often moves price'],
+[NZ,'NZD','high','RBNZ Rate Decision',         {nth:[3,4], months:[2,4,5,7,8,10,11]},14,0,'Reserve Bank of New Zealand',1],
+[NZ,'NZD','high','New Zealand CPI q/q',        {day:17, months:[1,4,7,10]},10,45,'Quarterly inflation, drives RBNZ pricing',1],
+[NZ,'NZD','high','New Zealand Employment Change q/q',{day:5, months:[2,5,8,11]},10,45,'Quarterly jobs and unemployment rate',1],
+[NZ,'NZD','med' ,'New Zealand GDP q/q',        {day:19, months:[3,6,9,12]},10,45,'Quarterly growth',1],
+[CH,'CHF','high','SNB Policy Rate',            {nth:[4,3], months:[3,6,9,12]},9,30,'The Swiss National Bank meets quarterly',1],
+[CN,'CNY','high','China GDP y/y',              {day:17, months:[1,4,7,10]},10,0,'Quarterly growth in the second largest economy',1],
+[SY,'AUD','high','Australia CPI q/q',          {day:28, months:[1,4,7,10]},11,30,'Quarterly inflation',1],
+[SY,'AUD','med' ,'Australia Wage Price Index q/q',{day:19, months:[2,5,8,11]},11,30,'',1],
+[TK,'JPY','med' ,'Japan GDP q/q',              {day:16, months:[2,5,8,11]},8,50,'',1],
+[TK,'JPY','med' ,'Tankan Manufacturing Index', {bd:1, months:[1,4,7,10]},8,50,'',1],
+[LN,'GBP','med' ,'UK GDP q/q',                 {day:12, months:[2,5,8,11]},7,0,'',1]
+];
+
+/* central bank decisions that follow their own calendars */
+var CB = [
+  {cur:'EUR',tz:FR,name:'ECB Rate Decision',imp:'high',rule:{nth:[4,2]},H:14,M:15,note:'Followed by the press conference at 14:45 CET',
+   extra:[{name:'ECB Press Conference',imp:'high',H:14,M:45,note:'Where the real volatility usually shows up'}]},
+  {cur:'GBP',tz:LN,name:'BoE Rate Decision',imp:'high',rule:{nth:[4,1]},H:12,M:0,note:'Bank Rate and the vote split',
+   extra:[{name:'BoE Monetary Policy Summary',imp:'high',H:12,M:0,note:'The vote split is the real signal'}]},
+  {cur:'JPY',tz:TK,name:'BoJ Policy Rate',imp:'high',rule:{day:19},H:12,M:0,note:'Moves yen pairs hard when it surprises',
+   extra:[{name:'BoJ Press Conference',imp:'high',H:15,M:30,note:''}]},
+  {cur:'AUD',tz:SY,name:'RBA Rate Decision',imp:'high',rule:{nth:[2,1]},H:14,M:30,note:'Reserve Bank of Australia',
+   extra:[{name:'RBA Governor Press Conference',imp:'med',H:15,M:30,note:''}]},
+  {cur:'CAD',tz:ET,name:'BoC Rate Decision',imp:'high',rule:{nth:[3,2]},H:9,M:45,note:'Bank of Canada policy rate',
+   extra:[{name:'BoC Press Conference',imp:'med',H:10,M:30,note:''}]}
+];
+
+/* bank holidays that close a market. Fixed date ones only, which is
+   most of what actually matters for liquidity. */
+var HOLIDAYS = [
+  {cur:'USD',tz:ET,m:1,d:1,n:'New Year Day'},   {cur:'USD',tz:ET,m:7,d:4,n:'Independence Day'},
+  {cur:'USD',tz:ET,m:12,d:25,n:'Christmas Day'},{cur:'USD',tz:ET,m:11,rule:{nth:[4,4]},n:'Thanksgiving'},
+  {cur:'USD',tz:ET,m:1,rule:{nth:[1,3]},n:'Martin Luther King Day'},
+  {cur:'USD',tz:ET,m:2,rule:{nth:[1,3]},n:'Presidents Day'},
+  {cur:'USD',tz:ET,m:5,rule:{last:1},n:'Memorial Day'},
+  {cur:'USD',tz:ET,m:9,rule:{nth:[1,1]},n:'Labor Day'},
+  {cur:'GBP',tz:LN,m:1,d:1,n:'New Year Day'},   {cur:'GBP',tz:LN,m:12,d:25,n:'Christmas Day'},
+  {cur:'GBP',tz:LN,m:12,d:26,n:'Boxing Day'},   {cur:'GBP',tz:LN,m:5,rule:{nth:[1,1]},n:'Early May Bank Holiday'},
+  {cur:'GBP',tz:LN,m:8,rule:{last:1},n:'Summer Bank Holiday'},
+  {cur:'EUR',tz:FR,m:1,d:1,n:'New Year Day'},   {cur:'EUR',tz:FR,m:5,d:1,n:'Labour Day'},
+  {cur:'EUR',tz:FR,m:12,d:25,n:'Christmas Day'},{cur:'EUR',tz:FR,m:12,d:26,n:'Boxing Day'},
+  {cur:'EUR',tz:FR,m:10,d:3,n:'German Unity Day'},
+  {cur:'CAD',tz:ET,m:1,d:1,n:'New Year Day'},   {cur:'CAD',tz:ET,m:7,d:1,n:'Canada Day'},
+  {cur:'CAD',tz:ET,m:12,d:25,n:'Christmas Day'},{cur:'CAD',tz:ET,m:9,rule:{nth:[1,1]},n:'Labour Day'},
+  {cur:'JPY',tz:TK,m:1,d:1,n:'New Year Day'},   {cur:'JPY',tz:TK,m:5,d:3,n:'Constitution Day'},
+  {cur:'JPY',tz:TK,m:5,d:5,n:'Children Day'},   {cur:'JPY',tz:TK,m:2,d:11,n:'National Foundation Day'},
+  {cur:'AUD',tz:SY,m:1,d:1,n:'New Year Day'},   {cur:'AUD',tz:SY,m:1,d:26,n:'Australia Day'},
+  {cur:'AUD',tz:SY,m:12,d:25,n:'Christmas Day'},{cur:'AUD',tz:SY,m:4,d:25,n:'Anzac Day'},
+  {cur:'NZD',tz:NZ,m:1,d:1,n:'New Year Day'},   {cur:'NZD',tz:NZ,m:2,d:6,n:'Waitangi Day'},
+  {cur:'NZD',tz:NZ,m:12,d:25,n:'Christmas Day'},{cur:'NZD',tz:NZ,m:4,d:25,n:'Anzac Day'},
+  {cur:'CHF',tz:CH,m:1,d:1,n:'New Year Day'},   {cur:'CHF',tz:CH,m:8,d:1,n:'Swiss National Day'},
+  {cur:'CHF',tz:CH,m:12,d:25,n:'Christmas Day'},
+  {cur:'CNY',tz:CN,m:1,d:1,n:'New Year Day'},   {cur:'CNY',tz:CN,m:10,d:1,n:'National Day'},
+  {cur:'CNY',tz:CN,m:5,d:1,n:'Labour Day'}
+];
+
+/* resolve a rule to a list of days in the month */
+function daysForRule(y, m, r){
+  if (r.months && r.months.indexOf(m) === -1) return [];
+  if (r.weekly !== undefined){
+    var ds = [];
+    for (var k=1;k<=5;k++){
+      var d = nthWeekdayOfMonth(y, m, r.weekly, k);
+      if (d.getUTCMonth() === m-1) ds.push(d.getUTCDate());
+    }
+    return ds;
+  }
+  if (r.nth) return [ nthWeekdayOfMonth(y, m, r.nth[0], r.nth[1]).getUTCDate() ];
+  if (r.last !== undefined) return [ lastWeekdayOfMonth(y, m, r.last).getUTCDate() ];
+  if (r.bd) return [ nthBusinessDay(y, m, r.bd).getUTCDate() ];
+  if (r.lastDay) return [ new Date(Date.UTC(y, m, 0)).getUTCDate() ];
+  if (r.day) return [ r.day ];
+  if (r.fomcMinutes){
+    var out = [];
+    FOMC_2026.forEach(function(f){
+      var dt = new Date(Date.UTC(y, f.m-1, f.d));
+      dt = new Date(dt.getTime() + 21*86400000);
+      if (dt.getUTCFullYear() === y && dt.getUTCMonth() === m-1) out.push(dt.getUTCDate());
+    });
+    return out;
+  }
+  return [];
+}
+
 function buildMonth(y, m){
   var out = [];
 
-  /* ---- United States ---- */
-  var nfp = nthWeekdayOfMonth(y, m, 5, 1);          /* first Friday */
-  out.push(ev(ET,y,m,nfp.getUTCDate(),8,30,'USD','high','Non Farm Payrolls','The single biggest scheduled mover of the month'));
-  out.push(ev(ET,y,m,nfp.getUTCDate(),8,30,'USD','high','Unemployment Rate','Released alongside payrolls'));
-  out.push(ev(ET,y,m,nfp.getUTCDate(),8,30,'USD','med','Average Hourly Earnings','Wage growth, feeds the inflation picture'));
-
-  var ism1 = nthBusinessDay(y, m, 1);
-  out.push(ev(ET,y,m,ism1.getUTCDate(),10,0,'USD','high','ISM Manufacturing PMI','First real read on the new month'));
-  var ism3 = nthBusinessDay(y, m, 3);
-  out.push(ev(ET,y,m,ism3.getUTCDate(),10,0,'USD','high','ISM Services PMI','Services carry most of the US economy'));
-
-  var jolts = nthBusinessDay(y, m, 2);
-  out.push(ev(ET,y,m,jolts.getUTCDate(),10,0,'USD','med','JOLTS Job Openings','Labour demand, watched closely by the Fed', true));
-
-  /* weekly claims, every Thursday */
-  for (var wk=1; wk<=5; wk++){
-    var th = nthWeekdayOfMonth(y, m, 4, wk);
-    if (th.getUTCMonth() !== m-1) break;
-    out.push(ev(ET,y,m,th.getUTCDate(),8,30,'USD','med','Initial Jobless Claims','Weekly labour pulse'));
-  }
-
-  /* CPI dates are published by the Bureau of Labor Statistics, so these are exact */
-  var CPI_2026 = { 9:11, 10:14, 11:10, 12:10 };
-  if (y === 2026 && CPI_2026[m]){
-    out.push(ev(ET,y,m,CPI_2026[m],8,30,'USD','high','Consumer Price Index','Headline inflation, the Fed reacts to this'));
-    out.push(ev(ET,y,m,CPI_2026[m]+1,8,30,'USD','med','Producer Price Index','Factory gate inflation, lands just after CPI', true));
-  } else {
-    out.push(ev(ET,y,m,12,8,30,'USD','high','Consumer Price Index','Headline inflation, the Fed reacts to this', true));
-    out.push(ev(ET,y,m,13,8,30,'USD','med','Producer Price Index','Factory gate inflation, lands just after CPI', true));
-  }
-  out.push(ev(ET,y,m,15,8,30,'USD','high','Retail Sales','Consumer spending, drives GDP expectations', true));
-
-  var mich = nthWeekdayOfMonth(y, m, 5, 2);
-  out.push(ev(ET,y,m,mich.getUTCDate(),10,0,'USD','med','Michigan Consumer Sentiment (Prelim)','Survey read on the consumer'));
-
-  var cc = lastWeekdayOfMonth(y, m, 2);
-  out.push(ev(ET,y,m,cc.getUTCDate(),10,0,'USD','med','CB Consumer Confidence','Confidence leads spending'));
-
-  out.push(ev(ET,y,m,27,8,30,'USD','high','Core PCE Price Index','The inflation gauge the Fed actually targets', true));
-  out.push(ev(ET,y,m,28,8,30,'USD','high','GDP','Quarterly growth, released in three estimates', true));
-
-  /* weekly energy inventories, every Wednesday. Moves oil and the CAD. */
-  for (var ow=1; ow<=5; ow++){
-    var wed = nthWeekdayOfMonth(y, m, 3, ow);
-    if (wed.getUTCMonth() !== m-1) break;
-    out.push(ev(ET,y,m,wed.getUTCDate(),10,30,'USD','med','Crude Oil Inventories','Weekly EIA build or draw, drives oil and CAD'));
-  }
-
-  /* flash PMIs, the monthly pulse check across all three majors */
-  out.push(ev(FR,y,m,23,9,0,'EUR','med','Euro Area Flash PMI','First look at activity this month', true));
-  out.push(ev(LN,y,m,23,9,30,'GBP','med','UK Flash PMI','Composite, manufacturing and services', true));
-  out.push(ev(ET,y,m,23,9,45,'USD','med','US Flash PMI','S&P Global read, lands before ISM', true));
-
-  out.push(ev(ET,y,m,5,8,30,'USD','med','Trade Balance','Goods and services deficit', true));
-  out.push(ev(ET,y,m,17,8,30,'USD','med','Housing Starts and Building Permits','Construction pipeline', true));
-  out.push(ev(ET,y,m,15,9,15,'USD','low','Industrial Production','Factory output', true));
-  out.push(ev(ET,y,m,21,10,0,'USD','med','Existing Home Sales','Largest slice of the housing market', true));
-  out.push(ev(ET,y,m,25,8,30,'USD','med','Durable Goods Orders','Business investment appetite', true));
-  out.push(ev(ET,y,m,25,10,0,'USD','low','New Home Sales','Smaller but leading housing read', true));
-
-  /* FOMC */
-  if (y === 2026){
-    FOMC_2026.forEach(function(f){
-      if (f.m === m){
-        out.push(ev(ET,y,m,f.d,14,0,'USD','high','FOMC Rate Decision', f.sep ? 'Decision plus updated projections' : 'Interest rate decision'));
-        out.push(ev(ET,y,m,f.d,14,30,'USD','high','Fed Press Conference','Where the real volatility usually shows up'));
-      }
+  function addSpec(list){
+    list.forEach(function(s){
+      daysForRule(y, m, s[4]).forEach(function(d){
+        out.push(ev(s[0], y, m, d, s[5], s[6], s[1], s[2], s[3], s[7]||'', s[8]));
+      });
     });
   }
+  addSpec(SPEC);
+  addSpec(SPEC_Q);
 
-  /* ---- Europe and UK ---- */
-  out.push(ev(LN,y,m,16,7,0,'GBP','high','UK Consumer Price Index','Sets the tone for Bank of England pricing', true));
-  out.push(ev(LN,y,m,11,7,0,'GBP','med','UK GDP (Monthly)','Monthly growth print', true));
-  out.push(ev(FR,y,m,1,10,0,'EUR','high','Euro Area CPI Flash','First inflation estimate for the bloc', true));
-  var ecbTh = nthWeekdayOfMonth(y, m, 4, 2);
-  out.push(ev(FR,y,m,ecbTh.getUTCDate(),14,15,'EUR','high','ECB Rate Decision','Followed by the press conference at 14:45 CET', true));
-  var boeTh = nthWeekdayOfMonth(y, m, 4, 1);
-  out.push(ev(LN,y,m,boeTh.getUTCDate(),12,0,'GBP','high','BoE Rate Decision','Bank Rate and the vote split', true));
+  /* central bank decisions */
+  CB.forEach(function(c){
+    daysForRule(y, m, c.rule).forEach(function(d){
+      out.push(ev(c.tz, y, m, d, c.H, c.M, c.cur, c.imp, c.name, c.note, 1));
+      (c.extra||[]).forEach(function(x){
+        out.push(ev(c.tz, y, m, d, x.H, x.M, c.cur, x.imp, x.name, x.note, 1));
+      });
+    });
+  });
 
-  /* ---- Asia Pacific ---- */
-  var zewTue = nthWeekdayOfMonth(y, m, 2, 2);
-  out.push(ev(FR,y,m,zewTue.getUTCDate(),11,0,'EUR','med','German ZEW Sentiment','Investor expectations survey'));
-  out.push(ev(FR,y,m,25,10,0,'EUR','med','German Ifo Business Climate','The bellwether German survey', true));
-  out.push(ev(LN,y,m,20,7,0,'GBP','med','UK Retail Sales','Consumer spending on the high street', true));
-
-  /* ---- Asia Pacific ---- */
-  out.push(ev(TK,y,m,19,8,30,'JPY','med','Japan National CPI','Inflation read that shapes BoJ pricing', true));
-  out.push(ev(TK,y,m,19,12,0,'JPY','high','BoJ Policy Rate','Moves yen pairs hard when it surprises', true));
-  var rbaTue = nthWeekdayOfMonth(y, m, 2, 1);
-  out.push(ev(SY,y,m,rbaTue.getUTCDate(),14,30,'AUD','high','RBA Rate Decision','Reserve Bank of Australia', true));
-  out.push(ev(SY,y,m,18,11,30,'AUD','high','Australia Employment Change','Aussie jobs data', true));
-
-  /* ---- New Zealand ---- */
-  var RBNZ_MONTHS = [2,4,5,7,8,10,11];      /* the RBNZ meets seven times a year */
-  if (RBNZ_MONTHS.indexOf(m) !== -1){
-    var rbnzWed = nthWeekdayOfMonth(y, m, 3, 4);
-    out.push(ev(NZ,y,m,rbnzWed.getUTCDate(),14,0,'NZD','high','RBNZ Rate Decision','Reserve Bank of New Zealand', true));
+  /* the Fed runs on its own published calendar */
+  if (y === 2026){
+    FOMC_2026.forEach(function(f){
+      if (f.m !== m) return;
+      out.push(ev(ET,y,m,f.d,14,0,'USD','high','FOMC Rate Decision', f.sep ? 'Decision plus updated projections' : 'Interest rate decision'));
+      out.push(ev(ET,y,m,f.d,14,30,'USD','high','Fed Press Conference','Where the real volatility usually shows up'));
+    });
+    /* CPI dates are published by the Bureau of Labor Statistics, so these are exact */
+    var CPI_2026 = { 9:11, 10:14, 11:10, 12:10 };
+    if (CPI_2026[m]){
+      out = out.filter(function(e){ return !/^(Consumer Price Index|Core CPI)/.test(e.name) || e.cur !== 'USD'; });
+      out.push(ev(ET,y,m,CPI_2026[m],8,30,'USD','high','Consumer Price Index m/m','Headline inflation, the Fed reacts to this'));
+      out.push(ev(ET,y,m,CPI_2026[m],8,30,'USD','high','Core CPI m/m','Strips food and energy, the number that matters most'));
+      out.push(ev(ET,y,m,CPI_2026[m],8,30,'USD','med','Consumer Price Index y/y',''));
+    }
   }
-  if ([1,4,7,10].indexOf(m) !== -1)
-    out.push(ev(NZ,y,m,17,10,45,'NZD','high','New Zealand CPI','Quarterly inflation, drives RBNZ pricing', true));
-  if ([2,5,8,11].indexOf(m) !== -1)
-    out.push(ev(NZ,y,m,5,10,45,'NZD','high','New Zealand Employment Change','Quarterly jobs and unemployment rate', true));
-  if ([3,6,9,12].indexOf(m) !== -1)
-    out.push(ev(NZ,y,m,19,10,45,'NZD','med','New Zealand GDP','Quarterly growth', true));
 
-  /* ---- Switzerland ---- */
-  if ([3,6,9,12].indexOf(m) !== -1){
-    var snbThu = nthWeekdayOfMonth(y, m, 4, 3);
-    out.push(ev(CH,y,m,snbThu.getUTCDate(),9,30,'CHF','high','SNB Policy Rate','The Swiss National Bank meets quarterly', true));
-  }
-  out.push(ev(CH,y,m,3,8,30,'CHF','med','Swiss CPI','Swiss inflation', true));
-  out.push(ev(CH,y,m,30,9,0,'CHF','low','KOF Economic Barometer','Leading indicator for the Swiss economy', true));
-
-  /* ---- China ---- */
-  out.push(ev(CN,y,m,1,9,45,'CNY','med','Caixin Manufacturing PMI','Private sector factory survey', true));
-  out.push(ev(CN,y,m,7,10,0,'CNY','med','China Trade Balance','Exports and imports, a global demand read', true));
-  out.push(ev(CN,y,m,9,9,30,'CNY','med','China CPI','Chinese inflation', true));
-  out.push(ev(CN,y,m,15,10,0,'CNY','med','China Retail Sales and Industrial Production','Monthly activity data', true));
-  if ([1,4,7,10].indexOf(m) !== -1)
-    out.push(ev(CN,y,m,17,10,0,'CNY','high','China GDP','Quarterly growth in the second largest economy', true));
-  var lastDay = new Date(Date.UTC(y, m, 0)).getUTCDate();
-  out.push(ev(CN,y,m,lastDay,9,30,'CNY','high','China Manufacturing PMI','Official NBS survey, above 50 is expansion', true));
-
-  /* ---- Canada ---- */
-  out.push(ev(ET,y,m,nfp.getUTCDate(),8,30,'CAD','high','Canada Employment Change','Often lands the same minute as US payrolls'));
-  out.push(ev(ET,y,m,17,8,30,'CAD','med','Canada CPI','Bank of Canada inflation read', true));
+  /* bank holidays */
+  HOLIDAYS.forEach(function(h){
+    if (h.m !== m) return;
+    var d = h.d ? h.d : (h.rule ? daysForRule(y, m, h.rule)[0] : null);
+    if (!d) return;
+    out.push({ ts: zonedToUTC(h.tz, y, m, d, 0, 0), cur:h.cur, imp:'low',
+               name:'Bank Holiday, ' + h.n, note:'Thin liquidity in this currency all day', est:false, holiday:true });
+  });
 
   return out;
 }
 
-/* =========================================================
-   WHY IT MOVES
-   One entry per recurring release. Keyed by event name.
-   up   = what a hotter or higher number tends to do
-   down = what a softer or lower number tends to do
-   Written for the currency in question, not for stocks.
-   ========================================================= */
 var WHY = {
   'Non Farm Payrolls': {
     what:'The headline count of jobs added across the US economy last month, excluding farms. It is the most heavily traded scheduled release there is, because employment is half of the Federal Reserve mandate and it lands with the unemployment rate and wage growth at the same second.',
@@ -997,6 +1142,150 @@ var WHY = {
     down:'Weakness <b>drags them lower</b>.',
     watch:'Industrial production matters more than retail sales for the Aussie, because it drives demand for iron ore and coal.'
   },
+  'BoC Rate Decision': {
+    what:'The Bank of Canada sets the overnight rate. Canada is a commodity exporter, so the loonie answers to oil as much as to policy.',
+    up:'A hike or hawkish tone strengthens the <b>Canadian dollar</b>.',
+    down:'A cut or dovish language <b>weakens it</b>.',
+    watch:'USDCAD is the pair to watch, and it can be pulled the opposite way by a big move in crude on the same day.'
+  },
+  'BoC Press Conference': {
+    what:'The Bank of Canada Governor takes questions after the decision.',
+    up:'Hawkish answers lift the <b>loonie</b>.',
+    down:'Dovish answers <b>press it lower</b>.',
+    watch:'Like every central bank presser, the tone here regularly reverses the move the decision caused.'
+  },
+  'Claimant Count Change': {
+    what:'How many more people claimed unemployment benefits in the UK last month. The most timely UK labour read.',
+    up:'More claimants means a weakening labour market and <b>weighs on the pound</b>.',
+    down:'Fewer claimants is a sign of strength and <b>supports sterling</b>.',
+    watch:'It is released at the same moment as average earnings, and wages usually win the argument when the two disagree.'
+  },
+  'Average Earnings Index 3m/y': {
+    what:'UK wage growth measured over three months against a year earlier. The Bank of England treats this as the core inflation problem.',
+    up:'Faster wage growth is hawkish and <b>lifts the pound</b>.',
+    down:'Cooling wages raise cut expectations and <b>weigh on it</b>.',
+    watch:'This is the single most important UK number after CPI. Watch the version excluding bonuses, which is the cleaner trend.'
+  },
+  'Empire State Manufacturing Index': {
+    what:'A survey of manufacturers in New York State, and the first regional factory read of each month.',
+    up:'A positive number means expansion and is mildly <b>dollar supportive</b>.',
+    down:'A negative reading signals contraction.',
+    watch:'Very volatile and prone to big swings. It matters mainly as an early hint at what ISM will say two weeks later.'
+  },
+  'Philly Fed Manufacturing Index': {
+    what:'The Philadelphia Fed survey of regional manufacturers, watched as a national bellwether.',
+    up:'Expansion is mildly <b>dollar positive</b>.',
+    down:'Contraction points to industrial weakness.',
+    watch:'More reliable than the Empire State survey and taken more seriously when the two conflict.'
+  },
+  'Personal Spending m/m': {
+    what:'How much households actually spent. Released alongside the PCE inflation figures.',
+    up:'Strong spending supports growth and is mildly <b>dollar positive</b>.',
+    down:'Weak spending points to a tiring consumer.',
+    watch:'It shares its release with Core PCE, and the inflation number takes the market attention almost every time.'
+  },
+  'Personal Income m/m': {
+    what:'Total income households received, before they spend it.',
+    up:'Rising income supports future spending.',
+    down:'Falling income warns of weaker demand ahead.',
+    watch:'The savings rate published alongside it tells you whether people are spending the income or banking it.'
+  },
+  'Pending Home Sales m/m': {
+    what:'Homes under contract but not yet closed, which makes it the most forward looking housing read.',
+    up:'Rising contracts point to a recovering housing market.',
+    down:'Falling contracts show buyers priced out by rates.',
+    watch:'It leads existing home sales by roughly two months, so it tells you what that release will say before it happens.'
+  },
+  'Factory Orders m/m': {
+    what:'New orders placed with US manufacturers.',
+    up:'Rising orders point to industrial demand.',
+    down:'Falling orders warn of a manufacturing slowdown.',
+    watch:'Most of the content is already known from the durable goods report days earlier, so it rarely moves price.'
+  },
+  'Wholesale Inventories m/m': {
+    what:'Stock sitting in warehouses across the wholesale trade.',
+    up:'Building inventories can mean confidence, or it can mean goods are not selling.',
+    down:'Falling inventories suggest demand is outpacing supply.',
+    watch:'Ambiguous by nature, which is why it is a minor release. It does feed the GDP calculation.'
+  },
+  'Capacity Utilisation Rate': {
+    what:'How much of the nation industrial capacity is actually in use.',
+    up:'Higher utilisation can signal inflationary pressure building in the supply chain.',
+    down:'Lower utilisation means slack in the economy.',
+    watch:'A slow moving series. Only worth attention at extremes.'
+  },
+  'Labour Force Participation Rate': {
+    what:'The share of working age people either employed or looking for work.',
+    up:'More people entering the workforce eases wage pressure, which is mildly dovish.',
+    down:'People leaving the workforce can flatter the unemployment rate without the economy improving.',
+    watch:'This is the number that tells you whether a falling unemployment rate is genuine or an illusion.'
+  },
+  'Natural Gas Storage': {
+    what:'Weekly US natural gas held in storage.',
+    up:'A larger build means weak demand and usually <b>pushes gas prices down</b>.',
+    down:'A draw means tight supply and <b>lifts prices</b>.',
+    watch:'Relevant if you trade natural gas. It has almost no effect on currency pairs.'
+  },
+  'German Factory Orders m/m': {
+    what:'New orders at German manufacturers, the industrial heart of the eurozone.',
+    up:'Rising orders are <b>euro supportive</b>.',
+    down:'Falling orders point to European industrial weakness.',
+    watch:'Extremely volatile because large one off contracts distort it. The trend matters, the single print rarely does.'
+  },
+  'Sentix Investor Confidence': {
+    what:'A survey of European investors on current conditions and expectations.',
+    up:'Improving confidence is mildly <b>euro positive</b>.',
+    down:'Deteriorating confidence weighs on it.',
+    watch:'An early month sentiment read. Minor unless it moves sharply.'
+  },
+  'UK Construction PMI': {
+    what:'Activity survey for UK builders. Above 50 is expansion.',
+    up:'Strength is mildly <b>sterling positive</b>.',
+    down:'Weakness signals a rate sensitive sector under pressure.',
+    watch:'The smallest of the three UK PMIs and the least market moving.'
+  },
+  'Nationwide House Prices m/m': {
+    what:'A UK house price index built from one lender mortgage approvals.',
+    up:'Rising prices suggest the consumer is coping with borrowing costs.',
+    down:'Falling prices point to affordability strain.',
+    watch:'Sentiment rather than a policy input. It rarely moves the pound.'
+  },
+  'Public Sector Net Borrowing': {
+    what:'How much the UK government borrowed last month.',
+    up:'Higher borrowing raises questions about fiscal sustainability and can <b>pressure the pound</b>.',
+    down:'Lower borrowing is fiscally reassuring.',
+    watch:'Normally ignored, but it becomes very live around Budget announcements or when gilt markets are already nervous.'
+  },
+  'Ivey PMI': {
+    what:'A survey of Canadian purchasing managers across both public and private sectors.',
+    up:'Above 50 signals expansion and is mildly <b>loonie supportive</b>.',
+    down:'Below 50 signals contraction.',
+    watch:'A secondary Canadian read. Employment and CPI matter far more for the loonie.'
+  },
+  'Australia Building Approvals m/m': {
+    what:'Permits issued for new residential construction in Australia.',
+    up:'More approvals suggest confidence and cheap enough credit.',
+    down:'Fewer approvals point to a rate squeezed housing market.',
+    watch:'Notoriously volatile month to month because apartment blocks land unevenly.'
+  },
+  'ANZ Business Confidence': {
+    what:'A survey of New Zealand firms about their own trading outlook.',
+    up:'Rising confidence is mildly <b>kiwi supportive</b>.',
+    down:'Falling confidence weighs on it.',
+    watch:'A minor release, though it can move NZD more than its size suggests because kiwi liquidity is thin.'
+  },
+  'China Non Manufacturing PMI': {
+    what:'The official Chinese survey covering services and construction, released with the manufacturing version.',
+    up:'Strength suggests Chinese domestic demand is holding up, which <b>supports commodity currencies</b>.',
+    down:'Weakness points to a slowing domestic economy.',
+    watch:'Construction sits inside this number, so it is the read on Chinese property, which drives steel and iron ore.'
+  },
+  'China New Loans': {
+    what:'How much new credit Chinese banks extended. Credit growth is the main lever Beijing pulls to stimulate.',
+    up:'A surge in lending signals stimulus flowing through, which is <b>positive for commodity currencies</b>.',
+    down:'Weak lending suggests stimulus is not reaching the real economy.',
+    watch:'The release date is not fixed and can arrive with little warning anywhere in a multi day window.'
+  },
   'Industrial Production': {
     what:'Total output from factories, mines and utilities.',
     up:'Higher output is growth positive.',
@@ -1004,6 +1293,50 @@ var WHY = {
     watch:'A minor mover in most conditions. It gets attention mainly when manufacturing is already the market focus.'
   }
 };
+
+var WHY_ALIAS = [
+  ['Non Farm Payrolls','Non Farm Payrolls'], ['Unemployment Rate','Unemployment Rate'],
+  ['Average Hourly Earnings','Average Hourly Earnings'], ['Core CPI','Consumer Price Index'],
+  ['Consumer Price Index','Consumer Price Index'], ['CPI Flash','Euro Area CPI Flash'],
+  ['CPI','Consumer Price Index'], ['PPI','Producer Price Index'],
+  ['Producer Price Index','Producer Price Index'], ['Core PCE','Core PCE Price Index'],
+  ['Retail Sales','Retail Sales'], ['GDP','GDP'], ['FOMC','FOMC Rate Decision'],
+  ['Fed Press','Fed Press Conference'], ['ISM Manufacturing','ISM Manufacturing PMI'],
+  ['ISM Services','ISM Services PMI'], ['Jobless Claims','Initial Jobless Claims'],
+  ['JOLTS','JOLTS Job Openings'], ['Consumer Confidence','CB Consumer Confidence'],
+  ['Michigan','Michigan Consumer Sentiment (Prelim)'], ['Crude Oil','Crude Oil Inventories'],
+  ['Flash Manufacturing PMI','US Flash PMI'], ['Flash Services PMI','US Flash PMI'],
+  ['Flash PMI','US Flash PMI'], ['ECB','ECB Rate Decision'], ['BoE','BoE Rate Decision'],
+  ['BoJ','BoJ Policy Rate'], ['RBA','RBA Rate Decision'], ['RBNZ','RBNZ Rate Decision'],
+  ['SNB','SNB Policy Rate'], ['BoC','BoC Rate Decision'],
+  ['ZEW','German ZEW Sentiment'], ['Ifo','German Ifo Business Climate'],
+  ['China Manufacturing PMI','China Manufacturing PMI'], ['Caixin','Caixin Manufacturing PMI'],
+  ['China GDP','China GDP'], ['China CPI','China CPI'], ['China Trade','China Trade Balance'],
+  ['China Retail','China Retail Sales and Industrial Production'],
+  ['China Industrial','China Retail Sales and Industrial Production'],
+  ['Employment Change','Non Farm Payrolls'], ['Durable Goods','Durable Goods Orders'],
+  ['Housing Starts','Housing Starts and Building Permits'],
+  ['Building Permits','Housing Starts and Building Permits'],
+  ['Existing Home','Existing Home Sales'], ['New Home','New Home Sales'],
+  ['Industrial Production','Industrial Production'], ['Trade Balance','Trade Balance'],
+  ['KOF','KOF Economic Barometer'], ['Bank Holiday','__HOLIDAY__']
+];
+var WHY_HOLIDAY = {
+  what:'A public holiday closes the banks in this country, so its currency trades on much thinner volume for the whole session.',
+  up:'Thin books exaggerate moves. A normal sized order can push price further than it would on a full day.',
+  down:'Ranges often compress instead, with price drifting sideways because the usual participants are absent.',
+  watch:'The risk is not direction, it is liquidity. Spreads widen, stops get filled at worse prices, and a breakout is far more likely to be false. Many traders simply skip the affected pairs.'
+};
+function whyFor(name){
+  if (WHY[name]) return WHY[name];
+  for (var i=0;i<WHY_ALIAS.length;i++){
+    if (name.indexOf(WHY_ALIAS[i][0]) !== -1){
+      if (WHY_ALIAS[i][1] === '__HOLIDAY__') return WHY_HOLIDAY;
+      return WHY[WHY_ALIAS[i][1]] || null;
+    }
+  }
+  return null;
+}
 
 var CAL_CACHE = {};
 function monthEvents(y, m){
@@ -1094,7 +1427,7 @@ function renderCal(){
       ? (MONNAMES[d.getMonth()].slice(0,3)+' '+pad(d.getDate()))
       : (pad(d.getHours())+':'+pad(d.getMinutes()));
 
-    var info = WHY[e.name];
+    var info = whyFor(e.name);
     var rid = 'r' + (ROW_ID++);
 
     html += '<div class="tl-ev '+(past?'past ':'')+(info?'has':'')+'" '+(info?'data-row="'+rid+'"':'')+'>'+
