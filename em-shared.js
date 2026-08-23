@@ -570,7 +570,7 @@ const EM = {
       { href: 'pro.html', label: 'Pro' },
       { href: 'creators.html', label: 'Creators' },
       { href: 'about.html', label: 'About' },
-      { href: 'blog.html', label: 'Blog' },
+      { href: 'tools.html', label: 'Tools' },
     ];
 
     const nav = document.createElement('nav');
@@ -641,7 +641,7 @@ const EM = {
             <h5>Company</h5>
             <ul>
               <li><a href="about.html">About</a></li>
-              <li><a href="blog.html">Blog</a></li>
+              <li><a href="tools.html">Tools</a></li>
               <li><a href="mailto:hello@edgematrixhq.com" class="em-contact">Contact</a></li>
             </ul>
           </div>

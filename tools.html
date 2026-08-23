@@ -1,17 +1,1090 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7GQBYWNHT3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-7GQBYWNHT3");
+  </script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Creators — EdgeMatrix</title>
-<link rel="canonical" href="https://edgematrixhq.com/creators.html"/>
-<meta name="robots" content="noindex, follow"/>
-<meta http-equiv="refresh" content="0; url=creators.html"/>
-<script>window.location.replace("creators.html");</script>
-</head>
+<title>Trading Tools — Live Session Clock &amp; Economic Calendar | EdgeMatrix</title>
+<meta name="description" content="Free trading tools from EdgeMatrix. See which forex session is open right now, when every session opens in your local time, and every high impact news release for the week, month and year."/>
+<link rel="canonical" href="https://edgematrixhq.com/tools.html"/>
+<meta name="robots" content="index, follow"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="EdgeMatrix"/>
+<meta property="og:url" content="https://edgematrixhq.com/tools.html"/>
+<meta property="og:title" content="Trading Tools — Live Session Clock &amp; Economic Calendar | EdgeMatrix"/>
+<meta property="og:description" content="Which session is open right now, and what news is about to move it. Free from EdgeMatrix."/>
+<meta property="og:image" content="https://edgematrixhq.com/og-image.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://edgematrixhq.com/og-image.png"/>
+<style>
+/* ============ HERO ============ */
+.tl-hero { padding:150px 24px 60px; text-align:center; position:relative; overflow:hidden; }
+.tl-hero-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:760px; height:420px; background:radial-gradient(ellipse,rgba(166,30,46,0.12),transparent 65%); pointer-events:none; }
+.tl-hero-content { position:relative; z-index:2; max-width:720px; margin:0 auto; }
+.tl-hero h1 { font-size:clamp(36px,5.2vw,66px); font-weight:700; letter-spacing:-3px; line-height:1.02; margin-bottom:22px; }
+.tl-hero h1 em { font-style:normal; color:#D42B40; }
+.tl-hero p { font-size:17px; color:#888899; line-height:1.8; max-width:560px; margin:0 auto; }
+
+/* ============ LIVE STATUS ============ */
+.tl-live { max-width:1100px; margin:0 auto; padding:0 24px; }
+.tl-livecard { background:linear-gradient(180deg,#0F0F12,#0A0A0C); border:1px solid rgba(166,30,46,0.22); border-radius:10px; padding:30px 32px; display:flex; align-items:center; justify-content:space-between; gap:28px; flex-wrap:wrap; position:relative; overflow:hidden; }
+.tl-livecard::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 12% 50%,rgba(166,30,46,0.10),transparent 60%); pointer-events:none; }
+.tl-live-left { position:relative; z-index:2; }
+.tl-live-label { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:2.5px; color:#666677; text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.tl-dot { width:7px; height:7px; border-radius:50%; background:#1DB954; box-shadow:0 0 8px #1DB954; animation:tl-pulse 2s infinite; }
+.tl-dot.closed { background:#444455; box-shadow:none; animation:none; }
+@keyframes tl-pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+.tl-live-name { font-size:clamp(28px,4vw,42px); font-weight:700; letter-spacing:-1.5px; line-height:1.1; }
+.tl-live-name .on { color:#1DB954; }
+.tl-live-name .off { color:#666677; }
+.tl-live-sub { font-size:14px; color:#888899; margin-top:8px; }
+.tl-live-sub b { color:#E8E8EC; font-weight:600; }
+.tl-live-right { position:relative; z-index:2; text-align:right; }
+.tl-clock { font-family:'Space Mono',monospace; font-size:clamp(26px,3.5vw,38px); font-weight:700; letter-spacing:-1px; color:#E8E8EC; font-variant-numeric:tabular-nums; }
+.tl-clock-zone { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; color:#666677; text-transform:uppercase; margin-top:6px; }
+
+/* ============ NEXT HIGH IMPACT ============ */
+.tl-next { margin-top:14px; display:flex; align-items:center; justify-content:space-between; gap:24px;
+  background:#0A0A0C; border:1px solid rgba(255,255,255,0.06); border-left:2px solid #A61E2E;
+  border-radius:8px; padding:18px 24px; text-decoration:none; color:inherit;
+  transition:border-color 0.3s, background 0.3s; }
+.tl-next:hover { background:#0F0F12; border-color:rgba(166,30,46,0.3); border-left-color:#D42B40; }
+.tl-next.soon { border-left-color:#D42B40; background:rgba(166,30,46,0.05); }
+.tl-next.none { border-left-color:#2A2A2E; }
+.tl-next-label { font-family:'Space Mono',monospace; font-size:9px; font-weight:700; letter-spacing:2.5px; color:#666677; text-transform:uppercase; margin-bottom:7px; }
+.tl-next-ev { font-size:16px; font-weight:600; letter-spacing:-0.2px; color:#E8E8EC; line-height:1.35; }
+.tl-next-ev .cur { font-family:'Space Mono',monospace; font-size:12px; color:#D42B40; font-weight:700; letter-spacing:0.5px; margin-right:8px; }
+.tl-next-r { text-align:right; flex-shrink:0; }
+.tl-next-count { font-family:'Space Mono',monospace; font-size:24px; font-weight:700; letter-spacing:-0.5px; color:#E8E8EC; font-variant-numeric:tabular-nums; line-height:1.1; }
+.tl-next.soon .tl-next-count { color:#D42B40; }
+.tl-next.none .tl-next-count { color:#444455; font-size:16px; }
+.tl-next-when { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:1.2px; color:#666677; text-transform:uppercase; margin-top:5px; }
+
+/* ============ TIMELINE ============ */
+.tl-timeline { margin-top:22px; background:#0A0A0C; border:1px solid rgba(255,255,255,0.05); border-radius:8px; padding:22px 24px 16px; }
+.tl-tl-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px; }
+.tl-tl-title { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:2px; color:#A61E2E; text-transform:uppercase; }
+.tl-legend { display:flex; gap:16px; flex-wrap:wrap; }
+.tl-leg { display:flex; align-items:center; gap:6px; font-size:11px; color:#666677; }
+.tl-leg i { width:10px; height:10px; border-radius:2px; display:block; }
+.tl-rows { position:relative; }
+.tl-row { display:flex; align-items:center; gap:12px; margin-bottom:9px; }
+.tl-row-name { width:74px; flex-shrink:0; font-family:'Space Mono',monospace; font-size:10px; letter-spacing:1px; color:#888899; text-transform:uppercase; }
+.tl-track { flex:1; height:16px; background:rgba(255,255,255,0.03); border-radius:3px; position:relative; overflow:hidden; }
+.tl-bar { position:absolute; top:0; bottom:0; border-radius:3px; opacity:0.85; }
+.tl-now { position:absolute; top:0; bottom:0; width:2px; background:#D42B40; box-shadow:0 0 8px rgba(212,43,64,0.9); z-index:5; }
+.tl-axis { display:flex; margin-top:8px; padding-left:86px; }
+.tl-axis span { flex:1; font-family:'Space Mono',monospace; font-size:9px; color:#444455; text-align:left; }
+
+/* ============ SESSION CARDS ============ */
+.tl-sessions { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:22px; }
+.tl-sc { background:#0F0F12; border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:24px; transition:border-color 0.3s, transform 0.2s; }
+.tl-sc.open { border-color:rgba(29,185,84,0.35); box-shadow:0 8px 40px rgba(29,185,84,0.06); }
+.tl-sc:hover { transform:translateY(-2px); }
+.tl-sc-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+.tl-sc-name { font-size:17px; font-weight:700; letter-spacing:-0.3px; }
+.tl-sc-city { font-family:'Space Mono',monospace; font-size:10px; color:#666677; letter-spacing:1px; margin-top:3px; }
+.tl-pill { font-family:'Space Mono',monospace; font-size:9px; font-weight:700; letter-spacing:1.5px; padding:4px 9px; border-radius:2px; text-transform:uppercase; white-space:nowrap; }
+.tl-pill.open { background:rgba(29,185,84,0.12); color:#1DB954; border:1px solid rgba(29,185,84,0.3); }
+.tl-pill.closed { background:rgba(255,255,255,0.04); color:#666677; border:1px solid rgba(255,255,255,0.08); }
+.tl-sc-hours { font-family:'Space Mono',monospace; font-size:15px; color:#E8E8EC; letter-spacing:-0.3px; }
+.tl-sc-meta { font-size:12px; color:#666677; margin-top:8px; line-height:1.6; }
+.tl-sc-meta b { color:#D42B40; font-weight:600; }
+
+/* ============ CALENDAR ============ */
+.tl-cal-bar { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
+.tl-tabs { display:flex; gap:6px; background:#0A0A0C; border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:4px; }
+.tl-tab { background:none; border:none; color:#888899; font-family:'Space Mono',monospace; font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; padding:9px 14px; white-space:nowrap; border-radius:4px; cursor:pointer; transition:all 0.2s; }
+.tl-tab:hover { color:#E8E8EC; }
+.tl-tab .sm { display:none; }
+.tl-tab.active { background:#A61E2E; color:#fff; }
+.tl-filters { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.tl-chip { background:#0A0A0C; border:1px solid rgba(255,255,255,0.08); color:#888899; font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; padding:8px 13px; border-radius:4px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:7px; }
+.tl-chip i { width:8px; height:8px; border-radius:50%; display:block; }
+.tl-chip.on { color:#E8E8EC; border-color:rgba(166,30,46,0.45); background:#141418; }
+.tl-chip.off { opacity:0.4; }
+
+.tl-daygroup { margin-bottom:26px; }
+.tl-dayhead { display:flex; align-items:baseline; gap:12px; padding:0 0 10px; border-bottom:1px solid rgba(166,30,46,0.18); margin-bottom:4px; flex-wrap:wrap; }
+.tl-dayhead h4 { font-size:15px; font-weight:700; letter-spacing:-0.3px; }
+.tl-dayhead .dh-date { font-family:'Space Mono',monospace; font-size:11px; color:#666677; letter-spacing:1px; }
+.tl-dayhead .dh-today { font-family:'Space Mono',monospace; font-size:9px; font-weight:700; letter-spacing:1.5px; color:#D42B40; background:rgba(166,30,46,0.12); border:1px solid rgba(166,30,46,0.3); padding:3px 8px; border-radius:2px; text-transform:uppercase; }
+
+.tl-ev { display:grid; grid-template-columns:76px 46px 22px 1fr 28px; gap:14px; align-items:center; padding:14px 12px; border-bottom:1px solid rgba(255,255,255,0.035); transition:background 0.2s; cursor:pointer; }
+.tl-ev.has:hover { background:rgba(255,255,255,0.025); }
+.tl-chev { color:#444455; font-size:11px; text-align:center; transition:transform 0.25s, color 0.2s; }
+.tl-ev.has:hover .tl-chev { color:#888899; }
+.tl-ev.open-row .tl-chev { transform:rotate(90deg); color:#D42B40; }
+.tl-ev.open-row { background:rgba(255,255,255,0.025); border-bottom-color:transparent; }
+.tl-ev.past { opacity:0.4; }
+.tl-ev-time { font-family:'Space Mono',monospace; font-size:12px; color:#888899; letter-spacing:-0.2px; font-variant-numeric:tabular-nums; }
+.tl-ev-cur { font-family:'Space Mono',monospace; font-size:11px; font-weight:700; color:#E8E8EC; letter-spacing:0.5px; }
+.tl-imp { width:9px; height:9px; border-radius:50%; display:block; margin:0 auto; }
+.tl-imp.high { background:#D42B40; box-shadow:0 0 7px rgba(212,43,64,0.55); }
+.tl-imp.med { background:#E5820A; }
+.tl-imp.low { background:#555566; }
+.tl-ev-name { font-size:14px; color:#E8E8EC; line-height:1.45; }
+.tl-ev-note { font-size:11.5px; color:#666677; margin-top:2px; }
+.tl-est { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; color:#666677; border:1px solid rgba(255,255,255,0.1); padding:2px 6px; border-radius:2px; text-transform:uppercase; white-space:nowrap; }
+
+/* expandable explainer */
+.tl-detail { display:none; padding:4px 12px 22px 12px; border-bottom:1px solid rgba(255,255,255,0.035); background:rgba(255,255,255,0.015); }
+.tl-detail.show { display:block; }
+.tl-detail-in { border-left:2px solid rgba(166,30,46,0.4); padding:2px 0 2px 20px; margin-left:60px; }
+.tl-what { font-size:13.5px; color:#888899; line-height:1.75; margin-bottom:16px; }
+.tl-react { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+.tl-rx { background:#0A0A0C; border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:14px 16px; }
+.tl-rx-h { font-family:'Space Mono',monospace; font-size:9.5px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.tl-rx.up .tl-rx-h { color:#1DB954; }
+.tl-rx.down .tl-rx-h { color:#D42B40; }
+.tl-rx p { font-size:12.5px; color:#888899; line-height:1.7; }
+.tl-rx p b { color:#E8E8EC; font-weight:600; }
+.tl-watch { font-size:12.5px; color:#666677; line-height:1.7; padding-top:12px; border-top:1px solid rgba(255,255,255,0.05); }
+.tl-watch b { color:#A61E2E; font-weight:700; font-family:'Space Mono',monospace; font-size:9.5px; letter-spacing:1.5px; text-transform:uppercase; display:block; margin-bottom:6px; }
+
+.tl-rolled { font-size:12.5px; color:#888899; background:rgba(166,30,46,0.06); border:1px solid rgba(166,30,46,0.18); border-radius:6px; padding:11px 15px; margin-bottom:20px; }
+.tl-empty { text-align:center; padding:56px 20px; color:#666677; font-size:14px; }
+.tl-empty b { display:block; color:#E8E8EC; font-size:16px; margin-bottom:8px; font-weight:600; }
+.tl-note { margin-top:26px; padding:20px 22px; background:#0A0A0C; border:1px solid rgba(255,255,255,0.05); border-radius:8px; font-size:12.5px; color:#666677; line-height:1.75; }
+.tl-note b { color:#888899; font-weight:600; }
+
+@media(max-width:980px){ .tl-sessions { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:640px){
+  .tl-sessions { grid-template-columns:1fr; }
+  .tl-livecard { padding:24px; }
+  .tl-next { flex-direction:column; align-items:flex-start; gap:14px; padding:18px 20px; }
+  .tl-next-r { text-align:left; }
+  .tl-next-count { font-size:21px; }
+  .tl-live-right { text-align:left; width:100%; }
+  .tl-ev { grid-template-columns:58px 38px 18px 1fr 20px; gap:9px; padding:13px 4px; }
+  .tl-ev .tl-est { display:none; }
+  .tl-detail-in { margin-left:0; padding-left:16px; }
+  .tl-detail { padding:4px 4px 20px; }
+  .tl-react { grid-template-columns:1fr; }
+  .tl-tab { flex:1; padding:14px 4px; font-size:10px; letter-spacing:0.8px; min-height:44px; }
+  .tl-tab .lg { display:none; }
+  .tl-tab .sm { display:inline; }
+  .tl-tabs { width:100%; }
+  .tl-chip { padding:11px 14px; min-height:40px; }
+  .tl-filters { justify-content:space-between; }
+  .tl-row-name { width:56px; font-size:9px; }
+  .tl-axis { padding-left:68px; }
+  .tl-axis span:nth-child(even) { display:none; }
+  .tl-cal-bar { flex-direction:column; align-items:stretch; }
+  .tl-tabs { justify-content:space-between; }
+}
+</style></head>
 <body>
-<p style="font-family:Arial,sans-serif;background:#0A0A0C;color:#E8E8EC;padding:24px;">
-This page has moved. <a href="creators.html" style="color:#D42B40;">Go to Creators &rarr;</a>
-</p>
+<script src="em-shared.js"></script>
+<script>EM.injectGlobalStyles(); EM.buildNav('tools');</script>
+
+<!-- HERO -->
+<div class="tl-hero">
+  <div class="tl-hero-glow"></div>
+  <div class="tl-hero-content">
+    <div class="em-badge" style="margin-bottom:30px;">Free Tools</div>
+    <h1>Know the hour.<br/><em>Know the news.</em></h1>
+    <p>Which session is live right now, when the next one opens in your time, and every release that can move your chart this week. Free, no account, no email.</p>
+  </div>
+</div>
+
+<!-- LIVE SESSION -->
+<section class="em-section" style="padding-top:0;">
+  <div class="tl-live">
+    <div class="tl-livecard">
+      <div class="tl-live-left">
+        <div class="tl-live-label"><span class="tl-dot" id="tl-dot"></span> Market status</div>
+        <div class="tl-live-name" id="tl-status">Loading</div>
+        <div class="tl-live-sub" id="tl-next"></div>
+      </div>
+      <div class="tl-live-right">
+        <div class="tl-clock" id="tl-clock">00:00:00</div>
+        <div class="tl-clock-zone" id="tl-zone">Your local time</div>
+      </div>
+    </div>
+
+    <a class="tl-next" id="tl-next-card" href="#tl-calendar">
+      <div class="tl-next-l">
+        <div class="tl-next-label">Next high impact</div>
+        <div class="tl-next-ev" id="tl-next-ev">Checking the calendar</div>
+      </div>
+      <div class="tl-next-r">
+        <div class="tl-next-count" id="tl-next-count">·</div>
+        <div class="tl-next-when" id="tl-next-when"></div>
+      </div>
+    </a>
+
+    <div class="tl-timeline">
+      <div class="tl-tl-head">
+        <div class="tl-tl-title" id="tl-tl-title">Today at a glance</div>
+        <div class="tl-legend">
+          <div class="tl-leg"><i style="background:#3E6FB0"></i> Sydney</div>
+          <div class="tl-leg"><i style="background:#7A4FA8"></i> Tokyo</div>
+          <div class="tl-leg"><i style="background:#1DB954"></i> London</div>
+          <div class="tl-leg"><i style="background:#A61E2E"></i> New York</div>
+          <div class="tl-leg"><i style="background:#D42B40;box-shadow:0 0 6px #D42B40"></i> Now</div>
+        </div>
+      </div>
+      <div class="tl-rows" id="tl-rows"></div>
+      <div class="tl-axis" id="tl-axis"></div>
+    </div>
+
+    <div class="tl-sessions" id="tl-cards"></div>
+  </div>
+</section>
+
+<div class="em-divider"></div>
+
+<!-- ECONOMIC CALENDAR -->
+<section class="em-section">
+  <div class="em-grid-bg"></div>
+  <div class="em-container">
+    <div class="em-reveal" style="max-width:620px;" id="tl-calendar">
+      <div class="em-section-label">Economic Calendar</div>
+      <h2 class="em-section-title">The releases that move price.</h2>
+      <p class="em-section-sub">High impact prints can move a pair more in two minutes than the whole session before it. Tap any release to see what it measures and which way price usually reacts.</p>
+    </div>
+
+    <div style="margin-top:38px;">
+      <div class="tl-cal-bar">
+        <div class="tl-tabs" id="tl-tabs">
+          <button class="tl-tab" data-view="day"><span class="lg">Today</span><span class="sm">Today</span></button>
+          <button class="tl-tab active" data-view="week"><span class="lg">Next 7 Days</span><span class="sm">7 Days</span></button>
+          <button class="tl-tab" data-view="month"><span class="lg">Rest of Month</span><span class="sm">Month</span></button>
+          <button class="tl-tab" data-view="year"><span class="lg">Rest of Year</span><span class="sm">Year</span></button>
+        </div>
+        <div class="tl-filters" id="tl-filters">
+          <div class="tl-chip on" data-imp="high"><i style="background:#D42B40"></i> High</div>
+          <div class="tl-chip on" data-imp="med"><i style="background:#E5820A"></i> Medium</div>
+          <div class="tl-chip on" data-imp="low"><i style="background:#555566"></i> Low</div>
+        </div>
+      </div>
+
+      <div id="tl-cal"></div>
+
+      <div class="tl-note">
+        <b>How to read this.</b> Times are converted to your device clock automatically, so what you see is when it lands for you. Dates marked <span class="tl-est">est</span> follow the normal monthly pattern for that release and the agency confirms the exact day closer to the time, so treat those as a heads up rather than a fixed appointment. Everything else runs on a fixed rule or a published schedule. Federal Reserve meeting dates come from the Fed calendar and US inflation dates come from the Bureau of Labor Statistics.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="em-divider"></div>
+
+<!-- CTA -->
+<section class="em-section">
+  <div class="em-container">
+    <div class="em-reveal" style="background:linear-gradient(180deg,#0F0F12,#0A0A0C); border:1px solid rgba(166,30,46,0.18); border-radius:8px; padding:56px; text-align:center;">
+      <h2 style="font-size:clamp(26px,3.5vw,38px);font-weight:700;letter-spacing:-1px;margin-bottom:14px;">Knowing the schedule is step one.</h2>
+      <p style="font-size:16px;color:#888899;line-height:1.8;max-width:520px;margin:0 auto 30px;">EdgeMatrix Pro puts your own rules on the chart, so you actually follow the plan when the number drops.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="pro.html" class="em-btn em-btn-primary">Try Pro Free for 7 Days →</a>
+        <a href="creators.html" class="em-btn em-btn-ghost">See Creator Drops ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+
+/* =========================================================
+   SESSIONS
+   Each session is defined in its own city time, so daylight
+   saving is handled correctly all year without hardcoding.
+   ========================================================= */
+var SESSIONS = [
+  { key:'sydney', name:'Sydney',   city:'Australia/Sydney', label:'AEST / AEDT', open:8, close:17, color:'#3E6FB0' },
+  { key:'tokyo',  name:'Tokyo',    city:'Asia/Tokyo',       label:'JST',         open:9, close:18, color:'#7A4FA8' },
+  { key:'london', name:'London',   city:'Europe/London',    label:'GMT / BST',   open:8, close:17, color:'#1DB954' },
+  { key:'ny',     name:'New York', city:'America/New_York', label:'ET',          open:8, close:17, color:'#A61E2E' }
+];
+
+function partsIn(tz, d){
+  var f = new Intl.DateTimeFormat('en-US', { timeZone: tz, year:'numeric', month:'2-digit', day:'2-digit',
+    hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, weekday:'short' });
+  var o = {};
+  f.formatToParts(d).forEach(function(p){ o[p.type] = p.value; });
+  return { y:+o.year, m:+o.month, d:+o.day, H:(+o.hour)%24, M:+o.minute, S:+o.second, wd:o.weekday };
+}
+
+/* Returns the UTC ms for a given wall clock time in a timezone */
+function zonedToUTC(tz, y, m, d, H, M){
+  var guess = Date.UTC(y, m-1, d, H, M, 0);
+  for (var i=0;i<3;i++){
+    var p = partsIn(tz, new Date(guess));
+    var got = Date.UTC(p.y, p.m-1, p.d, p.H, p.M, 0);
+    var want = Date.UTC(y, m-1, d, H, M, 0);
+    guess += (want - got);
+  }
+  return guess;
+}
+
+/* Session window for a session on the calendar day it is currently in */
+function sessionWindow(s, now, dayShift){
+  dayShift = dayShift || 0;
+  var p = partsIn(s.city, new Date(now.getTime() + dayShift*86400000));
+  var openMs  = zonedToUTC(s.city, p.y, p.m, p.d, s.open, 0);
+  var closeMs = zonedToUTC(s.city, p.y, p.m, p.d, s.close, 0);
+  var wd = new Date(openMs).getUTCDay();
+  return { open:openMs, close:closeMs, cityParts:p, weekend:(p.wd==='Sat'||p.wd==='Sun') };
+}
+
+function fmtDur(ms){
+  if (ms < 0) ms = 0;
+  var t = Math.floor(ms/1000);
+  var h = Math.floor(t/3600), m = Math.floor((t%3600)/60);
+  if (h >= 24) { var d = Math.floor(h/24); return d + (d===1?' day ':' days ') + (h%24) + 'h'; }
+  if (h > 0) return h + 'h ' + m + 'm';
+  return m + 'm';
+}
+function pad(n){ return n<10 ? '0'+n : ''+n; }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function num(v){ var n = parseFloat(String(v).replace(/[^0-9.\-]/g,'')); return isNaN(n) ? null : n; }
+
+function computeSessions(now){
+  return SESSIONS.map(function(s){
+    var today = sessionWindow(s, now, 0);
+    var isOpen = !today.weekend && now.getTime() >= today.open && now.getTime() < today.close;
+    var nextOpen = null;
+    if (!isOpen){
+      for (var k=0;k<8;k++){
+        var w = sessionWindow(s, now, k);
+        if (!w.weekend && w.open > now.getTime()){ nextOpen = w.open; break; }
+      }
+    }
+    return { s:s, isOpen:isOpen, open:today.open, close:today.close, nextOpen:nextOpen, weekend:today.weekend };
+  });
+}
+
+/* =========================================================
+   RENDER: live status, timeline, cards
+   ========================================================= */
+function renderLive(){
+  var now = new Date();
+  var st = computeSessions(now);
+  var openOnes = st.filter(function(x){ return x.isOpen; });
+
+  /* clock */
+  document.getElementById('tl-clock').textContent =
+    pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+  try {
+    var tzName = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    document.getElementById('tl-zone').textContent = tzName ? ('Your time · ' + tzName.replace(/_/g,' ')) : 'Your local time';
+  } catch(e){}
+
+  var dot = document.getElementById('tl-dot');
+  var nameEl = document.getElementById('tl-status');
+  var subEl = document.getElementById('tl-next');
+
+  if (openOnes.length){
+    dot.className = 'tl-dot';
+    var names = openOnes.map(function(x){ return x.s.name; });
+    nameEl.innerHTML = names.join(' + ') + ' <span class="on">open</span>';
+    var soonest = openOnes.slice().sort(function(a,b){ return a.close-b.close; })[0];
+    var extra = openOnes.length > 1 ? 'Overlap in play, this is the busiest liquidity of the day. ' : '';
+    subEl.innerHTML = extra + '<b>'+soonest.s.name+'</b> closes in <b>'+fmtDur(soonest.close-now.getTime())+'</b>';
+  } else {
+    dot.className = 'tl-dot closed';
+    nameEl.innerHTML = '<span class="off">All sessions closed</span>';
+    var upcoming = st.filter(function(x){ return x.nextOpen; }).sort(function(a,b){ return a.nextOpen-b.nextOpen; })[0];
+    subEl.innerHTML = upcoming
+      ? '<b>'+upcoming.s.name+'</b> opens in <b>'+fmtDur(upcoming.nextOpen-now.getTime())+'</b>'
+      : 'Markets reopen Monday.';
+  }
+
+  /* timeline: 24h window. On a weekend we show the next trading day instead of an empty bar. */
+  var isWeekendNow = (now.getDay() === 0 || now.getDay() === 6);
+  var refShift = 0;
+  if (isWeekendNow) refShift = (now.getDay() === 6) ? 2 : 1;   /* Sat to Mon, Sun to Mon */
+  var ref = new Date(now.getTime() + refShift*86400000);
+  var mid = new Date(ref); mid.setHours(0,0,0,0);
+  var dayStart = mid.getTime(), dayMs = 86400000;
+
+  document.getElementById('tl-tl-title').textContent = isWeekendNow ? 'Monday at a glance' : 'Today at a glance';
+
+  var rows = '';
+  SESSIONS.forEach(function(s){
+    var segs = '';
+    for (var k=refShift-1;k<=refShift+1;k++){
+      var w = sessionWindow(s, now, k);
+      if (w.weekend) continue;
+      var a = Math.max(w.open, dayStart), b = Math.min(w.close, dayStart+dayMs);
+      if (b <= a) continue;
+      var l = ((a-dayStart)/dayMs)*100, wdt = ((b-a)/dayMs)*100;
+      segs += '<div class="tl-bar" style="left:'+l.toFixed(2)+'%;width:'+wdt.toFixed(2)+'%;background:'+s.color+'"></div>';
+    }
+    rows += '<div class="tl-row"><div class="tl-row-name">'+s.name+'</div><div class="tl-track">'+segs+'</div></div>';
+  });
+  var rowsEl = document.getElementById('tl-rows');
+  rowsEl.innerHTML = rows;
+
+  if (!isWeekendNow){
+    var nowPct = ((now.getTime()-dayStart)/dayMs)*100;
+    var track = rowsEl.querySelector('.tl-track');
+    if (track){
+      var line = document.createElement('div');
+      line.className = 'tl-now';
+      line.style.left = (track.offsetLeft + track.offsetWidth * (nowPct/100)) + 'px';
+      rowsEl.appendChild(line);
+    }
+  }
+
+  var ax = '';
+  for (var h=0; h<24; h+=3) ax += '<span>'+pad(h)+':00</span>';
+  document.getElementById('tl-axis').innerHTML = ax;
+
+  /* cards */
+  var cards = st.map(function(x){
+    var oH = new Date(x.open), cH = new Date(x.close);
+    var hours = pad(oH.getHours())+':'+pad(oH.getMinutes())+' to '+pad(cH.getHours())+':'+pad(cH.getMinutes());
+    var meta = x.isOpen
+      ? 'Closes in <b>'+fmtDur(x.close-now.getTime())+'</b>'
+      : (x.nextOpen ? 'Opens in <b>'+fmtDur(x.nextOpen-now.getTime())+'</b>' : 'Closed for the weekend');
+    return '<div class="tl-sc '+(x.isOpen?'open':'')+'">'+
+      '<div class="tl-sc-top"><div><div class="tl-sc-name">'+x.s.name+'</div><div class="tl-sc-city">'+x.s.label+'</div></div>'+
+      '<div class="tl-pill '+(x.isOpen?'open':'closed')+'">'+(x.isOpen?'Open':'Closed')+'</div></div>'+
+      '<div class="tl-sc-hours">'+hours+'</div>'+
+      '<div class="tl-sc-meta">'+meta+'</div></div>';
+  }).join('');
+  document.getElementById('tl-cards').innerHTML = cards;
+}
+
+/* =========================================================
+   ECONOMIC CALENDAR ENGINE
+   Everything is generated from a rule or a published schedule.
+   ========================================================= */
+var ET = 'America/New_York', LN = 'Europe/London', TK = 'Asia/Tokyo', SY = 'Australia/Sydney', FR = 'Europe/Berlin';
+
+function nthWeekdayOfMonth(y, m, weekday, n){        /* m 1-12, weekday 0=Sun */
+  var d = new Date(Date.UTC(y, m-1, 1));
+  var add = (weekday - d.getUTCDay() + 7) % 7;
+  return new Date(Date.UTC(y, m-1, 1 + add + (n-1)*7));
+}
+function lastWeekdayOfMonth(y, m, weekday){
+  var d = new Date(Date.UTC(y, m, 0));
+  var back = (d.getUTCDay() - weekday + 7) % 7;
+  return new Date(Date.UTC(y, m-1, d.getUTCDate() - back));
+}
+function nthBusinessDay(y, m, n){
+  var count = 0, day = 1, dt;
+  while (day <= 31){
+    dt = new Date(Date.UTC(y, m-1, day));
+    if (dt.getUTCMonth() !== m-1) break;
+    var w = dt.getUTCDay();
+    if (w !== 0 && w !== 6){ count++; if (count === n) return dt; }
+    day++;
+  }
+  return new Date(Date.UTC(y, m-1, 1));
+}
+/* Nothing is ever released on a weekend, so any fixed calendar date that
+   lands on Saturday or Sunday rolls forward to the Monday. */
+function ev(tz, y, m, d, H, M, cur, imp, name, note, est){
+  var dt = new Date(Date.UTC(y, m-1, d));
+  var wd = dt.getUTCDay();
+  if (wd === 6) dt = new Date(dt.getTime() + 2*86400000);
+  else if (wd === 0) dt = new Date(dt.getTime() + 86400000);
+  return {
+    ts: zonedToUTC(tz, dt.getUTCFullYear(), dt.getUTCMonth()+1, dt.getUTCDate(), H, M),
+    cur:cur, imp:imp, name:name, note:note||'', est:!!est
+  };
+}
+
+/* FOMC 2026, decision day and time from the Federal Reserve calendar */
+var FOMC_2026 = [
+  { m:1,  d:28, sep:false }, { m:3,  d:18, sep:true },
+  { m:4,  d:29, sep:false }, { m:6,  d:17, sep:true },
+  { m:7,  d:29, sep:false }, { m:9,  d:16, sep:true },
+  { m:10, d:28, sep:false }, { m:12, d:9,  sep:true }
+];
+
+function buildMonth(y, m){
+  var out = [];
+
+  /* ---- United States ---- */
+  var nfp = nthWeekdayOfMonth(y, m, 5, 1);          /* first Friday */
+  out.push(ev(ET,y,m,nfp.getUTCDate(),8,30,'USD','high','Non Farm Payrolls','The single biggest scheduled mover of the month'));
+  out.push(ev(ET,y,m,nfp.getUTCDate(),8,30,'USD','high','Unemployment Rate','Released alongside payrolls'));
+  out.push(ev(ET,y,m,nfp.getUTCDate(),8,30,'USD','med','Average Hourly Earnings','Wage growth, feeds the inflation picture'));
+
+  var ism1 = nthBusinessDay(y, m, 1);
+  out.push(ev(ET,y,m,ism1.getUTCDate(),10,0,'USD','high','ISM Manufacturing PMI','First real read on the new month'));
+  var ism3 = nthBusinessDay(y, m, 3);
+  out.push(ev(ET,y,m,ism3.getUTCDate(),10,0,'USD','high','ISM Services PMI','Services carry most of the US economy'));
+
+  var jolts = nthBusinessDay(y, m, 2);
+  out.push(ev(ET,y,m,jolts.getUTCDate(),10,0,'USD','med','JOLTS Job Openings','Labour demand, watched closely by the Fed', true));
+
+  /* weekly claims, every Thursday */
+  for (var wk=1; wk<=5; wk++){
+    var th = nthWeekdayOfMonth(y, m, 4, wk);
+    if (th.getUTCMonth() !== m-1) break;
+    out.push(ev(ET,y,m,th.getUTCDate(),8,30,'USD','med','Initial Jobless Claims','Weekly labour pulse'));
+  }
+
+  /* CPI dates are published by the Bureau of Labor Statistics, so these are exact */
+  var CPI_2026 = { 9:11, 10:14, 11:10, 12:10 };
+  if (y === 2026 && CPI_2026[m]){
+    out.push(ev(ET,y,m,CPI_2026[m],8,30,'USD','high','Consumer Price Index','Headline inflation, the Fed reacts to this'));
+    out.push(ev(ET,y,m,CPI_2026[m]+1,8,30,'USD','med','Producer Price Index','Factory gate inflation, lands just after CPI', true));
+  } else {
+    out.push(ev(ET,y,m,12,8,30,'USD','high','Consumer Price Index','Headline inflation, the Fed reacts to this', true));
+    out.push(ev(ET,y,m,13,8,30,'USD','med','Producer Price Index','Factory gate inflation, lands just after CPI', true));
+  }
+  out.push(ev(ET,y,m,15,8,30,'USD','high','Retail Sales','Consumer spending, drives GDP expectations', true));
+
+  var mich = nthWeekdayOfMonth(y, m, 5, 2);
+  out.push(ev(ET,y,m,mich.getUTCDate(),10,0,'USD','med','Michigan Consumer Sentiment (Prelim)','Survey read on the consumer'));
+
+  var cc = lastWeekdayOfMonth(y, m, 2);
+  out.push(ev(ET,y,m,cc.getUTCDate(),10,0,'USD','med','CB Consumer Confidence','Confidence leads spending'));
+
+  out.push(ev(ET,y,m,27,8,30,'USD','high','Core PCE Price Index','The inflation gauge the Fed actually targets', true));
+  out.push(ev(ET,y,m,28,8,30,'USD','high','GDP','Quarterly growth, released in three estimates', true));
+
+  /* weekly energy inventories, every Wednesday. Moves oil and the CAD. */
+  for (var ow=1; ow<=5; ow++){
+    var wed = nthWeekdayOfMonth(y, m, 3, ow);
+    if (wed.getUTCMonth() !== m-1) break;
+    out.push(ev(ET,y,m,wed.getUTCDate(),10,30,'USD','med','Crude Oil Inventories','Weekly EIA build or draw, drives oil and CAD'));
+  }
+
+  /* flash PMIs, the monthly pulse check across all three majors */
+  out.push(ev(FR,y,m,23,9,0,'EUR','med','Euro Area Flash PMI','First look at activity this month', true));
+  out.push(ev(LN,y,m,23,9,30,'GBP','med','UK Flash PMI','Composite, manufacturing and services', true));
+  out.push(ev(ET,y,m,23,9,45,'USD','med','US Flash PMI','S&P Global read, lands before ISM', true));
+
+  out.push(ev(ET,y,m,5,8,30,'USD','med','Trade Balance','Goods and services deficit', true));
+  out.push(ev(ET,y,m,17,8,30,'USD','med','Housing Starts and Building Permits','Construction pipeline', true));
+  out.push(ev(ET,y,m,15,9,15,'USD','low','Industrial Production','Factory output', true));
+  out.push(ev(ET,y,m,21,10,0,'USD','med','Existing Home Sales','Largest slice of the housing market', true));
+  out.push(ev(ET,y,m,25,8,30,'USD','med','Durable Goods Orders','Business investment appetite', true));
+  out.push(ev(ET,y,m,25,10,0,'USD','low','New Home Sales','Smaller but leading housing read', true));
+
+  /* FOMC */
+  if (y === 2026){
+    FOMC_2026.forEach(function(f){
+      if (f.m === m){
+        out.push(ev(ET,y,m,f.d,14,0,'USD','high','FOMC Rate Decision', f.sep ? 'Decision plus updated projections' : 'Interest rate decision'));
+        out.push(ev(ET,y,m,f.d,14,30,'USD','high','Fed Press Conference','Where the real volatility usually shows up'));
+      }
+    });
+  }
+
+  /* ---- Europe and UK ---- */
+  out.push(ev(LN,y,m,16,7,0,'GBP','high','UK Consumer Price Index','Sets the tone for Bank of England pricing', true));
+  out.push(ev(LN,y,m,11,7,0,'GBP','med','UK GDP (Monthly)','Monthly growth print', true));
+  out.push(ev(FR,y,m,1,10,0,'EUR','high','Euro Area CPI Flash','First inflation estimate for the bloc', true));
+  var ecbTh = nthWeekdayOfMonth(y, m, 4, 2);
+  out.push(ev(FR,y,m,ecbTh.getUTCDate(),14,15,'EUR','high','ECB Rate Decision','Followed by the press conference at 14:45 CET', true));
+  var boeTh = nthWeekdayOfMonth(y, m, 4, 1);
+  out.push(ev(LN,y,m,boeTh.getUTCDate(),12,0,'GBP','high','BoE Rate Decision','Bank Rate and the vote split', true));
+
+  /* ---- Asia Pacific ---- */
+  var zewTue = nthWeekdayOfMonth(y, m, 2, 2);
+  out.push(ev(FR,y,m,zewTue.getUTCDate(),11,0,'EUR','med','German ZEW Sentiment','Investor expectations survey'));
+  out.push(ev(FR,y,m,25,10,0,'EUR','med','German Ifo Business Climate','The bellwether German survey', true));
+  out.push(ev(LN,y,m,20,7,0,'GBP','med','UK Retail Sales','Consumer spending on the high street', true));
+
+  /* ---- Asia Pacific ---- */
+  out.push(ev(TK,y,m,19,8,30,'JPY','med','Japan National CPI','Inflation read that shapes BoJ pricing', true));
+  out.push(ev(TK,y,m,19,12,0,'JPY','high','BoJ Policy Rate','Moves yen pairs hard when it surprises', true));
+  var rbaTue = nthWeekdayOfMonth(y, m, 2, 1);
+  out.push(ev(SY,y,m,rbaTue.getUTCDate(),14,30,'AUD','high','RBA Rate Decision','Reserve Bank of Australia', true));
+  out.push(ev(SY,y,m,18,11,30,'AUD','high','Australia Employment Change','Aussie jobs data', true));
+
+  /* ---- Canada ---- */
+  out.push(ev(ET,y,m,nfp.getUTCDate(),8,30,'CAD','high','Canada Employment Change','Often lands the same minute as US payrolls'));
+  out.push(ev(ET,y,m,17,8,30,'CAD','med','Canada CPI','Bank of Canada inflation read', true));
+
+  return out;
+}
+
+/* =========================================================
+   WHY IT MOVES
+   One entry per recurring release. Keyed by event name.
+   up   = what a hotter or higher number tends to do
+   down = what a softer or lower number tends to do
+   Written for the currency in question, not for stocks.
+   ========================================================= */
+var WHY = {
+  'Non Farm Payrolls': {
+    what:'The headline count of jobs added across the US economy last month, excluding farms. It is the most heavily traded scheduled release there is, because employment is half of the Federal Reserve mandate and it lands with the unemployment rate and wage growth at the same second.',
+    up:'A big beat says the economy is running hot. Traders price in the Fed staying higher for longer, yields rise and the <b>dollar usually strengthens</b>. Gold often drops as higher yields make it less attractive to hold.',
+    down:'A weak print raises the odds of rate cuts. Yields fall and the <b>dollar usually weakens</b>. Gold tends to catch a bid, and indices can actually rally on the idea that cheaper money is coming.',
+    watch:'The headline number is not the whole story. Revisions to the previous two months can be larger than the beat itself, and price will sometimes reverse hard once traders read them. Give it two or three minutes before trusting the direction.'
+  },
+  'Unemployment Rate': {
+    what:'The share of people actively looking for work who cannot find it. Released in the same report as payrolls.',
+    up:'Rising unemployment points to a cooling labour market. The <b>dollar generally softens</b> as cut expectations build.',
+    down:'A falling rate says the labour market is still tight, which keeps the Fed cautious about cutting and tends to <b>support the dollar</b>.',
+    watch:'Check whether the rate moved because people found jobs or because they stopped looking. A drop caused by people leaving the workforce is weak news dressed up as strong.'
+  },
+  'Average Hourly Earnings': {
+    what:'How fast wages are rising. Wages feed directly into services inflation, so the Fed watches this closely.',
+    up:'Hot wage growth means inflation is harder to kill. Hawkish, and generally <b>dollar positive</b>.',
+    down:'Cooling wages give the Fed room to ease, which usually <b>weighs on the dollar</b>.',
+    watch:'This is released at the same moment as payrolls. When the two disagree, wages often win the second move after the initial spike fades.'
+  },
+  'Consumer Price Index': {
+    what:'The main measure of US inflation, covering the price of a basket of goods and services. Released monthly at 8:30 Eastern, covering the previous month.',
+    up:'Hotter inflation forces the Fed to stay restrictive. Yields jump and the <b>dollar typically rallies</b>. Risk assets and gold usually sell off on the first move.',
+    down:'A cooler print opens the door to cuts. The <b>dollar typically falls</b>, and equities and gold usually rally.',
+    watch:'Core CPI, which strips out food and energy, matters more than the headline. If headline and core move in opposite directions, price follows core.'
+  },
+  'Producer Price Index': {
+    what:'Inflation at the factory gate, measuring what producers receive rather than what shoppers pay. It often leads consumer inflation by a month or two.',
+    up:'Higher input costs eventually reach consumers, which is hawkish and <b>mildly dollar positive</b>.',
+    down:'Falling producer prices suggest consumer inflation follows, which is <b>mildly dollar negative</b>.',
+    watch:'Lands a day or two after CPI and usually moves price far less. Worth knowing about mainly because certain components feed the PCE calculation the Fed actually targets.'
+  },
+  'Core PCE Price Index': {
+    what:'The Federal Reserve preferred inflation gauge. It weights spending differently to CPI and updates as consumers substitute cheaper goods, which the Fed considers more honest.',
+    up:'Because this is the number the Fed formally targets, an upside surprise carries real policy weight and tends to be <b>strongly dollar positive</b>.',
+    down:'A soft print is the clearest green light for cuts and usually <b>pressures the dollar</b>.',
+    watch:'It often arrives weeks after CPI covering the same period, so the market has already guessed the answer. The reaction is smaller than the importance suggests, unless it disagrees with CPI.'
+  },
+  'Retail Sales': {
+    what:'Total receipts at retail stores. Consumer spending drives roughly two thirds of US economic output, so this is a direct read on growth.',
+    up:'Strong spending means a resilient economy and less urgency to cut. Generally <b>dollar positive</b>.',
+    down:'Weak sales point to a slowing consumer, raising recession and rate cut talk. Generally <b>dollar negative</b>.',
+    watch:'Look at the control group, which strips out autos, gas and building materials. That is the number that feeds GDP, and it frequently tells a different story to the headline.'
+  },
+  'GDP': {
+    what:'The broadest measure of economic output, released quarterly in three revisions: advance, second and third.',
+    up:'Faster growth supports the currency and pushes back rate cut bets. <b>Dollar positive</b>.',
+    down:'A miss fuels slowdown fears and <b>weighs on the dollar</b>.',
+    watch:'The advance estimate moves price. The two revisions rarely do, because the market has moved on by then.'
+  },
+  'FOMC Rate Decision': {
+    what:'The Federal Reserve announces where it is setting US interest rates. Eight scheduled meetings a year, four of which come with updated economic projections.',
+    up:'A hike, or a hold with hawkish language, lifts yields and <b>strengthens the dollar</b> sharply.',
+    down:'A cut, or dovish language, <b>weakens the dollar</b> and typically lifts gold and indices.',
+    watch:'The decision itself is usually priced in. The move comes from the statement wording and, on projection meetings, the dot plot showing where each official expects rates to go. Expect violent two way movement in the first ten minutes.'
+  },
+  'Fed Press Conference': {
+    what:'The Fed Chair takes questions thirty minutes after the decision. Unscripted, and frequently more market moving than the decision itself.',
+    up:'Hawkish answers, meaning any hint that cuts are further away than hoped, push <b>the dollar higher</b>.',
+    down:'Dovish answers or concern about growth <b>send the dollar lower</b>.',
+    watch:'This is the single most dangerous half hour of the month for a tight stop. Price frequently reverses the entire decision move mid sentence. Most experienced traders are flat through it.'
+  },
+  'ISM Manufacturing PMI': {
+    what:'A survey of purchasing managers at factories. Above 50 means expansion, below 50 means contraction. It is the first real read on a new month.',
+    up:'A number above 50 and rising suggests industrial strength, which is <b>dollar supportive</b>.',
+    down:'A reading below 50 signals contraction and tends to <b>weigh on the dollar</b>.',
+    watch:'The prices paid component inside the report is an early inflation signal and sometimes moves price more than the headline.'
+  },
+  'ISM Services PMI': {
+    what:'The same survey for the services sector, which is the vast majority of the US economy. Generally more important than the manufacturing version.',
+    up:'Strength here means the bulk of the economy is holding up. <b>Dollar positive</b>.',
+    down:'Services weakness is a genuine slowdown warning and usually <b>hits the dollar</b> harder than a manufacturing miss.',
+    watch:'Because services is where inflation has been stickiest, the employment and prices sub indexes get read closely by the Fed.'
+  },
+  'Initial Jobless Claims': {
+    what:'How many people filed for unemployment benefits last week. The only weekly read on the labour market, which makes it the fastest signal available.',
+    up:'More claims means more layoffs, a cooling labour market, and a <b>softer dollar</b>.',
+    down:'Fewer claims means a tight labour market, which is <b>dollar supportive</b>.',
+    watch:'Any single week is noisy. Traders watch the four week average for the real trend. It only moves price meaningfully when the number breaks well outside its recent range.'
+  },
+  'JOLTS Job Openings': {
+    what:'The number of unfilled job openings across the economy. A direct measure of how badly employers want workers.',
+    up:'More openings means labour demand is still strong, which keeps the Fed cautious. <b>Dollar supportive</b>.',
+    down:'Falling openings is the cleanest sign that the labour market is loosening without people losing jobs yet. Tends to be <b>dollar negative</b>.',
+    watch:'This data runs a month behind everything else, so it moves price less than its reputation suggests.'
+  },
+  'CB Consumer Confidence': {
+    what:'A survey asking households how they feel about the economy and their own finances now and six months out.',
+    up:'Confident consumers spend, which supports growth. Mildly <b>dollar positive</b>.',
+    down:'Falling confidence tends to lead falling spending. Mildly <b>dollar negative</b>.',
+    watch:'The expectations component leads, the present situation component lags. A wide gap between them has historically preceded slowdowns.'
+  },
+  'Michigan Consumer Sentiment (Prelim)': {
+    what:'A separate consumer survey that also asks households what inflation they expect over the next year and five years.',
+    up:'Higher sentiment is mildly growth positive.',
+    down:'Lower sentiment points to weaker spending ahead.',
+    watch:'The inflation expectations numbers inside this report matter far more than the sentiment headline. The Fed has said outright that it watches them, and a jump there can move the dollar on its own.'
+  },
+  'Crude Oil Inventories': {
+    what:'How much crude the US has in storage, published weekly. A build means supply is outpacing demand, a draw means the opposite.',
+    up:'A larger build than expected means weak demand, and oil usually <b>sells off</b>. That drags the Canadian dollar with it.',
+    down:'A bigger draw means tight supply and oil usually <b>rallies</b>, lifting CAD.',
+    watch:'The main event if you trade oil or CAD pairs, and mostly noise if you do not. Watch out for it landing at 10:30 Eastern in the middle of the New York session.'
+  },
+  'US Flash PMI': {
+    what:'An early estimate of business activity from a survey of companies, released before the official monthly figures.',
+    up:'Above 50 and improving is growth positive and mildly <b>dollar supportive</b>.',
+    down:'Below 50 signals contraction and <b>weighs on the dollar</b>.',
+    watch:'Flash means preliminary. It moves price because it arrives first, not because it is the most accurate version.'
+  },
+  'Euro Area Flash PMI': {
+    what:'The first estimate of business activity across the eurozone, with Germany and France reported separately just before.',
+    up:'Stronger activity supports the <b>euro</b> and reduces pressure on the ECB to ease.',
+    down:'Contraction <b>weakens the euro</b> and raises cut expectations.',
+    watch:'The German number is released minutes earlier and frequently sets the direction before the bloc wide figure even lands.'
+  },
+  'UK Flash PMI': {
+    what:'The first read on UK business activity for the month, covering manufacturing, services and the composite of both.',
+    up:'Strength supports the <b>pound</b> and pushes back Bank of England cut bets.',
+    down:'Weakness <b>pressures the pound</b>.',
+    watch:'The services number carries the most weight, since services dominate the UK economy.'
+  },
+  'ECB Rate Decision': {
+    what:'The European Central Bank sets interest rates for the eurozone, followed by a press conference forty five minutes later.',
+    up:'A hike or hawkish guidance lifts the <b>euro</b>.',
+    down:'A cut or dovish tone <b>sends the euro lower</b>.',
+    watch:'As with the Fed, the press conference usually matters more than the decision. Watch EURUSD and EURGBP for the cleanest reaction.'
+  },
+  'BoE Rate Decision': {
+    what:'The Bank of England sets UK rates and publishes how each committee member voted.',
+    up:'A hike or a more hawkish vote split strengthens the <b>pound</b>.',
+    down:'A cut or a dovish split <b>weakens the pound</b>.',
+    watch:'The vote split is the real signal. A hold that comes with two members voting to hike can move sterling more than the hold itself.'
+  },
+  'BoJ Policy Rate': {
+    what:'The Bank of Japan sets rates. It has spent decades as the most dovish major central bank, which makes any shift genuinely violent.',
+    up:'Any move toward tightening causes sharp <b>yen strength</b>, often hundreds of pips in minutes.',
+    down:'Staying dovish keeps the <b>yen weak</b>.',
+    watch:'The BoJ does not announce at a fixed minute. The decision can land anywhere in a window, so yen pairs can sit still and then gap. Do not hold a tight stop through it.'
+  },
+  'RBA Rate Decision': {
+    what:'The Reserve Bank of Australia sets rates. The Australian dollar is also sensitive to Chinese growth and commodity prices.',
+    up:'A hike or hawkish statement lifts the <b>Australian dollar</b>.',
+    down:'A cut or dovish tone <b>weakens it</b>.',
+    watch:'AUD often reacts more to Chinese data than to its own central bank. Check what China released overnight before trusting the move.'
+  },
+  'UK Consumer Price Index': {
+    what:'UK inflation, released monthly at 7:00 London time, an hour before the London session opens properly.',
+    up:'Hotter inflation keeps the Bank of England restrictive and typically <b>lifts the pound</b>.',
+    down:'A cooler print raises cut expectations and <b>weighs on the pound</b>.',
+    watch:'It lands before most of Europe is trading, so the initial move happens on thin liquidity and can overshoot badly before the real direction sets in.'
+  },
+  'Euro Area CPI Flash': {
+    what:'The first estimate of eurozone inflation, assembled from national figures released over the preceding days.',
+    up:'Hotter inflation is hawkish for the ECB and <b>supports the euro</b>.',
+    down:'A cooler print <b>pressures the euro</b>.',
+    watch:'German and Spanish national numbers come out first and effectively leak the answer. By the time the bloc figure prints, much of the move has happened.'
+  },
+  'Canada Employment Change': {
+    what:'Canadian jobs data, which frequently lands at the exact same minute as US payrolls.',
+    up:'Strong jobs support the <b>Canadian dollar</b>.',
+    down:'Weak jobs <b>weaken it</b>.',
+    watch:'When it collides with US payrolls, USDCAD gets hit by both numbers at once and can move erratically in both directions. It is one of the messiest minutes of the month.'
+  },
+  'Canada CPI': {
+    what:'Canadian inflation, which drives Bank of Canada expectations.',
+    up:'Hotter inflation is hawkish and <b>supports the Canadian dollar</b>.',
+    down:'Cooler inflation <b>weighs on it</b>.',
+    watch:'CAD is also driven hard by oil. A hot CPI can be completely overridden by a large move in crude on the same day.'
+  },
+  'Australia Employment Change': {
+    what:'Australian jobs data, released during the Asian session.',
+    up:'Strong hiring <b>supports the Australian dollar</b>.',
+    down:'Weak hiring <b>pressures it</b>.',
+    watch:'The full time versus part time split matters. Headline growth built entirely on part time work is usually faded.'
+  },
+  'Japan National CPI': {
+    what:'Japanese inflation. After decades of deflation, sustained inflation here is what would finally force the Bank of Japan to move.',
+    up:'Higher inflation raises the odds of BoJ tightening, which <b>strengthens the yen</b>.',
+    down:'Soft inflation keeps the BoJ on hold and the <b>yen weak</b>.',
+    watch:'Released during the Asian session when yen liquidity is deepest, so the reaction tends to be orderly rather than spiky.'
+  },
+  'German ZEW Sentiment': {
+    what:'A survey of institutional investors and analysts on where they expect the German economy to go over the next six months.',
+    up:'Improving expectations <b>support the euro</b>.',
+    down:'Deteriorating expectations <b>weigh on it</b>.',
+    watch:'It is a sentiment survey rather than hard data, so it moves price far less than actual German output figures.'
+  },
+  'German Ifo Business Climate': {
+    what:'A long running survey of German firms about current conditions and their outlook. Germany is the largest economy in the eurozone.',
+    up:'Rising business confidence is <b>euro supportive</b>.',
+    down:'Falling confidence <b>pressures the euro</b>.',
+    watch:'The expectations component leads the current assessment. Watch the gap between the two.'
+  },
+  'UK Retail Sales': {
+    what:'Consumer spending across UK retailers.',
+    up:'Strong spending <b>supports the pound</b>.',
+    down:'Weak sales <b>weigh on it</b>.',
+    watch:'Volatile month to month and heavily distorted by weather and holidays. The three month trend is worth more than any single print.'
+  },
+  'UK GDP (Monthly)': {
+    what:'The UK is unusual in publishing a monthly growth estimate rather than only quarterly.',
+    up:'Faster growth <b>supports the pound</b>.',
+    down:'Contraction <b>weakens it</b>.',
+    watch:'Monthly GDP is noisy. Two consecutive negative months is what actually gets attention.'
+  },
+  'Trade Balance': {
+    what:'The gap between what a country exports and what it imports.',
+    up:'A narrowing deficit or growing surplus is mildly currency supportive.',
+    down:'A widening deficit is mildly negative.',
+    watch:'Rarely moves major pairs on its own. It matters most for commodity currencies where trade flows dominate.'
+  },
+  'Housing Starts and Building Permits': {
+    what:'How many new homes broke ground and how many permits were issued. Housing is rate sensitive, so it shows how policy is feeding through.',
+    up:'More construction signals confidence and cheap enough credit. Mildly <b>dollar positive</b>.',
+    down:'Falling starts show high rates biting. Mildly <b>dollar negative</b>.',
+    watch:'Permits lead starts by a month or two, so permits are the forward looking half.'
+  },
+  'Existing Home Sales': {
+    what:'Completed sales of previously owned homes, which make up the bulk of the housing market.',
+    up:'Stronger sales point to a resilient consumer.',
+    down:'Weak sales show high borrowing costs suppressing activity.',
+    watch:'This counts closings, so it reflects deals agreed a month or two ago. It is a lagging read by design.'
+  },
+  'New Home Sales': {
+    what:'Sales of newly built homes. Smaller than existing sales but more forward looking, because it is measured at contract signing.',
+    up:'Rising sales suggest confidence in taking on a mortgage at current rates.',
+    down:'Falling sales point to affordability pressure.',
+    watch:'A small sample with large revisions. Treat single months with caution.'
+  },
+  'Durable Goods Orders': {
+    what:'Orders for goods designed to last three years or more, from appliances to aircraft.',
+    up:'Rising orders signal business investment and confidence. Mildly <b>dollar positive</b>.',
+    down:'Falling orders warn of a pullback in investment.',
+    watch:'A single aircraft order can swing the headline by double digits. Look at orders excluding transport for the real signal.'
+  },
+  'Industrial Production': {
+    what:'Total output from factories, mines and utilities.',
+    up:'Higher output is growth positive.',
+    down:'Falling output points to industrial weakness.',
+    watch:'A minor mover in most conditions. It gets attention mainly when manufacturing is already the market focus.'
+  }
+};
+
+var CAL_CACHE = {};
+function monthEvents(y, m){
+  var k = y+'-'+m;
+  if (!CAL_CACHE[k]) CAL_CACHE[k] = buildMonth(y, m);
+  return CAL_CACHE[k];
+}
+
+function rangeEvents(fromMs, toMs){
+  var out = [], d = new Date(fromMs);
+  var y = d.getFullYear(), m = d.getMonth()+1;
+  var end = new Date(toMs), guard = 0;
+  while ((y < end.getFullYear() || (y === end.getFullYear() && m <= end.getMonth()+1)) && guard++ < 40){
+    monthEvents(y, m).forEach(function(e){ if (e.ts >= fromMs && e.ts <= toMs) out.push(e); });
+    m++; if (m > 12){ m = 1; y++; }
+  }
+  return out.sort(function(a,b){ return a.ts - b.ts; });
+}
+
+/* ---- calendar rendering ---- */
+var VIEW = 'week';
+var IMPS = { high:true, med:true, low:true }, SAVED_IMPS = null;
+var DAYNAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var MONNAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function renderCal(){
+  var now = new Date();
+  var from, to, groupBy = 'day', dayRolled = false;
+
+  if (VIEW === 'day'){
+    /* On a weekend nothing is scheduled, so roll forward to the next trading day. */
+    var shift = (now.getDay() === 6) ? 2 : (now.getDay() === 0 ? 1 : 0);
+    from = new Date(now.getTime() + shift*86400000); from.setHours(0,0,0,0);
+    to = new Date(from.getTime() + 86400000 - 1);
+    dayRolled = shift > 0;
+  } else if (VIEW === 'week'){
+    /* the next seven days, forward looking. Nobody needs a calendar of what already happened. */
+    from = new Date(now); from.setHours(0,0,0,0);
+    to = new Date(from.getTime() + 8*86400000 - 1);
+  } else if (VIEW === 'month'){
+    /* rest of this month, from today forward */
+    from = new Date(now); from.setHours(0,0,0,0);
+    to = new Date(now.getFullYear(), now.getMonth()+1, 0, 23,59,59,999);
+  } else {
+    /* rest of this year, from today forward */
+    from = new Date(now); from.setHours(0,0,0,0);
+    to = new Date(now.getFullYear(), 11, 31, 23,59,59,999);
+    groupBy = 'month';
+  }
+
+  var evs = rangeEvents(from.getTime(), to.getTime()).filter(function(e){ return IMPS[e.imp]; });
+  var box = document.getElementById('tl-cal');
+
+  var rolledNote = dayRolled
+    ? '<div class="tl-rolled">Markets are closed for the weekend, so this is the next trading day.</div>'
+    : '';
+
+  if (!evs.length){
+    box.innerHTML = rolledNote + '<div class="tl-empty"><b>Nothing scheduled</b>No releases match your filters for this period. Turn medium and low back on, or switch to the week view to see what is coming.</div>';
+    return;
+  }
+
+  var todayKey = new Date(); todayKey.setHours(0,0,0,0); todayKey = todayKey.getTime();
+  var html = rolledNote, lastKey = null, ROW_ID = 0;
+
+  evs.forEach(function(e){
+    var d = new Date(e.ts);
+    var key, head;
+    if (groupBy === 'month'){
+      key = d.getFullYear()+'-'+d.getMonth();
+      head = '<h4>'+MONNAMES[d.getMonth()]+' '+d.getFullYear()+'</h4>';
+    } else {
+      var dk = new Date(d); dk.setHours(0,0,0,0);
+      key = dk.getTime();
+      var isToday = key === todayKey;
+      head = '<h4>'+DAYNAMES[d.getDay()]+'</h4><span class="dh-date">'+MONNAMES[d.getMonth()].slice(0,3).toUpperCase()+' '+d.getDate()+'</span>'+
+             (isToday ? '<span class="dh-today">Today</span>' : '');
+    }
+    if (key !== lastKey){
+      if (lastKey !== null) html += '</div>';
+      html += '<div class="tl-daygroup"><div class="tl-dayhead">'+head+'</div>';
+      lastKey = key;
+    }
+    var past = e.ts < now.getTime();
+    var timeStr = (groupBy === 'month')
+      ? (MONNAMES[d.getMonth()].slice(0,3)+' '+pad(d.getDate()))
+      : (pad(d.getHours())+':'+pad(d.getMinutes()));
+
+    var info = WHY[e.name];
+    var rid = 'r' + (ROW_ID++);
+
+    html += '<div class="tl-ev '+(past?'past ':'')+(info?'has':'')+'" '+(info?'data-row="'+rid+'"':'')+'>'+
+      '<div class="tl-ev-time">'+timeStr+'</div>'+
+      '<div class="tl-ev-cur">'+esc(e.cur)+'</div>'+
+      '<div><span class="tl-imp '+e.imp+'"></span></div>'+
+      '<div><div class="tl-ev-name">'+esc(e.name)+(e.est?' <span class="tl-est">est</span>':'')+'</div>'+
+        (e.note?'<div class="tl-ev-note">'+esc(e.note)+'</div>':'')+'</div>'+
+      '<div class="tl-chev">'+(info?'▶':'')+'</div>'+
+    '</div>';
+
+    if (info){
+      html += '<div class="tl-detail" id="'+rid+'"><div class="tl-detail-in">'+
+        '<div class="tl-what">'+info.what+'</div>'+
+        '<div class="tl-react">'+
+          '<div class="tl-rx up"><div class="tl-rx-h">▲ Comes in higher</div><p>'+info.up+'</p></div>'+
+          '<div class="tl-rx down"><div class="tl-rx-h">▼ Comes in lower</div><p>'+info.down+'</p></div>'+
+        '</div>'+
+        '<div class="tl-watch"><b>What to watch</b>'+info.watch+'</div>'+
+      '</div></div>';
+    }
+  });
+  html += '</div>';
+  box.innerHTML = html;
+}
+
+/* ---- controls ---- */
+document.getElementById('tl-tabs').addEventListener('click', function(e){
+  var b = e.target.closest('.tl-tab'); if (!b) return;
+  this.querySelectorAll('.tl-tab').forEach(function(x){ x.classList.remove('active'); });
+  b.classList.add('active');
+  var prev = VIEW;
+  VIEW = b.getAttribute('data-view');
+  /* A whole year with every tier on is hundreds of rows, so year view narrows to
+     high impact. Whatever the user had chosen is restored when they leave. */
+  if (VIEW === 'year' && prev !== 'year'){
+    SAVED_IMPS = { high:IMPS.high, med:IMPS.med, low:IMPS.low };
+    IMPS.med = false; IMPS.low = false;
+    syncChips();
+  } else if (prev === 'year' && VIEW !== 'year' && SAVED_IMPS){
+    IMPS.high = SAVED_IMPS.high; IMPS.med = SAVED_IMPS.med; IMPS.low = SAVED_IMPS.low;
+    SAVED_IMPS = null;
+    syncChips();
+  }
+  renderCal();
+});
+function syncChips(){
+  document.querySelectorAll('.tl-chip').forEach(function(c){
+    var k = c.getAttribute('data-imp');
+    c.classList.toggle('on', !!IMPS[k]);
+    c.classList.toggle('off', !IMPS[k]);
+  });
+}
+document.getElementById('tl-filters').addEventListener('click', function(e){
+  var c = e.target.closest('.tl-chip'); if (!c) return;
+  var k = c.getAttribute('data-imp');
+  IMPS[k] = !IMPS[k];
+  syncChips(); renderCal();
+});
+
+/* expand and collapse the explainer under a row */
+document.getElementById('tl-cal').addEventListener('click', function(e){
+  var row = e.target.closest('.tl-ev'); if (!row) return;
+  var id = row.getAttribute('data-row'); if (!id) return;
+  var panel = document.getElementById(id); if (!panel) return;
+  var opening = !panel.classList.contains('show');
+  /* one open at a time keeps the list readable */
+  this.querySelectorAll('.tl-detail.show').forEach(function(p){ p.classList.remove('show'); });
+  this.querySelectorAll('.tl-ev.open-row').forEach(function(r){ r.classList.remove('open-row'); });
+  if (opening){ panel.classList.add('show'); row.classList.add('open-row'); }
+});
+
+/* =========================================================
+   NEXT HIGH IMPACT COUNTDOWN
+   Looks ahead 14 days and locks onto the first high impact
+   release. Recomputed only when the target passes, so the
+   per second tick stays cheap.
+   ========================================================= */
+var NEXT_EV = null, NEXT_SCANNED = 0;
+
+function findNextHigh(now){
+  var evs = rangeEvents(now, now + 14*86400000);
+  for (var i=0;i<evs.length;i++){
+    if (evs[i].imp === 'high' && evs[i].ts > now) return evs[i];
+  }
+  return null;
+}
+
+function countdownText(ms){
+  var t = Math.floor(ms/1000);
+  var d = Math.floor(t/86400), h = Math.floor((t%86400)/3600),
+      m = Math.floor((t%3600)/60), s = t%60;
+  if (d > 0) return d + 'd ' + h + 'h';
+  if (h > 0) return h + 'h ' + pad(m) + 'm';
+  return pad(m) + 'm ' + pad(s) + 's';
+}
+
+function renderNext(){
+  var now = Date.now();
+  if (!NEXT_EV || NEXT_EV.ts <= now || now - NEXT_SCANNED > 600000){
+    NEXT_EV = findNextHigh(now);
+    NEXT_SCANNED = now;
+  }
+  var card = document.getElementById('tl-next-card');
+  var evEl = document.getElementById('tl-next-ev');
+  var cEl = document.getElementById('tl-next-count');
+  var wEl = document.getElementById('tl-next-when');
+  if (!card) return;
+
+  if (!NEXT_EV){
+    card.className = 'tl-next none';
+    evEl.textContent = 'Nothing high impact in the next two weeks';
+    cEl.textContent = 'All clear';
+    wEl.textContent = '';
+    return;
+  }
+
+  var left = NEXT_EV.ts - now;
+  card.className = 'tl-next' + (left < 3600000 ? ' soon' : '');
+  evEl.innerHTML = '<span class="cur">' + esc(NEXT_EV.cur) + '</span>' + esc(NEXT_EV.name);
+  cEl.textContent = countdownText(left);
+
+  var d = new Date(NEXT_EV.ts);
+  var today = new Date(); today.setHours(0,0,0,0);
+  var evDay = new Date(d); evDay.setHours(0,0,0,0);
+  var dayDiff = Math.round((evDay - today) / 86400000);
+  var when = dayDiff === 0 ? 'Today' : (dayDiff === 1 ? 'Tomorrow' : DAYNAMES[d.getDay()].slice(0,3) + ' ' + d.getDate());
+  wEl.textContent = when + ' · ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ' your time';
+}
+
+/* ---- boot ---- */
+renderLive();
+renderCal();
+renderNext();
+setInterval(renderNext, 1000);
+setInterval(renderLive, 1000);
+window.addEventListener('resize', function(){ renderLive(); renderCal(); });
+
+EM.buildFooter();
+EM.initReveal();
+</script>
 </body>
 </html>
