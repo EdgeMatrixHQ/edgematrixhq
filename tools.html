@@ -11,15 +11,15 @@
   </script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Trading Tools — Live Session Clock &amp; Economic Calendar | EdgeMatrix</title>
-<meta name="description" content="Free trading tools from EdgeMatrix. See which forex session is open right now, when every session opens in your local time, and every high impact news release for the week, month and year."/>
+<title>Trading Tools — Live Forex Session Clock | EdgeMatrix</title>
+<meta name="description" content="Free trading tools from EdgeMatrix. See which forex session is open right now, when the next one opens in your local time, and how the four sessions overlap through the day. Economic calendar coming soon."/>
 <link rel="canonical" href="https://edgematrixhq.com/tools.html"/>
 <meta name="robots" content="index, follow"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="EdgeMatrix"/>
 <meta property="og:url" content="https://edgematrixhq.com/tools.html"/>
-<meta property="og:title" content="Trading Tools — Live Session Clock &amp; Economic Calendar | EdgeMatrix"/>
-<meta property="og:description" content="Which session is open right now, and what news is about to move it. Free from EdgeMatrix."/>
+<meta property="og:title" content="Trading Tools — Live Forex Session Clock | EdgeMatrix"/>
+<meta property="og:description" content="Which session is open right now, and when the next one opens in your time. Free from EdgeMatrix."/>
 <meta property="og:image" content="https://edgematrixhq.com/og-image.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://edgematrixhq.com/og-image.png"/>
@@ -97,6 +97,46 @@
 .tl-sc-hours { font-family:'Space Mono',monospace; font-size:15px; color:#E8E8EC; letter-spacing:-0.3px; }
 .tl-sc-meta { font-size:12px; color:#666677; margin-top:8px; line-height:1.6; }
 .tl-sc-meta b { color:#D42B40; font-weight:600; }
+
+/* ============ CALENDAR, COMING SOON PANEL ============ */
+.tl-soon { margin-top:38px; background:linear-gradient(180deg,#0F0F12,#0A0A0C); border:1px solid rgba(166,30,46,0.20); border-radius:10px; position:relative; overflow:hidden; }
+.tl-soon::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 8% 0%,rgba(166,30,46,0.10),transparent 62%); pointer-events:none; }
+.tl-soon-inner { position:relative; z-index:2; display:grid; grid-template-columns:1fr 1fr; gap:44px; padding:44px 46px; align-items:stretch; }
+.tl-soon-copy { min-width:0; }
+.tl-soon-badge { display:inline-flex; align-items:center; gap:9px; font-family:'Space Mono',monospace; font-size:9.5px; font-weight:700; letter-spacing:2.2px; text-transform:uppercase; color:#D42B40; background:rgba(166,30,46,0.10); border:1px solid rgba(166,30,46,0.30); padding:6px 12px; border-radius:2px; margin-bottom:20px; }
+.tl-soon-badge i { width:6px; height:6px; border-radius:50%; background:#D42B40; box-shadow:0 0 8px #D42B40; animation:tl-pulse 2s infinite; display:block; }
+.tl-soon h3 { font-size:clamp(23px,2.9vw,32px); font-weight:700; letter-spacing:-1.1px; line-height:1.14; margin-bottom:16px; color:#E8E8EC; }
+.tl-soon h3 em { font-style:normal; color:#D42B40; }
+.tl-soon-lead { font-size:14.5px; color:#888899; line-height:1.8; margin-bottom:26px; }
+.tl-soon-list { list-style:none; margin:0 0 28px; padding:0; border-top:1px solid rgba(255,255,255,0.055); }
+.tl-soon-list li { display:flex; gap:15px; padding:15px 2px; border-bottom:1px solid rgba(255,255,255,0.055); }
+.tl-soon-list .n { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:1.2px; color:#A61E2E; padding-top:3px; flex-shrink:0; }
+.tl-soon-list .t { font-size:13px; color:#888899; line-height:1.65; min-width:0; }
+.tl-soon-list .t b { display:block; color:#E8E8EC; font-weight:600; font-size:13.5px; margin-bottom:3px; letter-spacing:-0.1px; }
+.tl-soon-cta { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+.tl-soon-cta .tl-soon-hint { font-size:12px; color:#666677; line-height:1.6; }
+
+/* the ghosted preview, this is what the calendar will look like */
+.tl-soon-prev { position:relative; background:#08080A; border:1px solid rgba(255,255,255,0.055); border-radius:8px; padding:22px 22px 10px; min-width:0; overflow:hidden; }
+.tl-soon-prev-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.tl-soon-prev-title { font-family:'Space Mono',monospace; font-size:9.5px; font-weight:700; letter-spacing:2px; color:#3E3E48; text-transform:uppercase; }
+.tl-soon-tabs { display:flex; gap:4px; }
+.tl-soon-tabs i { display:block; width:26px; height:7px; border-radius:2px; background:rgba(255,255,255,0.05); }
+.tl-soon-tabs i.on { background:rgba(166,30,46,0.42); width:34px; }
+.tl-soon-day { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1.6px; color:#33333C; text-transform:uppercase; padding:12px 0 8px; border-bottom:1px solid rgba(255,255,255,0.05); }
+.tl-soon-day:first-of-type { padding-top:0; }
+.tl-soon-r { display:grid; grid-template-columns:38px 26px 9px 1fr; gap:11px; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.03); }
+.tl-soon-sk { height:8px; border-radius:2px; background:linear-gradient(90deg,rgba(255,255,255,0.05),rgba(255,255,255,0.10),rgba(255,255,255,0.05)); background-size:220% 100%; animation:tl-shim 2.6s ease-in-out infinite; }
+.tl-soon-r .dot { width:9px; height:9px; border-radius:50%; }
+.tl-soon-r .dot.high { background:rgba(212,43,64,0.55); }
+.tl-soon-r .dot.med  { background:rgba(229,130,10,0.45); }
+.tl-soon-r .dot.low  { background:rgba(85,85,102,0.55); }
+@keyframes tl-shim { 0%,100% { background-position:150% 0; } 50% { background-position:-50% 0; } }
+.tl-soon-veil { position:absolute; inset:0; border-radius:8px; display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(180deg,rgba(8,8,10,0.05) 0%,rgba(8,8,10,0.55) 42%,rgba(8,8,10,0.93) 78%,rgba(8,8,10,0.99) 100%); }
+.tl-soon-veil span { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#9A9AA6;
+  border:1px solid rgba(255,255,255,0.13); background:rgba(10,10,12,0.9); padding:11px 19px; border-radius:2px; }
+@media (prefers-reduced-motion:reduce){ .tl-soon-sk { animation:none; } .tl-soon-badge i { animation:none; } }
 
 /* ============ CALENDAR ============ */
 .tl-cal-bar { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
@@ -227,6 +267,22 @@
   .tl-cal-bar { flex-direction:column; align-items:stretch; }
   .tl-tabs { justify-content:space-between; }
 }
+
+@media(max-width:900px){
+  .tl-soon-inner { grid-template-columns:1fr; gap:32px; padding:34px 26px; }
+  /* the preview reads as decoration once it is stacked, so it goes first as a
+     visual and the copy carries the message underneath it */
+  /* stacked, the preview is decoration rather than the message, so it is capped
+     and the fade does the cutting off. Full height would push the copy down the page. */
+  .tl-soon-prev { order:-1; max-height:250px; padding-bottom:0; }
+}
+@media(max-width:640px){
+  .tl-soon-inner { padding:28px 20px; }
+  .tl-soon-prev { max-height:210px; padding:18px 18px 0; }
+  .tl-soon-cta { flex-direction:column; align-items:stretch; }
+  .tl-soon-cta .em-btn { text-align:center; }
+  .tl-soon-veil span { font-size:9px; letter-spacing:2.2px; padding:9px 14px; }
+}
 </style></head>
 <body>
 <script src="em-shared.js"></script>
@@ -237,8 +293,8 @@
   <div class="tl-hero-glow"></div>
   <div class="tl-hero-content">
     <div class="em-badge" style="margin-bottom:30px;">Free Tools</div>
-    <h1>Know the hour.<br/><em>Know the news.</em></h1>
-    <p>Which session is live right now, when the next one opens in your time, and every release that can move your chart this week. Free, no account, no email.</p>
+    <h1>Know the hour.<br/><em>Trade the session.</em></h1>
+    <p>Which session is live right now, when the next one opens in your time, and how the four of them overlap through your day. Free, no account, no email. The economic calendar is coming back shortly.</p>
   </div>
 </div>
 
@@ -257,16 +313,8 @@
       </div>
     </div>
 
-    <a class="tl-next" id="tl-next-card" href="#tl-calendar">
-      <div class="tl-next-l">
-        <div class="tl-next-label">Next high impact</div>
-        <div class="tl-next-ev" id="tl-next-ev">Checking the calendar</div>
-      </div>
-      <div class="tl-next-r">
-        <div class="tl-next-count" id="tl-next-count">·</div>
-        <div class="tl-next-when" id="tl-next-when"></div>
-      </div>
-    </a>
+    <!-- The next high impact card is fed by the economic calendar. It comes back
+         with the calendar, see NEWS_LIVE in the script below. -->
 
     <div class="tl-timeline">
       <div class="tl-tl-head">
@@ -296,10 +344,72 @@
     <div class="em-reveal" style="max-width:620px;" id="tl-calendar">
       <div class="em-section-label">Economic Calendar</div>
       <h2 class="em-section-title">The releases that move price.</h2>
-      <p class="em-section-sub">High impact prints can move a pair more in two minutes than the whole session before it. Tap any release to see what it measures and which way price usually reacts.</p>
+      <p class="em-section-sub">High impact prints can move a pair more in two minutes than the whole session before it. Knowing when they land is half of not getting caught by one.</p>
     </div>
 
-    <div style="margin-top:38px;">
+    <!-- ===== COMING SOON PANEL =====
+         The calendar engine below is finished and still in the file. It is held
+         behind NEWS_LIVE in the script at the bottom of this page. To put the
+         calendar back: set NEWS_LIVE to true and delete this panel. -->
+    <div class="tl-soon em-reveal">
+      <div class="tl-soon-inner">
+
+        <div class="tl-soon-copy">
+          <div class="tl-soon-badge"><i></i> In development</div>
+          <h3>We pulled it down to <em>rebuild it properly.</em></h3>
+          <p class="tl-soon-lead">Session times above are live and staying live. The calendar comes back once it reads at a glance the way it should, instead of being a list you have to work through. Worth waiting a few weeks for.</p>
+
+          <ul class="tl-soon-list">
+            <li>
+              <span class="n">01</span>
+              <span class="t"><b>Every release that matters</b>Central bank decisions, inflation, jobs and growth across the eight major currencies, rated by how hard they actually move price.</span>
+            </li>
+            <li>
+              <span class="n">02</span>
+              <span class="t"><b>Your clock, not ours</b>Every time converted to your device automatically, so you never do the maths on a release at three in the morning.</span>
+            </li>
+            <li>
+              <span class="n">03</span>
+              <span class="t"><b>What it means, not just when</b>Tap a release to see what it measures, what a beat or a miss usually does to the pair, and whether it is worth trading at all.</span>
+            </li>
+          </ul>
+
+          <div class="tl-soon-cta">
+            <a href="free.html" class="em-btn em-btn-primary">Get EdgeMatrix Sessions Free →</a>
+            <span class="tl-soon-hint">Free indicator, and you get told the day the calendar goes live.</span>
+          </div>
+        </div>
+
+        <div class="tl-soon-prev" aria-hidden="true">
+          <div class="tl-soon-prev-head">
+            <div class="tl-soon-prev-title">Preview</div>
+            <div class="tl-soon-tabs"><i></i><i class="on"></i><i></i><i></i></div>
+          </div>
+
+          <div class="tl-soon-day">Today</div>
+          <div class="tl-soon-r"><span class="tl-soon-sk"></span><span class="tl-soon-sk"></span><span class="dot high"></span><span class="tl-soon-sk" style="width:82%"></span></div>
+          <div class="tl-soon-r"><span class="tl-soon-sk"></span><span class="tl-soon-sk"></span><span class="dot med"></span><span class="tl-soon-sk" style="width:64%"></span></div>
+          <div class="tl-soon-r"><span class="tl-soon-sk"></span><span class="tl-soon-sk"></span><span class="dot low"></span><span class="tl-soon-sk" style="width:73%"></span></div>
+
+          <div class="tl-soon-day">Tomorrow</div>
+          <div class="tl-soon-r"><span class="tl-soon-sk"></span><span class="tl-soon-sk"></span><span class="dot high"></span><span class="tl-soon-sk" style="width:70%"></span></div>
+          <div class="tl-soon-r"><span class="tl-soon-sk"></span><span class="tl-soon-sk"></span><span class="dot low"></span><span class="tl-soon-sk" style="width:88%"></span></div>
+          <div class="tl-soon-r"><span class="tl-soon-sk"></span><span class="tl-soon-sk"></span><span class="dot med"></span><span class="tl-soon-sk" style="width:59%"></span></div>
+
+          <div class="tl-soon-day">Wednesday</div>
+          <div class="tl-soon-r"><span class="tl-soon-sk"></span><span class="tl-soon-sk"></span><span class="dot med"></span><span class="tl-soon-sk" style="width:77%"></span></div>
+          <div class="tl-soon-r"><span class="tl-soon-sk"></span><span class="tl-soon-sk"></span><span class="dot high"></span><span class="tl-soon-sk" style="width:66%"></span></div>
+          <div class="tl-soon-r"><span class="tl-soon-sk"></span><span class="tl-soon-sk"></span><span class="dot low"></span><span class="tl-soon-sk" style="width:84%"></span></div>
+          <div class="tl-soon-r"><span class="tl-soon-sk"></span><span class="tl-soon-sk"></span><span class="dot low"></span><span class="tl-soon-sk" style="width:61%"></span></div>
+
+          <div class="tl-soon-veil"><span>Coming soon</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- The finished calendar, held back until the rebuild lands. -->
+    <div id="tl-cal-shell" style="display:none;" aria-hidden="true">
       <div class="tl-cal-bar">
         <div class="tl-tabs" id="tl-tabs">
           <button class="tl-tab" data-view="day"><span class="lg">Today</span><span class="sm">Today</span></button>
@@ -1797,12 +1907,20 @@ function evDate(e){
 }
 
 /* ---- calendar rendering ---- */
+
+/* The economic calendar is finished but held back while the layout is reworked.
+   Everything below still exists and still works. Flipping this to true and
+   removing the coming soon panel plus the display:none on #tl-cal-shell brings
+   the whole calendar and the next high impact card back exactly as they were. */
+var NEWS_LIVE = false;
+
 var VIEW = 'week';
 var IMPS = { high:true, med:true, low:true, hol:true }, SAVED_IMPS = null;
 var DAYNAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var MONNAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 function renderCal(){
+  if (!NEWS_LIVE) return;
   var now = new Date();
   var from, to, groupBy = 'day', dayRolled = false;
 
@@ -2062,6 +2180,7 @@ function countdownText(ms){
 }
 
 function renderNext(){
+  if (!NEWS_LIVE) return;
   var now = Date.now();
   if (!NEXT_EV || NEXT_EV.ts <= now || now - NEXT_SCANNED > 600000){
     NEXT_EV = findNextHigh(now);
@@ -2096,14 +2215,17 @@ function renderNext(){
 
 /* ---- boot ---- */
 renderLive();
-renderCal();
-renderNext();
-loadSpeeches().then(function(n){
-  if (n){ CAL_CACHE = {}; renderCal(); NEXT_EV = null; renderNext(); }
-});
-setInterval(renderNext, 1000);
 setInterval(renderLive, 1000);
 window.addEventListener('resize', function(){ renderLive(); renderCal(); });
+
+if (NEWS_LIVE){
+  renderCal();
+  renderNext();
+  loadSpeeches().then(function(n){
+    if (n){ CAL_CACHE = {}; renderCal(); NEXT_EV = null; renderNext(); }
+  });
+  setInterval(renderNext, 1000);
+}
 
 EM.buildFooter();
 EM.initReveal();
