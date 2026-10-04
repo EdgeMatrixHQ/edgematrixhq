@@ -629,19 +629,19 @@ const EM = {
             <p>The execution system for serious traders. Discipline, enforced.</p>
           </div>
           <div class="em-footer-col">
-            <h5>Product</h5>
+            <h5>Platform</h5>
             <ul>
-              <li><a href="pro.html">EdgeMatrix Pro</a></li>
-              <li><a href="free.html">Sessions (Free)</a></li>
+              <li><a href="sessions.html">Sessions</a></li>
+              <li><a href="news.html">News</a></li>
               <li><a href="creators.html">Creators</a></li>
-              <li><a href="checkout.html">Pricing</a></li>
+              <li><a href="resources.html">Resources</a></li>
             </ul>
           </div>
           <div class="em-footer-col">
             <h5>Company</h5>
             <ul>
               <li><a href="about.html">About</a></li>
-              <li><a href="tools.html">Tools</a></li>
+              <li><a href="creators.html">Become a creator</a></li>
               <li><a href="mailto:hello@edgematrixhq.com" class="em-contact">Contact</a></li>
             </ul>
           </div>

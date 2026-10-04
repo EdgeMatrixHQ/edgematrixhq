@@ -109,6 +109,11 @@
       '.ems-tabbar{display:block}',
       '.ems-top{padding:0 18px}',
     '}',
+    /* The shared footer is the one full width band with a solid fill, so it
+       hides the field behind it. Translucent plus a blur keeps the text
+       readable while the particles carry on through to the bottom. */
+    '.em-footer{background:rgba(15,15,18,.66)!important;backdrop-filter:blur(12px)}',
+    '.em-footer-bottom,.em-footer-legal{background:transparent!important}',
     '@media(prefers-reduced-motion:reduce){#ems-bg{display:none}}'
   ].join('');
 
