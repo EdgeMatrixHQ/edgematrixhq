@@ -566,11 +566,12 @@ const EM = {
   buildNav(activePage) {
     this.buildAnnounce();
     const pages = [
-      { href: 'index.html', label: 'Home' },
-      { href: 'pro.html', label: 'Pro' },
+      { href: 'index.html', label: 'Today' },
+      { href: 'tools.html', label: 'Sessions' },
+      { href: 'tools.html', label: 'News' },
       { href: 'creators.html', label: 'Creators' },
+      { href: 'index.html#resources', label: 'Resources' },
       { href: 'about.html', label: 'About' },
-      { href: 'tools.html', label: 'Tools' },
     ];
 
     const nav = document.createElement('nav');
@@ -586,7 +587,7 @@ const EM = {
       <ul class="em-nav-links">
         ${pages.map(p => `<li><a href="${p.href}" class="${p.label.toLowerCase().replace(' ', '-') === activePage ? 'active' : ''}">${p.label}</a></li>`).join('')}
       </ul>
-      <a href="pro.html" class="em-nav-cta">Get Pro →</a>
+
       <div class="em-hamburger" id="em-hamburger">
         <span></span><span></span><span></span>
       </div>
@@ -599,7 +600,6 @@ const EM = {
     mobile.id = 'em-mobile-menu';
     mobile.innerHTML = `
       ${pages.map(p => `<a href="${p.href}">${p.label}</a>`).join('')}
-      <a href="pro.html" style="color: var(--accent-bright) !important;">Get Pro →</a>
     `;
     nav.after(mobile);
 
@@ -858,6 +858,7 @@ window.EM = EM;
   var path = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
   if (path === '') path = 'index.html';
   var skip = [
+    'index.html',
     'checkout.html',
     'thankyou.html',
     'purchase-thankyou.html',

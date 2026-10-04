@@ -1,0 +1,5 @@
+# Local rollback copies and work-in-progress. Never ship these.
+index-OLD-*.html
+*.bak
+index-new.html
+_to_delete/
