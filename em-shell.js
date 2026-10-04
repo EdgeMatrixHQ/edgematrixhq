@@ -1,17 +1,19 @@
 /* =========================================================
    EdgeMatrix app shell.
 
-   Injects the desktop left rail, the mobile bottom tab bar and
-   the top status strip, then moves whatever the page already had
-   in <body> inside the content column. Any existing page adopts
-   it with one line and no markup changes:
+   Injects the desktop left rail, the mobile bottom tab bar, the
+   top status strip and the animated background, then moves
+   whatever the page already had in <body> into the content
+   column. Any page adopts it with one line and no markup changes:
 
        <script src="em-shell.js"></script>
-       <script>EMShell.build('creators', 'Creators');</script>
+       <script>EMShell.build('sessions', 'Sessions');</script>
 
-   The NAV array below is the single source of truth. The items
-   marked tab:true are the mobile bottom tabs, which are also the
-   navigation a future EdgeMatrix app would ship with.
+   The NAV array is the single source of truth. Every entry points
+   at a real page, never an anchor, so clicking a tab always lands
+   somewhere rather than scrolling. The items marked tab:true are
+   the mobile bottom tabs, which are also the navigation a future
+   EdgeMatrix app would ship with.
    ========================================================= */
 (function () {
 
@@ -28,24 +30,28 @@
   };
 
   var NAV = [
-    { key: 'today',     href: 'index.html',           label: 'Today',     icon: 'today',     tab: true },
-    { key: 'sessions',  href: 'tools.html',           label: 'Sessions',  icon: 'sessions',  tab: true },
-    { key: 'news',      href: 'tools.html',           label: 'News',      icon: 'news',      tab: true },
-    { key: 'creators',  href: 'creators.html',        label: 'Creators',  icon: 'creators',  tab: true },
-    { key: 'resources', href: 'index.html#resources', label: 'Resources', icon: 'resources' },
-    { key: 'about',     href: 'about.html',           label: 'About',     icon: 'about' }
+    { key: 'today',     href: 'index.html',     label: 'Today',     icon: 'today',     tab: true },
+    { key: 'sessions',  href: 'sessions.html',  label: 'Sessions',  icon: 'sessions',  tab: true },
+    { key: 'news',      href: 'news.html',      label: 'News',      icon: 'news',      tab: true },
+    { key: 'creators',  href: 'creators.html',  label: 'Creators',  icon: 'creators',  tab: true },
+    { key: 'resources', href: 'resources.html', label: 'Resources', icon: 'resources' },
+    { key: 'about',     href: 'about.html',     label: 'About',     icon: 'about' }
   ];
 
-  /* Replaced the moment the real Stripe customer portal URL is pasted
-     in. Until then every billing link falls back to support rather
-     than shipping a dead link. */
   var PORTAL = 'https://billing.stripe.com/p/login/9B6cN72rYdrlc0zgMU4ZG00';
-  var PORTAL_FALLBACK = 'mailto:hello@edgematrixhq.com?subject=Manage%20my%20subscription';
 
   var CSS = [
     ':root{--ems-rail:238px;--ems-tab:62px}',
-    '.ems-rail{position:fixed;top:0;left:0;bottom:0;width:var(--ems-rail);z-index:70;',
-      'background:#0C0C0F;border-right:1px solid #1C1C22;display:flex;flex-direction:column;padding:20px 14px}',
+
+    /* Animated field sits behind the whole document, not just a hero. */
+    '#ems-bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}',
+    'body{position:relative;background:#0A0A0C}',
+    '.ems-rail,.ems-main,.ems-tabbar,.ems-sheet{position:relative;z-index:1}',
+    '.ems-rail{z-index:70}.ems-tabbar{z-index:80}.ems-sheet{z-index:90}',
+
+    '.ems-rail{position:fixed;top:0;left:0;bottom:0;width:var(--ems-rail);',
+      'background:rgba(12,12,15,.92);backdrop-filter:blur(10px);',
+      'border-right:1px solid #1C1C22;display:flex;flex-direction:column;padding:20px 14px}',
     '.ems-rail .ems-brand{display:flex;align-items:center;gap:10px;padding:4px 10px 24px;',
       'font-weight:700;font-size:17px;letter-spacing:-.3px;color:#E8E8EC;text-decoration:none}',
     '.ems-mark{width:24px;height:24px;border-radius:6px;flex:none;',
@@ -66,7 +72,7 @@
     '.ems-mini{display:block;font-size:11.5px;color:#666677;padding:4px 11px;text-decoration:none}',
     '.ems-mini:hover{color:#888899}',
 
-    '.ems-tabbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:80;',
+    '.ems-tabbar{display:none;position:fixed;left:0;right:0;bottom:0;',
       'height:calc(var(--ems-tab) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);',
       'background:rgba(12,12,15,.94);backdrop-filter:blur(16px);border-top:1px solid #1C1C22}',
     '.ems-tabbar .ems-in{display:flex;height:var(--ems-tab)}',
@@ -76,7 +82,7 @@
     '.ems-tabbar svg{width:21px;height:21px;stroke-width:1.7}',
     '.ems-tabbar a.on{color:#E8E8EC}',
     '.ems-tabbar a.on svg{stroke:#D42B40}',
-    '.ems-sheet{display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.6)}',
+    '.ems-sheet{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6)}',
     '.ems-sheet.open{display:block}',
     '.ems-sheet .ems-panel{position:absolute;left:0;right:0;bottom:0;background:#0F0F12;',
       'border-top:1px solid #26262E;border-radius:16px 16px 0 0;',
@@ -88,7 +94,7 @@
 
     '.ems-main{margin-left:var(--ems-rail)}',
     '.ems-top{position:sticky;top:0;z-index:50;height:56px;display:flex;align-items:center;gap:12px;',
-      'padding:0 26px;background:rgba(10,10,12,.86);backdrop-filter:blur(14px);border-bottom:1px solid #1C1C22}',
+      'padding:0 26px;background:rgba(10,10,12,.78);backdrop-filter:blur(14px);border-bottom:1px solid #1C1C22}',
     '.ems-where{font-size:14.5px;font-weight:700;letter-spacing:-.2px;color:#E8E8EC}',
     '.ems-st{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;',
       'letter-spacing:1.2px;text-transform:uppercase;color:#888899}',
@@ -102,7 +108,8 @@
       '.ems-main{margin-left:0;padding-bottom:calc(var(--ems-tab) + env(safe-area-inset-bottom))}',
       '.ems-tabbar{display:block}',
       '.ems-top{padding:0 18px}',
-    '}'
+    '}',
+    '@media(prefers-reduced-motion:reduce){#ems-bg{display:none}}'
   ].join('');
 
   function el(tag, cls, html) {
@@ -111,15 +118,94 @@
     if (html != null) n.innerHTML = html;
     return n;
   }
-
   function two(n) { return n < 10 ? '0' + n : '' + n; }
 
-  var EMShell = {
+  /* =========================================================
+     BACKGROUND
+     Full viewport, fixed, behind every page. Same look as the
+     old hero field but bound to the window rather than one
+     section, so it follows the cursor anywhere on the site.
+     ========================================================= */
+  function startBackground() {
+    var c = document.getElementById('ems-bg');
+    if (!c || !c.getContext) return;
+    var ctx = c.getContext('2d');
+    var W = 0, H = 0, dots = [], mouse = { x: -9999, y: -9999 };
+    var MAX = 120, PULL = 200;
 
+    function rand(a, b) { return Math.random() * (b - a) + a; }
+
+    function size() {
+      W = c.width = window.innerWidth;
+      H = c.height = window.innerHeight;
+      var want = W < 600 ? 45 : (W < 1100 ? 85 : 130);
+      while (dots.length < want) dots.push(make());
+      dots.length = want;
+    }
+    function make() {
+      return {
+        x: rand(0, W || window.innerWidth), y: rand(0, H || window.innerHeight),
+        vx: rand(-0.26, 0.26), vy: rand(-0.18, 0.18),
+        r: rand(0.8, 2.1), a: rand(0.2, 0.75),
+        p: rand(0, Math.PI * 2), ps: rand(0.005, 0.018),
+        col: Math.random() > 0.85 ? '212,43,64' : '136,136,153'
+      };
+    }
+
+    function frame() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (var i = 0; i < dots.length; i++) {
+        for (var j = i + 1; j < dots.length; j++) {
+          var dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          if (d < MAX) {
+            ctx.strokeStyle = 'rgba(136,136,153,' + ((1 - d / MAX) * 0.17).toFixed(3) + ')';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y); ctx.stroke();
+          }
+        }
+      }
+
+      for (var k = 0; k < dots.length; k++) {
+        var p = dots[k];
+        var mdx = mouse.x - p.x, mdy = mouse.y - p.y;
+        var md = Math.sqrt(mdx * mdx + mdy * mdy);
+        if (md < PULL) {
+          ctx.strokeStyle = 'rgba(212,43,64,' + ((1 - md / PULL) * 0.45).toFixed(3) + ')';
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+          p.vx += (mdx / md) * 0.006;
+          p.vy += (mdy / md) * 0.006;
+        }
+
+        p.p += p.ps;
+        var alpha = p.a * (0.6 + 0.4 * Math.sin(p.p));
+        ctx.fillStyle = 'rgba(' + p.col + ',' + alpha.toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+
+        p.x += p.vx; p.y += p.vy;
+        var sp = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (sp > 0.6) { p.vx *= 0.96; p.vy *= 0.96; }
+        if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10; if (p.y > H + 10) p.y = -10;
+      }
+      requestAnimationFrame(frame);
+    }
+
+    window.addEventListener('mousemove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('mouseout', function () { mouse.x = -9999; mouse.y = -9999; });
+    window.addEventListener('resize', size);
+    size();
+    frame();
+  }
+
+  var EMShell = {
     NAV: NAV,
     ICONS: ICONS,
+    PORTAL: PORTAL,
 
-    /* activeKey matches a NAV key. title is what the top strip shows. */
     build: function (activeKey, title) {
       if (document.querySelector('.ems-rail')) return;
 
@@ -128,7 +214,6 @@
       style.textContent = CSS;
       document.head.appendChild(style);
 
-      /* Everything the page already had becomes the content column. */
       var main = el('div', 'ems-main');
       while (document.body.firstChild) main.appendChild(document.body.firstChild);
 
@@ -168,6 +253,10 @@
         '</div>');
       sheet.id = 'emsSheet';
 
+      var bg = document.createElement('canvas');
+      bg.id = 'ems-bg';
+
+      document.body.appendChild(bg);
       document.body.appendChild(rail);
       document.body.appendChild(main);
       document.body.appendChild(bar);
@@ -180,7 +269,7 @@
         if (ev.target === sheet) sheet.classList.remove('open');
       });
 
-
+      startBackground();
       this.startClock();
       this.startStatus();
       return main;
@@ -193,12 +282,9 @@
         var n = new Date();
         node.textContent = two(n.getHours()) + ':' + two(n.getMinutes()) + ':' + two(n.getSeconds()) + ' local';
       }
-      tick();
-      setInterval(tick, 1000);
+      tick(); setInterval(tick, 1000);
     },
 
-    /* Uses the session engine when the page has loaded it, and stays
-       quiet when it has not, so the shell never depends on it. */
     startStatus: function () {
       var dot = document.getElementById('emsDot');
       var label = document.getElementById('emsStatus');
@@ -207,17 +293,11 @@
         if (typeof computeSessions !== 'function') { dot.className = 'ems-dot shut'; return; }
         try {
           var open = computeSessions(new Date()).filter(function (x) { return x.isOpen; });
-          if (open.length) {
-            dot.className = 'ems-dot';
-            label.textContent = open[0].s.name + ' open';
-          } else {
-            dot.className = 'ems-dot shut';
-            label.textContent = 'Markets closed';
-          }
+          if (open.length) { dot.className = 'ems-dot'; label.textContent = open[0].s.name + ' open'; }
+          else { dot.className = 'ems-dot shut'; label.textContent = 'Markets closed'; }
         } catch (e) { dot.className = 'ems-dot shut'; }
       }
-      paint();
-      setInterval(paint, 20000);
+      paint(); setInterval(paint, 20000);
     }
   };
 

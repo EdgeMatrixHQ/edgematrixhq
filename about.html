@@ -65,7 +65,8 @@
 </style></head>
 <body>
 <script src="em-shared.js"></script>
-<script>EM.injectGlobalStyles(); EM.buildNav('about');</script>
+<script src="em-sessions.js"></script>
+<script>EM.injectGlobalStyles();</script>
 
 <div class="about-hero">
   <div class="about-hero-glow"></div>
@@ -164,5 +165,7 @@
   EM.initReveal();
   EM.initParticles('about-particles');
 </script>
+<script src="em-shell.js"></script>
+<script>EMShell.build('about','About');</script>
 </body>
 </html>
