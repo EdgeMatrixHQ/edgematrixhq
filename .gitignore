@@ -1,5 +1,6 @@
 # Local rollback copies and work-in-progress. Never ship these.
-index-OLD-*.html
+*-OLD-*.html
 *.bak
 index-new.html
+creators-preview.html
 _to_delete/

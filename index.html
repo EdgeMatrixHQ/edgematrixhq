@@ -268,7 +268,7 @@ footer{border-top:1px solid var(--line-soft);padding:34px 0 38px;background:var(
   <div class="foot">
     <div class="sep"></div>
     <div class="clock" id="railClock">—</div>
-    <a class="mini" href="BILLING_PORTAL_URL">Manage subscription</a>
+    <a class="mini" href="https://billing.stripe.com/p/login/9B6cN72rYdrlc0zgMU4ZG00">Manage subscription</a>
     <a class="mini" href="mailto:hello@edgematrixhq.com">Support</a>
   </div>
 </aside>
@@ -372,7 +372,7 @@ footer{border-top:1px solid var(--line-soft);padding:34px 0 38px;background:var(
           <p>Update your card, see invoices, or cancel at any time. Cancelling stops future renewals and your access runs to the end of the period you have paid for.</p>
         </div>
         <div class="acts">
-          <a href="BILLING_PORTAL_URL" class="btn solid">Manage subscription</a>
+          <a href="https://billing.stripe.com/p/login/9B6cN72rYdrlc0zgMU4ZG00" class="btn solid">Manage subscription</a>
           <a href="mailto:hello@edgematrixhq.com" class="btn">Contact support</a>
         </div>
       </div>
@@ -479,7 +479,7 @@ var FOOTER = [
     { href:'#sessions', t:'Sessions' }, { href:'#news', t:'News' },
     { href:'creators.html', t:'Creators' }, { href:'#resources', t:'Resources' } ]},
   { h:'Account', links:[
-    { href:'BILLING_PORTAL_URL', t:'Manage subscription' },
+    { href:'https://billing.stripe.com/p/login/9B6cN72rYdrlc0zgMU4ZG00', t:'Manage subscription' },
     { href:'mailto:hello@edgematrixhq.com', t:'Support' } ]},
   { h:'Company', links:[
     { href:'about.html', t:'About' }, { href:'creators.html', t:'Become a creator' } ]},
@@ -506,7 +506,7 @@ document.getElementById('tabBar').innerHTML =
 var rest = NAV.filter(function(n){ return !n.tab; });
 document.getElementById('sheetLinks').innerHTML =
   rest.map(function(n){ return '<a href="'+n.href+'">'+I[n.icon]+e2(n.label)+'</a>'; }).join('') +
-  '<a href="BILLING_PORTAL_URL">'+I.card+'Manage subscription</a>' +
+  '<a href="https://billing.stripe.com/p/login/9B6cN72rYdrlc0zgMU4ZG00">'+I.card+'Manage subscription</a>' +
   '<a href="mailto:hello@edgematrixhq.com">'+I.mail+'Support</a>';
 
 document.getElementById('platformTiles').innerHTML = PLATFORM.map(function(t){
@@ -536,12 +536,7 @@ document.getElementById('footerCols').innerHTML = FOOTER.map(function(c){
 
 document.getElementById('yr').textContent = new Date().getFullYear();
 
-/* Fail safe: no dead billing link ships. Paste the real Stripe
-   portal URL over BILLING_PORTAL_URL and this stops firing. */
-[].forEach.call(document.querySelectorAll('a[href="BILLING_PORTAL_URL"]'), function(a){
-  a.setAttribute('href','mailto:hello@edgematrixhq.com?subject=Manage%20my%20subscription');
-  a.setAttribute('data-portal-pending','1');
-});
+
 
 /* sheet */
 var sheet = document.getElementById('sheet');
